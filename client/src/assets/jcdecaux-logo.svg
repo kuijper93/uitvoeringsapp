@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20.9 38.5h-8.4V11.5h8.4c8.8 0 15.3 5.8 15.3 13.5s-6.5 13.5-15.3 13.5zm0-23.2h-4v19.4h4c6.2 0 10.7-4.1 10.7-9.7s-4.5-9.7-10.7-9.7z" fill="#004F9F"/>
-  <path d="M63.4 38.5h-4.2l-2.1-5.8H45.6l-2.1 5.8h-4.2l10.5-27h3.1l10.5 27zm-7.5-9.6l-4.7-12.8-4.7 12.8h9.4z" fill="#004F9F"/>
-  <path d="M89.9 38.5h-4.4l-12.8-19v19h-4.4V11.5h4.4l12.8 19v-19h4.4v27z" fill="#004F9F"/>
-  <path d="M116.4 38.5h-4.4l-12.8-19v19h-4.4V11.5h4.4l12.8 19v-19h4.4v27z" fill="#004F9F"/>
-  <path d="M142.9 38.5h-4.4l-12.8-19v19h-4.4V11.5h4.4l12.8 19v-19h4.4v27z" fill="#004F9F"/>
-  <path d="M169.4 38.5H165l-12.8-19v19h-4.4V11.5h4.4l12.8 19v-19h4.4v27z" fill="#004F9F"/>
-  <path d="M195.9 38.5h-4.4l-12.8-19v19h-4.4V11.5h4.4l12.8 19v-19h4.4v27z" fill="#004F9F"/>
+  <g fill="#000000">
+    <path d="M42 12h18v4H42zM42 22h18v4H42zM42 32h18v4H42z"/>
+    <path d="M15 12h20v4H15zM15 22h20v4H15zM15 32h20v4H15z"/>
+    <path d="M75 12h18v4H75zM75 22h18v4H75zM75 32h18v4H75z"/>
+    <path d="M100 12h18v4h-18zM100 22h18v4h-18zM100 32h18v4h-18z"/>
+    <path d="M130 12h18v4h-18zM130 22h18v4h-18zM130 32h18v4h-18z"/>
+    <path d="M160 12h18v4h-18zM160 22h18v4h-18zM160 32h18v4h-18z"/>
+  </g>
 </svg>
