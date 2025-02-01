@@ -22,53 +22,68 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+        <Card className="bg-card">
           <CardHeader>
-            <CardTitle>Total Work Orders</CardTitle>
+            <CardTitle className="text-card-foreground">Totaal Mutaties</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{workOrders?.length || 0}</div>
+            <div className="text-2xl font-bold text-card-foreground">
+              {workOrders?.length || 0}
+            </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-card">
           <CardHeader>
-            <CardTitle>In Progress</CardTitle>
+            <CardTitle className="text-card-foreground">In Behandeling</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-card-foreground">
               {workOrders?.filter((wo) => wo.status === "in_progress").length || 0}
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-card">
           <CardHeader>
-            <CardTitle>Completed This Week</CardTitle>
+            <CardTitle className="text-card-foreground">Deze Week Afgerond</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-card-foreground">
               {workOrders?.filter((wo) => wo.status === "completed").length || 0}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-card">
         <CardHeader>
-          <CardTitle>Workload Trend</CardTitle>
+          <CardTitle className="text-card-foreground">Werkbelasting Trend</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="text-card-foreground">
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={workloadData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="week" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                <XAxis 
+                  dataKey="week" 
+                  stroke="hsl(var(--foreground))"
+                  tick={{ fill: "hsl(var(--foreground))" }}
+                />
+                <YAxis 
+                  stroke="hsl(var(--foreground))"
+                  tick={{ fill: "hsl(var(--foreground))" }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
+                    color: "hsl(var(--foreground))"
+                  }}
+                />
                 <Line
                   type="monotone"
                   dataKey="workload"
