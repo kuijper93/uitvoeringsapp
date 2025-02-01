@@ -9,14 +9,16 @@ import {
   Wrench,
   Box,
   Settings2,
-  Construction
+  Construction,
+  FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Losse aanvragen", href: "/requests", icon: ClipboardList },
+  { name: "Aanvragen", href: "/requests", icon: ClipboardList },
+  { name: "Losse aanvragen", href: "/single-requests", icon: FileText },
   { name: "Projecten", href: "/projects", icon: Construction },
   { name: "Werkorders", href: "/work-orders", icon: Wrench },
   { name: "Planning", href: "/planning", icon: Calendar },
