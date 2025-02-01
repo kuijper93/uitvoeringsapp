@@ -21,38 +21,38 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
+    <div className="space-y-3">
+      <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 md:grid-cols-3">
         <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">Totaal Mutaties</CardTitle>
+          <CardHeader className="p-4">
+            <CardTitle className="text-card-foreground text-base">Totaal Mutaties</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">
+          <CardContent className="p-4 pt-0">
+            <div className="text-xl font-bold text-card-foreground">
               {workOrders?.length || 0}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">In Behandeling</CardTitle>
+          <CardHeader className="p-4">
+            <CardTitle className="text-card-foreground text-base">In Behandeling</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">
+          <CardContent className="p-4 pt-0">
+            <div className="text-xl font-bold text-card-foreground">
               {workOrders?.filter((wo) => wo.status === "in_progress").length || 0}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-card">
-          <CardHeader>
-            <CardTitle className="text-card-foreground">Deze Week Afgerond</CardTitle>
+          <CardHeader className="p-4">
+            <CardTitle className="text-card-foreground text-base">Deze Week Afgerond</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-card-foreground">
+          <CardContent className="p-4 pt-0">
+            <div className="text-xl font-bold text-card-foreground">
               {workOrders?.filter((wo) => wo.status === "completed").length || 0}
             </div>
           </CardContent>
@@ -60,28 +60,29 @@ export default function Dashboard() {
       </div>
 
       <Card className="bg-card">
-        <CardHeader>
-          <CardTitle className="text-card-foreground">Werkbelasting Trend</CardTitle>
+        <CardHeader className="p-4">
+          <CardTitle className="text-card-foreground text-base">Werkbelasting Trend</CardTitle>
         </CardHeader>
-        <CardContent className="text-card-foreground">
-          <div className="h-[300px]">
+        <CardContent className="p-4 pt-0 text-card-foreground">
+          <div className="h-[250px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={workloadData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis 
                   dataKey="week" 
                   stroke="hsl(var(--foreground))"
-                  tick={{ fill: "hsl(var(--foreground))" }}
+                  tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
                 />
                 <YAxis 
                   stroke="hsl(var(--foreground))"
-                  tick={{ fill: "hsl(var(--foreground))" }}
+                  tick={{ fill: "hsl(var(--foreground))", fontSize: 12 }}
                 />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: "hsl(var(--background))",
                     border: "1px solid hsl(var(--border))",
-                    color: "hsl(var(--foreground))"
+                    color: "hsl(var(--foreground))",
+                    fontSize: 12,
                   }}
                 />
                 <Line
