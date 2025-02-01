@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import JCDecauxLogo from "../../assets/jcdecaux-logo.svg";
+import JCDecauxLogo from "../../assets/jcdecaux-logo.png";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
