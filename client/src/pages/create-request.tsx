@@ -88,20 +88,19 @@ export default function CreateRequest() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Contact Information */}
           <Card>
             <CardHeader className="p-4">
               <CardTitle className="text-base">Contactgegevens</CardTitle>
             </CardHeader>
-            <CardContent className="p-4 pt-0 grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium">Aanvrager</h3>
+            <CardContent className="p-4 pt-0">
+              <div className="grid grid-cols-2 divide-x">
+                <div className="pr-4 space-y-2">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">Aanvrager</h3>
                   <FormField
                     control={form.control}
                     name="requestorName"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>Naam</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -114,7 +113,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="requestorPhone"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>Telefoon</FormLabel>
                         <FormControl>
                           <Input type="tel" {...field} />
@@ -127,7 +126,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="requestorEmail"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>E-mail</FormLabel>
                         <FormControl>
                           <Input type="email" {...field} />
@@ -137,13 +136,13 @@ export default function CreateRequest() {
                     )}
                   />
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium">Voor Uitvoering</h3>
+                <div className="pl-4 space-y-2 bg-muted/5">
+                  <h3 className="text-sm font-medium text-muted-foreground mb-3">Voor Uitvoering</h3>
                   <FormField
                     control={form.control}
                     name="executionContactName"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>Naam</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -156,7 +155,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="executionContactPhone"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>Telefoon</FormLabel>
                         <FormControl>
                           <Input type="tel" {...field} />
@@ -169,7 +168,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="executionContactEmail"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="space-y-1">
                         <FormLabel>E-mail</FormLabel>
                         <FormControl>
                           <Input type="email" {...field} />
@@ -181,36 +180,38 @@ export default function CreateRequest() {
                 </div>
               </div>
 
-              <FormField
-                control={form.control}
-                name="municipality"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gemeente</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecteer gemeente" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {municipalities.map((municipality) => (
-                          <SelectItem
-                            key={municipality.toLowerCase()}
-                            value={municipality.toLowerCase()}
-                          >
-                            {municipality}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="mt-4">
+                <FormField
+                  control={form.control}
+                  name="municipality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gemeente</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer gemeente" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {municipalities.map((municipality) => (
+                            <SelectItem
+                              key={municipality.toLowerCase()}
+                              value={municipality.toLowerCase()}
+                            >
+                              {municipality}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </CardContent>
           </Card>
 
