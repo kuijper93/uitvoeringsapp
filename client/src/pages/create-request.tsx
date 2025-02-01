@@ -16,8 +16,10 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const requestFormSchema = z.object({
+  // Contact Information
   requestorName: z.string().min(1, "Naam is verplicht"),
   requestorPhone: z.string().min(1, "Telefoonnummer is verplicht"),
   requestorEmail: z.string().email("Ongeldig e-mailadres"),
@@ -25,58 +27,52 @@ const requestFormSchema = z.object({
   executionContact: z.string().min(1, "Contactpersoon is verplicht"),
   executionPhone: z.string().min(1, "Telefoonnummer is verplicht"),
   executionEmail: z.string().email("Ongeldig e-mailadres"),
-  abriFormat: z.string().optional(),
-  objectType: z.enum(["abri", "mupi", "vitrine", "digitaal object", "billboard", "zuil", "toilet", "hekwerk", "haltepaal", "prullenbak", "overig"]),
+
+  // Work Details
+  objectType: z.enum(["abri", "mupi", "vitrine", "digitaal_object", "billboard", "zuil", "toilet", "hekwerk", "haltepaal", "prullenbak", "overig"]),
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
   objectNumber: z.string().optional(),
   desiredDate: z.string().min(1, "Datum is verplicht"),
-  comments: z.string().optional(),
+
+  // Current Location (for removal/moving)
+  currentLocation: z.object({
+    address: z.string().min(1, "Adres is verplicht"),
+    coordinates: z.string().optional(),
+    remarks: z.string().optional(),
+  }),
+
+  // New Location (for installation/moving)
+  newLocation: z.object({
+    address: z.string().optional(),
+    coordinates: z.string().optional(),
+    remarks: z.string().optional(),
+  }).optional(),
+
+  // Infrastructure
+  streetwork: z.object({
+    required: z.boolean(),
+    type: z.enum(["bestrating", "fundering", "beide"]).optional(),
+    remarks: z.string().optional(),
+  }),
+
+  electricity: z.object({
+    required: z.boolean(),
+    connection: z.enum(["nieuwe_aansluiting", "bestaande_aansluiting", "geen"]).optional(),
+    meterNumber: z.string().optional(),
+    remarks: z.string().optional(),
+  }),
+
+  // Costs
+  costs: z.object({
+    estimate: z.string().optional(),
+    approved: z.boolean().optional(),
+    remarks: z.string().optional(),
+  }),
+
+  generalRemarks: z.string().optional(),
 });
 
 type RequestFormData = z.infer<typeof requestFormSchema>;
-
-// Form sections based on CSV structure
-const sections = {
-  contact: [
-    { id: "requestorName", label: "Naam opdrachtgever", type: "text" },
-    { id: "requestorPhone", label: "Tel. Nr. Opdrachtgever", type: "tel" },
-    { id: "requestorEmail", label: "Email Opdrachtgever", type: "email" },
-    { id: "municipality", label: "Gemeente", type: "select" },
-    { id: "executionContact", label: "Contactpersoon Uitvoering (gemeente)", type: "text" },
-    { id: "executionPhone", label: "Tel. Nr. Uitvoering (gemeente)", type: "tel" },
-    { id: "executionEmail", label: "Email Uitvoering (gemeente)", type: "email" },
-  ] as const,
-  workDetails: [
-    { id: "abriFormat", label: "Abri formaat", type: "text", showWhen: "municipality", equals: "amsterdam" },
-    {
-      id: "objectType",
-      label: "Type straatmeubilair",
-      type: "select",
-      options: [
-        "Abri",
-        "Mupi",
-        "Vitrine",
-        "Digitaal object",
-        "Billboard",
-        "Zuil",
-        "Toilet",
-        "Hekwerk",
-        "Haltepaal",
-        "Prullenbak",
-        "Overig",
-      ],
-    },
-    {
-      id: "actionType",
-      label: "Uit te voeren actie",
-      type: "select",
-      options: ["Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"],
-    },
-    { id: "objectNumber", label: "Betreft objectnummer", type: "text", placeholder: "NL-AB-12345" },
-    { id: "desiredDate", label: "Gewenste uitvoeringsdatum", type: "date" },
-    { id: "comments", label: "Overige opmerking voor opdrachtgever", type: "textarea" },
-  ] as const,
-};
 
 const municipalities = [
   "Amsterdam",
@@ -104,12 +100,35 @@ export default function CreateRequest() {
       executionContact: "",
       executionPhone: "",
       executionEmail: "",
-      abriFormat: "",
       objectType: "abri",
       actionType: "plaatsen",
       objectNumber: "",
       desiredDate: "",
-      comments: "",
+      currentLocation: {
+        address: "",
+        coordinates: "",
+        remarks: "",
+      },
+      newLocation: {
+        address: "",
+        coordinates: "",
+        remarks: "",
+      },
+      streetwork: {
+        required: false,
+        remarks: "",
+      },
+      electricity: {
+        required: false,
+        connection: "geen",
+        remarks: "",
+      },
+      costs: {
+        estimate: "",
+        approved: false,
+        remarks: "",
+      },
+      generalRemarks: "",
     },
   });
 
@@ -137,107 +156,445 @@ export default function CreateRequest() {
     createMutation.mutate(data);
   };
 
-  const selectedMunicipality = form.watch("municipality");
+  const actionType = form.watch("actionType");
+  const requiresElectricity = form.watch("electricity.required");
+  const requiresStreetwork = form.watch("streetwork.required");
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6">
       <h1 className="text-xl font-bold">Nieuwe Aanvraag</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Contact Informatie</h2>
-            {sections.contact.map((field) => (
-              <FormField
-                key={field.id}
-                control={form.control}
-                name={field.id as keyof RequestFormData}
-                render={({ field: formField }) => (
-                  <FormItem>
-                    <FormLabel>{field.label}</FormLabel>
-                    <FormControl>
-                      {field.type === "select" ? (
-                        <Select
-                          onValueChange={formField.onChange}
-                          defaultValue={formField.value}
-                        >
-                          <SelectTrigger>
-                            <SelectValue placeholder={`Selecteer ${field.label.toLowerCase()}`} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {municipalities.map((municipality) => (
-                              <SelectItem 
-                                key={municipality.toLowerCase()} 
-                                value={municipality.toLowerCase()}
-                              >
-                                {municipality}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      ) : (
-                        <Input type={field.type} {...formField} />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Gegevens Werkzaamheden</h2>
-            {sections.workDetails.map((field) => {
-              if (field.showWhen && field.equals && selectedMunicipality !== field.equals) {
-                return null;
-              }
-
-              return (
+          {/* Contact Information */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Contactgegevens</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <FormField
-                  key={field.id}
                   control={form.control}
-                  name={field.id as keyof RequestFormData}
-                  render={({ field: formField }) => (
+                  name="requestorName"
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{field.label}</FormLabel>
+                      <FormLabel>Naam Aanvrager</FormLabel>
                       <FormControl>
-                        {field.type === "select" ? (
-                          <Select
-                            onValueChange={formField.onChange}
-                            defaultValue={formField.value}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder={`Selecteer ${field.label.toLowerCase()}`} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {field.options?.map((option) => (
-                                <SelectItem 
-                                  key={option.toLowerCase()} 
-                                  value={option.toLowerCase()}
-                                >
-                                  {option}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : field.type === "textarea" ? (
-                          <Textarea {...formField} />
-                        ) : (
-                          <Input
-                            type={field.type}
-                            placeholder={field.placeholder}
-                            {...formField}
-                          />
-                        )}
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              );
-            })}
-          </div>
+                <FormField
+                  control={form.control}
+                  name="municipality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gemeente</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer gemeente" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {municipalities.map((municipality) => (
+                            <SelectItem
+                              key={municipality.toLowerCase()}
+                              value={municipality.toLowerCase()}
+                            >
+                              {municipality}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="requestorPhone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefoonnummer</FormLabel>
+                      <FormControl>
+                        <Input type="tel" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="requestorEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>E-mail</FormLabel>
+                      <FormControl>
+                        <Input type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Work Details */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Werkzaamheden</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="objectType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type Object</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="abri">Abri</SelectItem>
+                          <SelectItem value="mupi">Mupi</SelectItem>
+                          <SelectItem value="vitrine">Vitrine</SelectItem>
+                          <SelectItem value="digitaal_object">Digitaal object</SelectItem>
+                          <SelectItem value="billboard">Billboard</SelectItem>
+                          <SelectItem value="zuil">Zuil</SelectItem>
+                          <SelectItem value="toilet">Toilet</SelectItem>
+                          <SelectItem value="hekwerk">Hekwerk</SelectItem>
+                          <SelectItem value="haltepaal">Haltepaal</SelectItem>
+                          <SelectItem value="prullenbak">Prullenbak</SelectItem>
+                          <SelectItem value="overig">Overig</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="actionType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type Actie</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer actie" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="plaatsen">Plaatsen</SelectItem>
+                          <SelectItem value="verwijderen">Verwijderen</SelectItem>
+                          <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
+                          <SelectItem value="ophogen">Ophogen</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="objectNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Objectnummer</FormLabel>
+                      <FormControl>
+                        <Input placeholder="NL-AB-12345" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="desiredDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gewenste Datum</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Current Location */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Huidige Locatie</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-4">
+              <FormField
+                control={form.control}
+                name="currentLocation.address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Adres</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="currentLocation.remarks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Opmerkingen</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          {/* New Location (only for moving/installation) */}
+          {(actionType === "verplaatsen" || actionType === "plaatsen") && (
+            <Card>
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">Nieuwe Locatie</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0 space-y-4">
+                <FormField
+                  control={form.control}
+                  name="newLocation.address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Adres</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="newLocation.remarks"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Opmerkingen</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Infrastructure */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Infrastructuur</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-6">
+              {/* Street Work */}
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="streetwork.required"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-2">
+                      <FormControl>
+                        <input
+                          type="checkbox"
+                          checked={field.value}
+                          onChange={field.onChange}
+                          className="h-4 w-4"
+                        />
+                      </FormControl>
+                      <FormLabel className="!mt-0">Straatwerk nodig</FormLabel>
+                    </FormItem>
+                  )}
+                />
+
+                {requiresStreetwork && (
+                  <FormField
+                    control={form.control}
+                    name="streetwork.type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Type Straatwerk</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecteer type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="bestrating">Bestrating</SelectItem>
+                            <SelectItem value="fundering">Fundering</SelectItem>
+                            <SelectItem value="beide">Beide</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
+
+              {/* Electricity */}
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="electricity.required"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center gap-2">
+                      <FormControl>
+                        <input
+                          type="checkbox"
+                          checked={field.value}
+                          onChange={field.onChange}
+                          className="h-4 w-4"
+                        />
+                      </FormControl>
+                      <FormLabel className="!mt-0">Elektra nodig</FormLabel>
+                    </FormItem>
+                  )}
+                />
+
+                {requiresElectricity && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="electricity.connection"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Type Aansluiting</FormLabel>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Selecteer type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="nieuwe_aansluiting">Nieuwe aansluiting</SelectItem>
+                              <SelectItem value="bestaande_aansluiting">Bestaande aansluiting</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="electricity.meterNumber"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Meternummer</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Costs */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Kosten</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-4">
+              <FormField
+                control={form.control}
+                name="costs.estimate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Kostenschatting</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="costs.remarks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Opmerkingen Kosten</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          {/* General Remarks */}
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Algemene Opmerkingen</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0">
+              <FormField
+                control={form.control}
+                name="generalRemarks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
 
           <div className="flex justify-end gap-4">
             <Button

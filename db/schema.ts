@@ -9,7 +9,8 @@ export const workOrders = pgTable("work_orders", {
   requestType: text("request_type").notNull(), // placement, removal, etc
   status: text("status").notNull().default("draft"),
   objectType: text("object_type").notNull(), // Abri, Mupi, etc
-  location: jsonb("location").notNull(), // {lat, lng, address}
+
+  // Contact Information
   requestorName: text("requestor_name").notNull(),
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
@@ -17,8 +18,21 @@ export const workOrders = pgTable("work_orders", {
   executionContact: text("execution_contact"),
   executionPhone: text("execution_phone"),
   executionEmail: text("execution_email"),
+
+  // Location Information
+  currentLocation: jsonb("current_location").notNull(), // {address, coordinates, remarks}
+  newLocation: jsonb("new_location"), // {address, coordinates, remarks}
+
+  // Infrastructure
+  streetwork: jsonb("streetwork").notNull(), // {required, type, remarks}
+  electricity: jsonb("electricity").notNull(), // {required, connection, meterNumber, remarks}
+
+  // Costs
+  costs: jsonb("costs"), // {estimate, approved, remarks}
+
+  generalRemarks: text("general_remarks"),
   desiredDate: timestamp("desired_date").notNull(),
-  formData: jsonb("form_data").notNull(), // For storing additional form fields
+  formData: jsonb("form_data").notNull(), // For storing additional dynamic form fields
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
