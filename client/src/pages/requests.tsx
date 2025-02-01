@@ -24,7 +24,7 @@ export default function Requests() {
     <div className="space-y-3">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Losse aanvragen</h1>
-        <Link href="/requests/new">
+        <Link href="/create-order">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Nieuwe Aanvraag
@@ -39,8 +39,6 @@ export default function Requests() {
               <TableHead>Aanvraagnummer</TableHead>
               <TableHead>Opdrachtgever</TableHead>
               <TableHead>Gemeente</TableHead>
-              <TableHead>Type Object</TableHead>
-              <TableHead>Type Aanvraag</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Aangemaakt</TableHead>
             </TableRow>
@@ -53,8 +51,6 @@ export default function Requests() {
                 </TableCell>
                 <TableCell>{request.requestorName}</TableCell>
                 <TableCell>{request.municipality}</TableCell>
-                <TableCell>{request.objectType}</TableCell>
-                <TableCell>{request.requestType}</TableCell>
                 <TableCell>
                   <Badge className={getStatusColor(request.status)}>
                     {getStatusLabel(request.status)}
@@ -74,6 +70,7 @@ export default function Requests() {
     </div>
   );
 }
+
 function getStatusColor(status: string) {
   switch (status) {
     case "PENDING":
@@ -90,16 +87,16 @@ function getStatusColor(status: string) {
 }
 
 function getStatusLabel(status: string) {
-    switch (status) {
-        case "PENDING":
-            return "In behandeling";
-        case "IN_PROGRESS":
-            return "In uitvoering";
-        case "COMPLETED":
-            return "Afgerond";
-        case "CANCELLED":
-            return "Geannuleerd";
-        default:
-            return status;
-    }
+  switch (status) {
+    case "PENDING":
+      return "In behandeling";
+    case "IN_PROGRESS":
+      return "In uitvoering";
+    case "COMPLETED":
+      return "Afgerond";
+    case "CANCELLED":
+      return "Geannuleerd";
+    default:
+      return status;
+  }
 }
