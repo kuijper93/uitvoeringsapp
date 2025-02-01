@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, date } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import { z } from "zod";
@@ -15,6 +15,12 @@ export const workOrders = pgTable("work_orders", {
   executionContactEmail: text("execution_contact_email").notNull(),
   status: text("status").notNull().default("PENDING"),
   actionType: text("action_type").notNull(),
+  furnitureType: text("furniture_type").notNull(),
+  abriFormat: text("abri_format"),
+  objectNumber: text("object_number"),
+  desiredDate: date("desired_date").notNull(),
+  locationSketch: text("location_sketch"),
+  additionalNotes: text("additional_notes"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -34,6 +40,7 @@ export const workOrderRelations = relations(workOrders, ({ many }) => ({
 // Zod schemas
 export const insertWorkOrderSchema = createInsertSchema(workOrders, {
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
+  furnitureType: z.enum(["abri", "mupi", "driehoeksbord", "reclamezuil"]),
 });
 
 export const selectWorkOrderSchema = createSelectSchema(workOrders);

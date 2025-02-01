@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
 const requestFormSchema = z.object({
   // Contact Information
@@ -23,8 +24,14 @@ const requestFormSchema = z.object({
   executionContactPhone: z.string().min(1, "Telefoonnummer uitvoerder is verplicht"),
   executionContactEmail: z.string().email("Ongeldig e-mailadres uitvoerder"),
 
-  // Action Type
+  // Work Details
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
+  furnitureType: z.enum(["abri", "mupi", "driehoeksbord", "reclamezuil"]),
+  abriFormat: z.string().optional(),
+  objectNumber: z.string().optional(),
+  desiredDate: z.string().min(1, "Datum is verplicht"),
+  locationSketch: z.string().optional(),
+  additionalNotes: z.string().optional(),
 });
 
 type RequestFormData = z.infer<typeof requestFormSchema>;
@@ -40,6 +47,23 @@ const municipalities = [
   "Almere",
   "Breda",
   "Nijmegen",
+  "Apeldoorn",
+  "Arnhem",
+  "Zoetermeer",
+  "Zwolle",
+  "Amersfoort",
+  "Haarlem",
+  "Haarlemmermeer",
+  "'s-Hertogenbosch",
+  "Enschede",
+  "Zaanstad",
+] as const;
+
+const furnitureTypes = [
+  { value: "abri", label: "Abri" },
+  { value: "mupi", label: "Mupi" },
+  { value: "driehoeksbord", label: "Driehoeksbord" },
+  { value: "reclamezuil", label: "Reclamezuil" },
 ] as const;
 
 export default function CreateRequest() {
@@ -55,8 +79,19 @@ export default function CreateRequest() {
       executionContactName: "",
       executionContactPhone: "",
       executionContactEmail: "",
+      furnitureType: undefined,
+      actionType: undefined,
+      desiredDate: "",
+      additionalNotes: "",
     },
   });
+
+  const showAbriFormat = form.watch("municipality")?.toLowerCase() === "amsterdam" && 
+                        form.watch("furnitureType") === "abri";
+
+  const showLocationSketch = ["plaatsen", "verplaatsen"].includes(form.watch("actionType") || "");
+
+  const showObjectNumber = ["verwijderen", "ophogen", "verplaatsen"].includes(form.watch("actionType") || "");
 
   const createMutation = useMutation({
     mutationFn: async (data: RequestFormData) => {
@@ -93,6 +128,34 @@ export default function CreateRequest() {
               <CardTitle className="text-base">Contactgegevens</CardTitle>
             </CardHeader>
             <CardContent className="p-4 pt-0">
+              <FormField
+                control={form.control}
+                name="municipality"
+                render={({ field }) => (
+                  <FormItem className="mb-4">
+                    <FormLabel>Gemeente</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecteer gemeente" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {municipalities.map((municipality) => (
+                          <SelectItem
+                            key={municipality.toLowerCase()}
+                            value={municipality.toLowerCase()}
+                          >
+                            {municipality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <div className="grid grid-cols-2 divide-x">
                 <div className="pr-4 space-y-2">
                   <h3 className="text-sm font-medium text-muted-foreground mb-3">Aanvrager</h3>
@@ -179,30 +242,31 @@ export default function CreateRequest() {
                   />
                 </div>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="mt-4">
+          <Card>
+            <CardHeader className="p-4">
+              <CardTitle className="text-base">Werkzaamheden</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="municipality"
+                  name="furnitureType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Gemeente</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <FormLabel>Type straatmeubilair</FormLabel>
+                      <Select onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecteer gemeente" />
+                            <SelectValue placeholder="Selecteer het object" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {municipalities.map((municipality) => (
-                            <SelectItem
-                              key={municipality.toLowerCase()}
-                              value={municipality.toLowerCase()}
-                            >
-                              {municipality}
+                          {furnitureTypes.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -211,34 +275,110 @@ export default function CreateRequest() {
                     </FormItem>
                   )}
                 />
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Action Type */}
-          <Card>
-            <CardHeader className="p-4">
-              <CardTitle className="text-base">Type Actie</CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 pt-0">
+                <FormField
+                  control={form.control}
+                  name="actionType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Type actie</FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer type actie" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="plaatsen">Plaatsen</SelectItem>
+                          <SelectItem value="verwijderen">Verwijderen</SelectItem>
+                          <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
+                          <SelectItem value="ophogen">Ophogen</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
               <FormField
                 control={form.control}
-                name="actionType"
+                name="desiredDate"
                 render={({ field }) => (
                   <FormItem>
-                    <Select onValueChange={field.onChange}>
+                    <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {showAbriFormat && (
+                <FormField
+                  control={form.control}
+                  name="abriFormat"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Abri formaat</FormLabel>
                       <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecteer type actie" />
-                        </SelectTrigger>
+                        <Input {...field} />
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="plaatsen">Plaatsen</SelectItem>
-                        <SelectItem value="verwijderen">Verwijderen</SelectItem>
-                        <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
-                        <SelectItem value="ophogen">Ophogen</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {showObjectNumber && (
+                <FormField
+                  control={form.control}
+                  name="objectNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Objectnummer</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {showLocationSketch && (
+                <FormField
+                  control={form.control}
+                  name="locationSketch"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Locatieschets</FormLabel>
+                      <FormControl>
+                        <Input type="file" accept=".pdf,.dwg" {...field} />
+                      </FormControl>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        PDF en autocad (NLCS-DWG)
+                      </p>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <FormField
+                control={form.control}
+                name="additionalNotes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Overige opmerkingen voor de aanvraag</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Voeg hier eventuele opmerkingen toe..."
+                        className="min-h-[100px]"
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
