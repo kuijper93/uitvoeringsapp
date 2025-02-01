@@ -310,7 +310,7 @@ export default function CreateRequest() {
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {showAbriFormat && (
                   <FormField
                     control={form.control}
@@ -332,7 +332,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="objectNumber"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="max-w-[200px]">
                         <FormLabel>Objectnummer</FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -342,6 +342,20 @@ export default function CreateRequest() {
                     )}
                   />
                 )}
+
+                <FormField
+                  control={form.control}
+                  name="desiredDate"
+                  render={({ field }) => (
+                    <FormItem className="max-w-[200px]">
+                      <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 {showLocationSketch && (
                   <FormField
@@ -361,20 +375,6 @@ export default function CreateRequest() {
                     )}
                   />
                 )}
-
-                <FormField
-                  control={form.control}
-                  name="desiredDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
 
               <FormField
