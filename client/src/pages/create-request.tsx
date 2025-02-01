@@ -444,19 +444,82 @@ export default function CreateRequest() {
                   />
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="desiredDate"
-                  render={({ field }) => (
-                    <FormItem className="max-w-[200px]">
-                      <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
-                      <FormControl>
-                        <Input type="date" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                <div className="grid grid-cols-3 gap-4">
+                  {showAbriFormat && (
+                    <FormField
+                      control={form.control}
+                      name="abriFormat"
+                      render={({ field }) => (
+                        <FormItem className="max-w-[200px]">
+                          <FormLabel>Abri formaat</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
-                />
+
+                  {showObjectNumber && (
+                    <FormField
+                      control={form.control}
+                      name="objectNumber"
+                      render={({ field }) => (
+                        <FormItem className="max-w-[200px]">
+                          <FormLabel>Objectnummer</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+
+                  <FormField
+                    control={form.control}
+                    name="desiredDate"
+                    render={({ field }) => (
+                      <FormItem className="max-w-[200px]">
+                        <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
+                        <FormControl>
+                          <Input type="date" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {showLocationSketch && (
+                  <FormField
+                    control={form.control}
+                    name="locationSketch"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Locatieschets</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Input 
+                              type="file" 
+                              accept=".pdf,.dwg" 
+                              {...field} 
+                              className="opacity-0 absolute inset-0 w-[140px] h-8 cursor-pointer"
+                            />
+                            <div className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                              Bestand kiezen
+                            </div>
+                          </div>
+                        </FormControl>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          PDF en autocad (NLCS-DWG)
+                        </p>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
                 <FormField
                   control={form.control}
@@ -478,6 +541,383 @@ export default function CreateRequest() {
               </CardContent>
             </Card>
           </section>
+
+          {/* Location Information */}
+          <section data-section="location">
+            {showRemovalLocation && (
+              <Card>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base">Verwijderlocatie</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="removalCity"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Plaats</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="removalPostcode"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Postcode</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="removalStreet"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Straat</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                </CardContent>
+              </Card>
+            )}
+
+            {showInstallationLocation && (
+              <Card>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base">Installatielocatie</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0 space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="installationCity"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Plaats</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                     <FormField
+                        control={form.control}
+                        name="installationPostcode"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Postcode</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                        control={form.control}
+                        name="installationAddress"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Adres</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                           <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="installationXCoord"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>X Coördinaat</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                      <FormField
+                        control={form.control}
+                        name="installationYCoord"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Y Coördinaat</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    </div>
+
+                     <FormField
+                        control={form.control}
+                        name="installationStopName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Halte naam</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                </CardContent>
+              </Card>
+            )}
+          </section>
+
+          {/* Groundwork Information */}
+          <section data-section="groundwork">
+            {showGroundRemoval && (
+              <Card>
+                <CardHeader className="p-4">
+                  <CardTitle className="text-base">Grondwerk verwijderen</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 pt-0 space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="groundRemovalPaving"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel className="text-sm font-normal">Bestrating</FormLabel>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="groundRemovalExcavation"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel className="text-sm font-normal">Uitgraven</FormLabel>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                   <FormField
+                        control={form.control}
+                        name="groundRemovalFilling"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel className="text-sm font-normal">Aanvullen</FormLabel>
+                                 <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="groundRemovalRepaving"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel className="text-sm font-normal">Herbestraten</FormLabel>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="groundRemovalMaterials"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                 <FormLabel className="text-sm font-normal">Afvoeren materialen</FormLabel>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </CardContent>
+              </Card>
+            )}
+
+            {showGroundInstallation && (
+              <Card>
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Grondwerk installatie</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0 space-y-4">
+                      <FormField
+                          control={form.control}
+                          name="groundInstallationExcavation"
+                          render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2 space-y-0">
+                                  <FormControl>
+                                      <Checkbox
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                      />
+                                  </FormControl>
+                                  <FormLabel className="text-sm font-normal">Uitgraven</FormLabel>
+                                  <FormMessage />
+                              </FormItem>
+                          )}
+                      />
+                     <FormField
+                          control={form.control}
+                          name="groundInstallationFilling"
+                          render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2 space-y-0">
+                                  <FormControl>
+                                      <Checkbox
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                      />
+                                  </FormControl>
+                                   <FormLabel className="text-sm font-normal">Aanvullen</FormLabel>
+                                  <FormMessage />
+                              </FormItem>
+                          )}
+                      />
+                      <FormField
+                          control={form.control}
+                          name="groundInstallationRepaving"
+                          render={({ field }) => (
+                              <FormItem className="flex items-center space-x-2 space-y-0">
+                                  <FormControl>
+                                      <Checkbox
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                      />
+                                  </FormControl>
+                                  <FormLabel className="text-sm font-normal">Herbestraten</FormLabel>
+                                  <FormMessage />
+                              </FormItem>
+                          )}
+                      />
+                    <FormField
+                        control={form.control}
+                        name="groundInstallationMaterials"
+                        render={({ field }) => (
+                            <FormItem className="flex items-center space-x-2 space-y-0">
+                                <FormControl>
+                                    <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                 <FormLabel className="text-sm font-normal">Aanleveren materialen</FormLabel>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="groundInstallationExcessSoilAddress"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Adres overtollige grond</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+          </section>
+
+
+          {/* Electrical Work */}
+            <section data-section="electrical">
+              {(showElectricalDisconnect || showElectricalConnect) && (
+                <Card>
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-base">Electra Werkzaamheden</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-4 pt-0 space-y-4">
+                       {showElectricalDisconnect && (
+                          <FormField
+                              control={form.control}
+                              name="electricalDisconnect"
+                              render={({ field }) => (
+                                  <FormItem className="flex items-center space-x-2 space-y-0">
+                                      <FormControl>
+                                          <Checkbox
+                                          checked={field.value}
+                                          onCheckedChange={field.onChange}
+                                          />
+                                      </FormControl>
+                                       <FormLabel className="text-sm font-normal">Afkoppelen</FormLabel>
+                                      <FormMessage />
+                                  </FormItem>
+                              )}
+                          />
+                      )}
+                      {showElectricalConnect && (
+                          <FormField
+                            control={form.control}
+                            name="electricalConnect"
+                            render={({ field }) => (
+                                <FormItem className="flex items-center space-x-2 space-y-0">
+                                    <FormControl>
+                                        <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        />
+                                    </FormControl>
+                                    <FormLabel className="text-sm font-normal">Aansluiten</FormLabel>
+                                     <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                      )}
+                  </CardContent>
+                </Card>
+              )}
+            </section>
 
           {/* Billing Information */}
           <section data-section="billing">
@@ -514,12 +954,55 @@ export default function CreateRequest() {
                     )}
                   />
                 </div>
+
                 <FormField
                   control={form.control}
                   name="billingAddress"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Adres</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="billingDepartment"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Afdeling</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="billingAttention"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>T.a.v.</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="billingReference"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Referentie</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
