@@ -20,7 +20,7 @@ export function registerRoutes(app: Express): Server {
     const order = await db.insert(workOrders).values({
       ...data,
       orderNumber,
-      status: "draft",
+      status: "PENDING",
     }).returning();
 
     res.json(order[0]);
@@ -41,7 +41,6 @@ export function registerRoutes(app: Express): Server {
 
   app.get("/api/requests", async (_req, res) => {
     const requests = await db.query.workOrders.findMany({
-      where: eq(workOrders.type, "request"),
       orderBy: [desc(workOrders.createdAt)],
     });
     res.json(requests);
@@ -54,29 +53,7 @@ export function registerRoutes(app: Express): Server {
     const request = await db.insert(workOrders).values({
       ...data,
       orderNumber,
-      type: "request",
-      status: "draft",
-      // Ensure all required fields are present
-      currentAddress: data.currentAddress || {
-        street: "",
-        number: "",
-        postcode: "",
-        city: "",
-        coordinates: { x: "", y: "" },
-      },
-      streetwork: data.streetwork || {
-        required: false,
-        vrijgraven: false,
-        aanvullen: false,
-        herstraten: false,
-        materiaalLevering: false,
-      },
-      electricity: data.electricity || {
-        required: false,
-        afkoppelen: false,
-        aansluiten: false,
-      },
-      billing: data.billing || {},
+      status: "PENDING",
     }).returning();
 
     res.json(request[0]);
