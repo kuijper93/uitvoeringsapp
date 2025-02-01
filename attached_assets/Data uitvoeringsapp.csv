@@ -1,0 +1,60 @@
+Type info;Vraag nr;Informatie;Invulveld;Veld zichtbaar bij:;Type veld;Automatiseringsopties;Versie automatisering
+Contact;1;Naam opdrachtgever;(tekstveld);Alles;;;V1
+;2;Tel. Nr. Opdrachtgever;(tekstveld);Alles;;;V1
+;3;Email Opdrachtgever;(tekstveld);Alles;;;V1
+;4;Gemeente;Dropdown alle gemeentes?;Alles;;Eventueel uit SAP de actuele steden halen;V1
+;5;Contactpersoon Uitvoering (gemeente);(tekstveld);Alles;;;V1
+;6;Tel. Nr. Uitvoering (gemeente);(tekstveld);Alles;;;V1
+;7;Email Uitvoering (gemeente);(tekstveld);Alles;;;V1
+;;;;;;;V1
+Gegevens werkzaamheden;8;Abri formaat;;Amsterdam;;;
+;9;Type straatmeubilair;Abri / Mupi / Vitrine / Digitaal object / Billboard / Zuil / Toilet / Hekwerk / Haltepaal / Prullenbak / Overig;Alles;;;V1
+;10;Uit te voeren actie;Verwijderen / Verplaatsen / Ophogen / Plaatsen;Alles;;;V1
+;11;Betreft objectnummer;(tekstveld met als voorbeeld NL-AB-12345);Verwijdering en verplaatsing;;;V1 (Verplaatsing = V2)
+;11B;Stad;(keuzemenu);Alles;;conditional formatting uit keuzelijst (zie data);V1
+;13;Gewenste uitvoeringsdatum;(datum tekstveld);Alles;;PowerBI link met steden in Forms mogelijk?;V2
+;18;Overige opmerking voor opdrachtgever;(groot tekstveld);Alles;;;
+;46;Locatieschets (PDF en autocad (NLCS-DWG);Documentatie toevoegen;Plaatsen en verplaatsen;;;V1 (Verplaatsing = V2)
+;;;;;;;
+Verwijderen / verplaatsen;12;Straat;(tekstveld);Verwijdering en verplaatsing;;;
+;12B;Postcode;(tekstveld);Verwijdering en verplaatsing;;;
+;;;;;;;V1
+Plaatsen / verplaatsen;14;X coordinaten;(tekstveld met verplicht format);Plaatsen en verplaatsen;;;V1 (Verplaatsing = V2)
+;15;Y coordinaten;(tekstveld met verplicht format);Plaatsen en verplaatsen;;;V1 (Verplaatsing = V2)
+;16;Straatnaam + huisnummer;(tekstveld);Plaatsen en verplaatsen;;;V1 (Verplaatsing = V2)
+;12C;Haltenaam;(tekstveld) - optioneel;Plaatsen en verplaatsen (AB);;;
+;17;Postcode;(tekstveld);Plaatsen en verplaatsen;;;V1 (Verplaatsing = V2)
+;;;;;;;V1
+;;;;;;;
+Bespreken met Arthur;20;(aanvinken indien uitvoering voor JCDecaux gewenst is);;;;;
+;21;Straatwerk opnemen;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;22;Vrijgraven;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;23;Aanvullen;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;24;Herstraten;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;25;Leveren materiaal;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;;;;;;;
+;26;Cunet graven;(aanvinkveld);Bij plaatsen en verplaatsen;;;
+;27;Aanvullen;(aanvinkveld);Bij plaatsen en verplaatsen;;;
+;28;Herstraten;(aanvinkveld);Bij plaatsen en verplaatsen;;;
+;29;Leveren materiaal;(aanvinkveld);Bij plaatsen en verplaatsen;;;
+;30;Afleveradres overtollige grond;(medium-groot tekstveld);Alles;;;
+;;;;;;;
+Elektra;32;(aanvinken indien JCDecaux dit dient aan te vragen);;;;;
+;33;Afkoppelen;(aanvinkveld);Bij verwijderen en verplaatsen;;;
+;34;Aansluiten;(aanvinkveld);Bij plaatsen en verplaatsen;;;
+;;;;;;;
+Kosten;;In rekening brengen aan:;;;;;
+;39;Gemeente;(tekstveld) - optioneel;;;;
+;40;Postcode;(tekstveld);;;;
+;41;Plaats;(tekstveld);;;;
+;42;Postbus;(tekstveld);;;;
+;43;Afdeling;(tekstveld);;;;
+;44;Ter attentie van;(tekstveld);;;;
+;45;Uw referentie;(tekstveld);;;;
+;;;;;;;
+;46;Goedkeuren leveringsvoorwaarden;;;2e versie;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
+;;;;;;;
