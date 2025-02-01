@@ -24,7 +24,7 @@ export default function Requests() {
     <div className="space-y-3">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Losse aanvragen</h1>
-        <Link href="/create-order">
+        <Link href="/create-request">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Nieuwe Aanvraag
