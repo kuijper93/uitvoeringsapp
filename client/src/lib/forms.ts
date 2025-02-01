@@ -16,7 +16,7 @@ const straatmeubilairTypes = [
 ] as const;
 
 const actieTypes = [
-  "Selecteer een actie",
+  "",
   "Verwijderen",
   "Verplaatsen",
   "Ophogen",
@@ -95,7 +95,7 @@ export const workOrderFormSchema = z.object({
     reference: z.string().optional()
   })
 }).refine((data) => {
-  if (data.actionType === "Selecteer een actie") return true;
+  if (data.actionType === "") return true;
 
   // Validation for removal and relocation
   if (["Verwijderen", "Verplaatsen"].includes(data.actionType) && !data.currentLocation) {

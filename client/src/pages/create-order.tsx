@@ -28,7 +28,7 @@ export default function CreateOrder() {
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
     defaultValues: {
-      actionType: "Selecteer een actie",
+      actionType: "",
       electrical: {
         jcdecauxRequest: false,
         disconnect: false,
@@ -249,23 +249,23 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-                <FormField
+                 <FormField
                   control={form.control}
                   name="actionType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Uit te voeren actie</FormLabel>
+                      <FormLabel>Type Actie</FormLabel>
                       <Select 
                         onValueChange={field.onChange} 
                         value={field.value}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue />
+                            <SelectValue placeholder="Selecteer actie" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="Selecteer een actie">Selecteer een actie</SelectItem>
+                          <SelectItem value="">Selecteer actie</SelectItem>
                           <SelectItem value="Verwijderen">Verwijderen</SelectItem>
                           <SelectItem value="Verplaatsen">Verplaatsen</SelectItem>
                           <SelectItem value="Ophogen">Ophogen</SelectItem>
@@ -356,7 +356,7 @@ export default function CreateOrder() {
           </Card>
 
           {/* Conditional Location Cards */}
-          {actionType !== "Selecteer een actie" && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
+          {actionType !== "" && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Huidige Locatie</CardTitle>
@@ -395,7 +395,7 @@ export default function CreateOrder() {
             </Card>
           )}
 
-          {actionType !== "Selecteer een actie" && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
+          {actionType !== "" && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Nieuwe Locatie</CardTitle>
