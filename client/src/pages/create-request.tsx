@@ -38,6 +38,7 @@ const requestFormSchema = z.object({
   removalPostcode: z.string().optional(),
 
   // Installation Location
+  installationCity: z.string().optional(),
   installationXCoord: z.string().optional(),
   installationYCoord: z.string().optional(),
   installationAddress: z.string().optional(),
@@ -424,7 +425,12 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Locatieschets</FormLabel>
                         <FormControl>
-                          <Input type="file" accept=".pdf,.dwg" {...field} />
+                          <Input 
+                            type="file" 
+                            accept=".pdf,.dwg" 
+                            {...field} 
+                            className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                          />
                         </FormControl>
                         <p className="text-sm text-muted-foreground mt-1">
                           PDF en autocad (NLCS-DWG)
@@ -508,85 +514,100 @@ export default function CreateRequest() {
             </Card>
           )}
 
-          {/* Installation Location */}
-          {showInstallationLocation && (
-            <Card>
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Installatielocatie</CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 pt-0 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="installationXCoord"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>X coördinaat</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="installationYCoord"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Y coördinaat</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="installationAddress"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Straatnaam + huisnummer</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="installationPostcode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Postcode</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="installationStopName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Haltenaam (optioneel)</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-          )}
+                {/* Installation Location */}
+                {showInstallationLocation && (
+                  <Card>
+                    <CardHeader className="p-4">
+                      <CardTitle className="text-base">Installatielocatie</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4 pt-0 space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="installationCity"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Stad</FormLabel>
+                              <FormControl>
+                                <Input {...field} value={municipality || ''} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="installationStopName"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Haltenaam (optioneel)</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="installationXCoord"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>X coördinaat</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="installationYCoord"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Y coördinaat</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="installationAddress"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Straatnaam + huisnummer</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="installationPostcode"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Postcode</FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
           {/* Ground Work Removal */}
           {showGroundRemoval && (

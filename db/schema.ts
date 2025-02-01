@@ -30,6 +30,7 @@ export const workOrders = pgTable("work_orders", {
   removalPostcode: text("removal_postcode"),
 
   // Installation Location
+    installationCity: text("installation_city"),
   installationXCoord: text("installation_x_coord"),
   installationYCoord: text("installation_y_coord"),
   installationAddress: text("installation_address"),
