@@ -71,20 +71,20 @@ export const workOrders = pgTable("work_orders", {
   city: text("city").notNull(),
   desiredDate: date("desired_date").notNull(),
   additionalNotes: text("additional_notes"),
-  locationSketch: jsonb("location_sketch"), // For PDF and AutoCAD files
+  locationSketch: text("location_sketch"), // For PDF and AutoCAD files
 
-  // Location information (conditional based on action type)
+  // Location information
   currentLocation: jsonb("current_location").$type<z.infer<typeof locationSchema>>(),
   newLocation: jsonb("new_location").$type<z.infer<typeof locationSchema>>(),
 
   // Infrastructure work
-  infrastructure: jsonb("infrastructure").$type<z.infer<typeof infrastructureSchema>>().notNull(),
+  infrastructureWork: jsonb("infrastructure_work").$type<z.infer<typeof infrastructureSchema>>(),
 
   // Electrical work
-  electrical: jsonb("electrical").$type<z.infer<typeof electricalSchema>>().notNull(),
+  electricalWork: jsonb("electrical_work").$type<z.infer<typeof electricalSchema>>(),
 
   // Billing information
-  billing: jsonb("billing").$type<z.infer<typeof billingSchema>>().notNull(),
+  billingInfo: jsonb("billing_info").$type<z.infer<typeof billingSchema>>(),
 
   // Additional fields
   status: text("status").notNull().default("draft"),
@@ -111,26 +111,22 @@ const baseWorkOrderSchema = createInsertSchema(workOrders);
 // Custom validation schema with conditional fields based on action type
 export const insertWorkOrderSchema = baseWorkOrderSchema.extend({
   actionType: z.enum(["Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"]),
-  currentLocation: locationSchema.optional().refine(
-    (data, ctx) => {
-      const actionType = ctx.path[0] as string;
-      if (["Verwijderen", "Verplaatsen"].includes(actionType) && !data) {
-        return false;
-      }
-      return true;
-    },
-    { message: "Current location is required for removal and relocation" }
-  ),
-  newLocation: locationSchema.optional().refine(
-    (data, ctx) => {
-      const actionType = ctx.path[0] as string;
-      if (["Plaatsen", "Verplaatsen"].includes(actionType) && !data) {
-        return false;
-      }
-      return true;
-    },
-    { message: "New location is required for placement and relocation" }
-  ),
+  currentLocation: locationSchema.optional().superRefine((data, ctx) => {
+    if (["Verwijderen", "Verplaatsen"].includes(ctx.parent.actionType) && !data) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Current location is required for removal and relocation"
+      });
+    }
+  }),
+  newLocation: locationSchema.optional().superRefine((data, ctx) => {
+    if (["Plaatsen", "Verplaatsen"].includes(ctx.parent.actionType) && !data) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "New location is required for placement and relocation"
+      });
+    }
+  }),
 });
 
 export const selectWorkOrderSchema = createSelectSchema(workOrders);
