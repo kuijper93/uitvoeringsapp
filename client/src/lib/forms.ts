@@ -22,8 +22,19 @@ const actieTypes = [
   "Plaatsen"
 ] as const;
 
+// Location schema
+const locationSchema = z.object({
+  street: z.string().min(1, "Straat is verplicht"),
+  postcode: z.string().min(1, "Postcode is verplicht"),
+  busStopName: z.string().optional(),
+  coordinates: z.object({
+    x: z.string().min(1, "X coördinaat is verplicht"),
+    y: z.string().min(1, "Y coördinaat is verplicht")
+  }).optional()
+});
+
 export const workOrderFormSchema = z.object({
-  // Contact (fields 1-7)
+  // Contact information
   requestorName: z.string().min(1, "Naam opdrachtgever is verplicht"),
   requestorPhone: z.string().min(1, "Tel. Nr. Opdrachtgever is verplicht"),
   requestorEmail: z.string().email("Ongeldig e-mailadres"),
@@ -32,50 +43,21 @@ export const workOrderFormSchema = z.object({
   executionPhone: z.string().min(1, "Tel. Nr. Uitvoering is verplicht"),
   executionEmail: z.string().email("Ongeldig e-mailadres"),
 
-  // Gegevens werkzaamheden (fields 8-18, 46)
-  abriFormat: z.string().optional(), // Only for Amsterdam
-  streetFurnitureType: z.enum(straatmeubilairTypes, {
-    required_error: "Type straatmeubilair is verplicht",
-  }),
-  actionType: z.enum(actieTypes, {
-    required_error: "Uit te voeren actie is verplicht",
-  }),
-  objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format: NL-AB-12345").optional(),
+  // Work details
+  abriFormat: z.string().optional(),
+  streetFurnitureType: z.enum(straatmeubilairTypes),
+  actionType: z.enum(actieTypes),
+  objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format moet zijn: NL-AB-12345").optional(),
   city: z.string().min(1, "Stad is verplicht"),
   desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
   additionalNotes: z.string().optional(),
-  locationSketch: z.any().optional(), // PDF and AutoCAD files
+  locationSketch: z.any().optional(),
 
-  // Verwijderen/verplaatsen (fields 12, 12B)
-  removalLocation: z.object({
-    street: z.string().min(1, "Straat is verplicht"),
-    postcode: z.string().min(1, "Postcode is verplicht")
-  }).optional().superRefine((data, ctx) => {
-    if (!data && ["Verwijderen", "Verplaatsen"].includes(ctx.parent.actionType)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Huidige locatie is verplicht voor verwijderen en verplaatsen"
-      });
-    }
-  }),
+  // Location details - conditionally required based on actionType
+  currentLocation: locationSchema.optional(),
+  newLocation: locationSchema.optional(),
 
-  // Plaatsen/verplaatsen (fields 14-17, 12C)
-  installationLocation: z.object({
-    xCoordinate: z.string().min(1, "X coördinaten is verplicht"),
-    yCoordinate: z.string().min(1, "Y coördinaten is verplicht"),
-    streetAndNumber: z.string().min(1, "Straatnaam + huisnummer is verplicht"),
-    busStopName: z.string().optional(),
-    postcode: z.string().min(1, "Postcode is verplicht")
-  }).optional().superRefine((data, ctx) => {
-    if (!data && ["Plaatsen", "Verplaatsen"].includes(ctx.parent.actionType)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Nieuwe locatie is verplicht voor plaatsen en verplaatsen"
-      });
-    }
-  }),
-
-  // Bespreken met Arthur (fields 20-30)
+  // Work requirements
   jcdecauxWork: z.object({
     required: z.boolean(),
     existingWork: z.object({
@@ -92,16 +74,16 @@ export const workOrderFormSchema = z.object({
       provideMaterials: z.boolean()
     }),
     excessSoilAddress: z.string().optional()
-  }),
+  }).optional(),
 
-  // Elektra (fields 32-34)
+  // Electrical work
   electrical: z.object({
     jcdecauxRequest: z.boolean(),
     disconnect: z.boolean(),
     connect: z.boolean()
   }),
 
-  // Kosten (fields 39-45)
+  // Billing information
   billing: z.object({
     municipality: z.string().optional(),
     postcode: z.string().optional(),
@@ -111,46 +93,27 @@ export const workOrderFormSchema = z.object({
     attention: z.string().optional(),
     reference: z.string().optional()
   })
+}).refine((data) => {
+  // Validation for removal and relocation
+  if (["Verwijderen", "Verplaatsen"].includes(data.actionType) && !data.currentLocation) {
+    return false;
+  }
+  // Validation for placement and relocation
+  if (["Plaatsen", "Verplaatsen"].includes(data.actionType) && !data.newLocation) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Location information is required based on the selected action type",
+  path: ["actionType"]
 });
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
 
-export const initialFormData: WorkOrderFormData = {
-  // Contact
-  requestorName: "",
-  requestorPhone: "",
-  requestorEmail: "",
-  municipality: "",
-  executionContact: "",
-  executionPhone: "",
-  executionEmail: "",
-
-  // Gegevens werkzaamheden
-  abriFormat: undefined,
+// Default form values
+export const defaultFormValues: Partial<WorkOrderFormData> = {
   streetFurnitureType: "Abri",
   actionType: "Plaatsen",
-  objectNumber: "",
-  city: "",
-  desiredDate: "",
-  additionalNotes: "",
-  locationSketch: null,
-
-  // Verwijderen/verplaatsen
-  removalLocation: {
-    street: "",
-    postcode: ""
-  },
-
-  // Plaatsen/verplaatsen
-  installationLocation: {
-    xCoordinate: "",
-    yCoordinate: "",
-    streetAndNumber: "",
-    busStopName: "",
-    postcode: ""
-  },
-
-  // Bespreken met Arthur
   jcdecauxWork: {
     required: false,
     existingWork: {
@@ -165,25 +128,11 @@ export const initialFormData: WorkOrderFormData = {
       fill: false,
       pave: false,
       provideMaterials: false
-    },
-    excessSoilAddress: ""
+    }
   },
-
-  // Elektra
   electrical: {
     jcdecauxRequest: false,
     disconnect: false,
     connect: false
-  },
-
-  // Kosten
-  billing: {
-    municipality: "",
-    postcode: "",
-    city: "",
-    poBox: "",
-    department: "",
-    attention: "",
-    reference: ""
   }
 };
