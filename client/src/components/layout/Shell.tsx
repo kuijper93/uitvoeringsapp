@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import JCDecauxLogo from "@/assets/jcdecaux-logo.png";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -35,11 +34,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       <div className="fixed inset-y-0 z-50 w-64">
         <div className="flex h-full flex-col overflow-y-auto bg-sidebar border-r">
           <div className="flex h-16 shrink-0 items-center px-6">
-            <img
-              className="h-8 w-auto"
-              src={JCDecauxLogo}
-              alt="JCDecaux"
-            />
+            <h1 className="text-xl font-bold tracking-wider">JCDecaux</h1>
           </div>
           <nav className="flex-1 px-6 pb-4">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
