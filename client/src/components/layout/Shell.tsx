@@ -47,21 +47,20 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <ul role="list" className="-mx-2 space-y-1">
                   {navigation.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href}>
-                        <a
-                          className={cn(
-                            item.href === location
-                              ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                              : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6"
-                          )}
-                        >
-                          <item.icon
-                            className="h-6 w-6 shrink-0"
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </a>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          item.href === location
+                            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6"
+                        )}
+                      >
+                        <item.icon
+                          className="h-6 w-6 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {item.name}
                       </Link>
                     </li>
                   ))}
