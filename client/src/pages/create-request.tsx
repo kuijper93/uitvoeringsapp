@@ -316,7 +316,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="abriFormat"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem className="max-w-[200px]">
                         <FormLabel>Abri formaat</FormLabel>
                         <FormControl>
                           <Input {...field} />
