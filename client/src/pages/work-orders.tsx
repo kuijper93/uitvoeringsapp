@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { getStatusColor, getStatusLabel } from "@/lib/status";
 import type { SelectWorkOrder } from "@db/schema";
 import { formatDistance } from "date-fns";
+import { nl } from "date-fns/locale";
 
 export default function WorkOrders() {
   const { data: workOrders, isLoading } = useQuery<SelectWorkOrder[]>({
@@ -23,11 +24,11 @@ export default function WorkOrders() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Work Orders</h1>
+        <h1 className="text-2xl font-bold">Mutaties</h1>
         <Link href="/work-orders/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            New Work Order
+            Nieuwe Mutatie doorgeven
           </Button>
         </Link>
       </div>
@@ -36,11 +37,11 @@ export default function WorkOrders() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order Number</TableHead>
+              <TableHead>Mutatienummer</TableHead>
               <TableHead>Type</TableHead>
-              <TableHead>Location</TableHead>
+              <TableHead>Locatie</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead>Aangemaakt</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -64,6 +65,7 @@ export default function WorkOrders() {
                 <TableCell>
                   {formatDistance(new Date(order.createdAt), new Date(), {
                     addSuffix: true,
+                    locale: nl,
                   })}
                 </TableCell>
               </TableRow>

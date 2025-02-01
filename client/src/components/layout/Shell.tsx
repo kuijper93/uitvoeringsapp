@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Work Orders", href: "/work-orders", icon: ClipboardList },
+  { name: "Mutaties", href: "/work-orders", icon: ClipboardList },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -59,7 +59,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <Link href="/work-orders/new">
                   <Button className="w-full">
                     <Plus className="mr-2 h-4 w-4" />
-                    New Work Order
+                    Nieuwe Mutatie doorgeven
                   </Button>
                 </Link>
               </li>
@@ -70,14 +70,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   className="w-full justify-start gap-x-3"
                 >
                   <Settings className="h-6 w-6" />
-                  Settings
+                  Instellingen
                 </Button>
                 <Button
                   variant="ghost"
                   className="w-full justify-start gap-x-3 text-red-500"
                 >
                   <LogOut className="h-6 w-6" />
-                  Logout
+                  Uitloggen
                 </Button>
               </li>
             </ul>

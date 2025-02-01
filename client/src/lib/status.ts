@@ -1,9 +1,9 @@
 export const WorkOrderStatus = {
-  DRAFT: "draft",
-  SUBMITTED: "submitted",
-  IN_PROGRESS: "in_progress",
-  COMPLETED: "completed",
-  CANCELLED: "cancelled",
+  DRAFT: "concept",
+  SUBMITTED: "ingediend",
+  IN_PROGRESS: "in_behandeling",
+  COMPLETED: "afgerond",
+  CANCELLED: "geannuleerd",
 } as const;
 
 export type WorkOrderStatusType = typeof WorkOrderStatus[keyof typeof WorkOrderStatus];
@@ -28,15 +28,15 @@ export const getStatusColor = (status: WorkOrderStatusType) => {
 export const getStatusLabel = (status: WorkOrderStatusType) => {
   switch (status) {
     case WorkOrderStatus.DRAFT:
-      return "Draft";
+      return "Concept";
     case WorkOrderStatus.SUBMITTED:
-      return "Submitted";
+      return "Ingediend";
     case WorkOrderStatus.IN_PROGRESS:
-      return "In Progress";
+      return "In behandeling";
     case WorkOrderStatus.COMPLETED:
-      return "Completed";
+      return "Afgerond";
     case WorkOrderStatus.CANCELLED:
-      return "Cancelled";
+      return "Geannuleerd";
     default:
       return status;
   }
