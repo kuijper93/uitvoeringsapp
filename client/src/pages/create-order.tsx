@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { workOrderFormSchema, type WorkOrderFormData, initialFormData } from "@/lib/forms";
+import { workOrderFormSchema, type WorkOrderFormData } from "@/lib/forms";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,15 +32,30 @@ export default function CreateOrder() {
   const { toast } = useToast();
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
-    defaultValues: initialFormData,
+    defaultValues: {
+      requestorName: "",
+      requestorPhone: "",
+      requestorEmail: "",
+      municipality: "",
+      executionContact: "",
+      executionPhone: "",
+      executionEmail: "",
+      streetFurnitureType: "Abri",
+      actionType: "Plaatsen",
+      city: "",
+      desiredDate: "",
+    }
   });
+
+  const actionType = form.watch("actionType");
 
   const createMutation = useMutation({
     mutationFn: async (data: WorkOrderFormData) => {
-      return await apiRequest("/api/work-orders", {
+      const response = await apiRequest("/api/work-orders", {
         method: "POST",
         body: JSON.stringify(data),
       });
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -49,7 +64,7 @@ export default function CreateOrder() {
       });
       navigate("/work-orders");
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: "Error",
         description: "Er is een fout opgetreden bij het aanmaken van de werk order.",
@@ -58,12 +73,16 @@ export default function CreateOrder() {
     },
   });
 
+  const onSubmit = (data: WorkOrderFormData) => {
+    createMutation.mutate(data);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <h1 className="text-3xl font-bold">Nieuwe aanvraag</h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(createMutation.mutate)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           {/* Contact Information */}
           <Card>
             <CardHeader>
@@ -137,8 +156,7 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-
-                <FormField
+                 <FormField
                   control={form.control}
                   name="executionContact"
                   render={({ field }) => (
@@ -214,7 +232,6 @@ export default function CreateOrder() {
                     )}
                   />
                 )}
-
                 <FormField
                   control={form.control}
                   name="streetFurnitureType"
@@ -269,8 +286,7 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-
-                <FormField
+                  <FormField
                   control={form.control}
                   name="objectNumber"
                   render={({ field }) => (
@@ -312,8 +328,7 @@ export default function CreateOrder() {
                   )}
                 />
               </div>
-
-              <FormField
+                <FormField
                 control={form.control}
                 name="additionalNotes"
                 render={({ field }) => (
@@ -350,8 +365,8 @@ export default function CreateOrder() {
             </CardContent>
           </Card>
 
-          {/* Location Cards - Conditional Rendering */}
-          {(form.watch("actionType") === "Verwijderen" || form.watch("actionType") === "Verplaatsen") && (
+          {/* Conditional Location Cards */}
+          {(actionType === "Verwijderen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Huidige Locatie</CardTitle>
@@ -361,7 +376,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="removalLocation.street"
+                    name="currentLocation.street"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Straat</FormLabel>
@@ -374,7 +389,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="removalLocation.postcode"
+                    name="currentLocation.postcode"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Postcode</FormLabel>
@@ -390,7 +405,7 @@ export default function CreateOrder() {
             </Card>
           )}
 
-          {(form.watch("actionType") === "Plaatsen" || form.watch("actionType") === "Verplaatsen") && (
+          {(actionType === "Plaatsen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Nieuwe Locatie</CardTitle>
@@ -400,7 +415,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
-                    name="installationLocation.xCoordinate"
+                    name="newLocation.xCoordinate"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>X coördinaten</FormLabel>
@@ -413,7 +428,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="installationLocation.yCoordinate"
+                    name="newLocation.yCoordinate"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Y coördinaten</FormLabel>
@@ -427,7 +442,7 @@ export default function CreateOrder() {
 
                   <FormField
                     control={form.control}
-                    name="installationLocation.streetAndNumber"
+                    name="newLocation.streetAndNumber"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Straatnaam + huisnummer</FormLabel>
@@ -441,7 +456,7 @@ export default function CreateOrder() {
 
                   <FormField
                     control={form.control}
-                    name="installationLocation.postcode"
+                    name="newLocation.postcode"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Postcode</FormLabel>
@@ -455,7 +470,7 @@ export default function CreateOrder() {
 
                   <FormField
                     control={form.control}
-                    name="installationLocation.busStopName"
+                    name="newLocation.busStopName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Haltenaam (optioneel)</FormLabel>
@@ -470,8 +485,7 @@ export default function CreateOrder() {
               </CardContent>
             </Card>
           )}
-
-          {/* Bespreken met Arthur */}
+             {/* Bespreken met Arthur */}
           <Card>
             <CardHeader>
               <CardTitle>Bespreken met Arthur</CardTitle>
@@ -660,8 +674,7 @@ export default function CreateOrder() {
               />
             </CardContent>
           </Card>
-
-          {/* Elektra */}
+            {/* Elektra */}
           <Card>
             <CardHeader>
               <CardTitle>Elektra</CardTitle>
@@ -703,8 +716,7 @@ export default function CreateOrder() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Kosten */}
+             {/* Kosten */}
           <Card>
             <CardHeader>
               <CardTitle>Kosten</CardTitle>
@@ -754,7 +766,7 @@ export default function CreateOrder() {
                   )}
                 />
 
-                <FormField
+                  <FormField
                   control={form.control}
                   name="billing.poBox"
                   render={({ field }) => (
@@ -796,7 +808,7 @@ export default function CreateOrder() {
                   )}
                 />
 
-                <FormField
+                  <FormField
                   control={form.control}
                   name="billing.reference"
                   render={({ field }) => (
@@ -812,7 +824,6 @@ export default function CreateOrder() {
               </div>
             </CardContent>
           </Card>
-
           <div className="flex justify-end space-x-4">
             <Button
               type="button"
