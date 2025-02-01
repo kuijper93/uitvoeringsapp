@@ -27,6 +27,9 @@ export default function CreateOrder() {
 
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
+    defaultValues: {
+      actionType: "",
+    }
   });
 
   const actionType = form.watch("actionType");
@@ -255,6 +258,7 @@ export default function CreateOrder() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="">Selecteer een actie</SelectItem>
                           <SelectItem value="Verwijderen">Verwijderen</SelectItem>
                           <SelectItem value="Verplaatsen">Verplaatsen</SelectItem>
                           <SelectItem value="Ophogen">Ophogen</SelectItem>
