@@ -6,6 +6,9 @@ import { workOrderFormSchema, type WorkOrderFormData, initialFormData } from "@/
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -13,8 +16,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export default function CreateOrder() {
   const [, navigate] = useLocation();
@@ -26,6 +35,14 @@ export default function CreateOrder() {
 
   const createMutation = useMutation({
     mutationFn: async (data: WorkOrderFormData) => {
+      // Set default location if not provided
+      if (!data.location.lat || !data.location.lng) {
+        data.location = {
+          ...data.location,
+          lat: initialFormData.location.lat,
+          lng: initialFormData.location.lng,
+        };
+      }
       await apiRequest("POST", "/api/work-orders", data);
     },
     onSuccess: () => {
@@ -171,6 +188,62 @@ export default function CreateOrder() {
                 <FormLabel>Municipality</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter municipality" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="desiredDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Desired Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date < new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="location.address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Location Address</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter location address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
