@@ -50,6 +50,13 @@ export const workOrderFormSchema = z.object({
   removalLocation: z.object({
     street: z.string().min(1, "Straat is verplicht"),
     postcode: z.string().min(1, "Postcode is verplicht")
+  }).optional().superRefine((data, ctx) => {
+    if (!data && ["Verwijderen", "Verplaatsen"].includes(ctx.parent.actionType)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Huidige locatie is verplicht voor verwijderen en verplaatsen"
+      });
+    }
   }),
 
   // Plaatsen/verplaatsen (fields 14-17, 12C)
@@ -59,6 +66,13 @@ export const workOrderFormSchema = z.object({
     streetAndNumber: z.string().min(1, "Straatnaam + huisnummer is verplicht"),
     busStopName: z.string().optional(),
     postcode: z.string().min(1, "Postcode is verplicht")
+  }).optional().superRefine((data, ctx) => {
+    if (!data && ["Plaatsen", "Verplaatsen"].includes(ctx.parent.actionType)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Nieuwe locatie is verplicht voor plaatsen en verplaatsen"
+      });
+    }
   }),
 
   // Bespreken met Arthur (fields 20-30)
