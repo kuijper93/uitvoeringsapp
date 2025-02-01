@@ -429,7 +429,7 @@ export default function CreateRequest() {
                             type="file" 
                             accept=".pdf,.dwg" 
                             {...field} 
-                            className="file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+                            className="border-0 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                           />
                         </FormControl>
                         <p className="text-sm text-muted-foreground mt-1">
