@@ -1,12 +1,60 @@
-import { pgTable, text, serial, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, boolean, timestamp, jsonb, date } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
+import { z } from "zod";
+
+// Location schema for validation
+const locationSchema = z.object({
+  street: z.string(),
+  postcode: z.string(),
+  halteName: z.string().optional(),
+  coordinates: z.object({
+    x: z.string(),
+    y: z.string()
+  }).optional()
+});
+
+// Infrastructure work schema
+const infrastructureSchema = z.object({
+  roadwork: z.object({
+    removeExisting: z.boolean(),
+    excavate: z.boolean(),
+    fill: z.boolean(),
+    repave: z.boolean(),
+    provideMaterials: z.boolean()
+  }),
+  newLocation: z.object({
+    excavateCunet: z.boolean(),
+    fill: z.boolean(),
+    repave: z.boolean(),
+    provideMaterials: z.boolean()
+  }),
+  surplusSoilAddress: z.string().optional()
+});
+
+// Electrical work schema
+const electricalSchema = z.object({
+  jcdecauxRequest: z.boolean(),
+  disconnect: z.boolean(),
+  connect: z.boolean()
+});
+
+// Billing information schema
+const billingSchema = z.object({
+  municipality: z.string().optional(),
+  postcode: z.string(),
+  city: z.string(),
+  poBox: z.string(),
+  department: z.string(),
+  attention: z.string(),
+  reference: z.string()
+});
 
 export const workOrders = pgTable("work_orders", {
   id: serial("id").primaryKey(),
   orderNumber: text("order_number").notNull(),
 
-  // Contact (rows 1-7)
+  // Contact information (rows 1-7)
   requestorName: text("requestor_name").notNull(),
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
@@ -15,30 +63,28 @@ export const workOrders = pgTable("work_orders", {
   executionPhone: text("execution_phone").notNull(),
   executionEmail: text("execution_email").notNull(),
 
-  // Gegevens werkzaamheden (rows 8-17)
+  // Work details (rows 8-17)
   abriFormat: text("abri_format"),
   streetFurnitureType: text("street_furniture_type").notNull(),
-  actionType: text("action_type").notNull(),
+  actionType: text("action_type").notNull(), // Verwijderen / Verplaatsen / Ophogen / Plaatsen
   objectNumber: text("object_number"),
   city: text("city").notNull(),
-  desiredDate: timestamp("desired_date").notNull(),
+  desiredDate: date("desired_date").notNull(),
   additionalNotes: text("additional_notes"),
-  locationSketch: jsonb("location_sketch"),
+  locationSketch: jsonb("location_sketch"), // For PDF and AutoCAD files
 
-  // Verwijderen / verplaatsen (rows 19-21)
-  currentLocation: jsonb("current_location").notNull(),
+  // Location information (conditional based on action type)
+  currentLocation: jsonb("current_location").$type<z.infer<typeof locationSchema>>(),
+  newLocation: jsonb("new_location").$type<z.infer<typeof locationSchema>>(),
 
-  // Plaatsen / verplaatsen (rows 22-26)
-  newLocation: jsonb("new_location"),
+  // Infrastructure work
+  infrastructure: jsonb("infrastructure").$type<z.infer<typeof infrastructureSchema>>().notNull(),
 
-  // Infrastructure (rows 29-40)
-  jcdecaux: jsonb("jcdecaux").notNull(),
+  // Electrical work
+  electrical: jsonb("electrical").$type<z.infer<typeof electricalSchema>>().notNull(),
 
-  // Elektra (rows 42-44)
-  electrical: jsonb("electrical").notNull(),
-
-  // Kosten (rows 46-53)
-  billing: jsonb("billing").notNull(),
+  // Billing information
+  billing: jsonb("billing").$type<z.infer<typeof billingSchema>>().notNull(),
 
   // Additional fields
   status: text("status").notNull().default("draft"),
@@ -59,7 +105,34 @@ export const workOrderRelations = relations(workOrders, ({ many }) => ({
   logs: many(workOrderLogs),
 }));
 
-export const insertWorkOrderSchema = createInsertSchema(workOrders);
+// Create base schema
+const baseWorkOrderSchema = createInsertSchema(workOrders);
+
+// Custom validation schema with conditional fields based on action type
+export const insertWorkOrderSchema = baseWorkOrderSchema.extend({
+  actionType: z.enum(["Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"]),
+  currentLocation: locationSchema.optional().refine(
+    (data, ctx) => {
+      const actionType = ctx.path[0] as string;
+      if (["Verwijderen", "Verplaatsen"].includes(actionType) && !data) {
+        return false;
+      }
+      return true;
+    },
+    { message: "Current location is required for removal and relocation" }
+  ),
+  newLocation: locationSchema.optional().refine(
+    (data, ctx) => {
+      const actionType = ctx.path[0] as string;
+      if (["Plaatsen", "Verplaatsen"].includes(actionType) && !data) {
+        return false;
+      }
+      return true;
+    },
+    { message: "New location is required for placement and relocation" }
+  ),
+});
+
 export const selectWorkOrderSchema = createSelectSchema(workOrders);
 
 export type InsertWorkOrder = typeof workOrders.$inferInsert;
