@@ -251,7 +251,7 @@ export default function CreateOrder() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Uit te voeren actie</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue="" value={field.value || ""}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecteer actie" />

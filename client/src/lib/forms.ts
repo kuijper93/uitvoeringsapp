@@ -3,13 +3,13 @@ import { z } from "zod";
 // Define the exact options from the CSV
 const straatmeubilairTypes = [
   "Abri",
-  "Mupi", 
+  "Mupi",
   "Vitrine",
   "Digitaal object",
   "Billboard",
   "Zuil",
   "Toilet",
-  "Hekwerk", 
+  "Hekwerk",
   "Haltepaal",
   "Prullenbak",
   "Overig"
@@ -18,7 +18,7 @@ const straatmeubilairTypes = [
 const actieTypes = [
   "",
   "Verwijderen",
-  "Verplaatsen", 
+  "Verplaatsen",
   "Ophogen",
   "Plaatsen"
 ] as const;
@@ -47,7 +47,7 @@ export const workOrderFormSchema = z.object({
   // Work details
   abriFormat: z.string().optional(),
   streetFurnitureType: z.enum(straatmeubilairTypes),
-  actionType: z.enum(actieTypes),
+  actionType: z.enum(actieTypes).default(""),
   objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format moet zijn: NL-AB-12345").optional(),
   city: z.string().min(1, "Stad is verplicht"),
   desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
