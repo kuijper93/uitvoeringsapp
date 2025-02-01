@@ -33,12 +33,15 @@ const requestFormSchema = z.object({
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
   objectNumber: z.string().optional(),
   desiredDate: z.string().min(1, "Datum is verplicht"),
+    objectFormat: z.string().optional(),
+
 
   // Current Location (for removal/moving)
   currentLocation: z.object({
     address: z.string().min(1, "Adres is verplicht"),
     coordinates: z.string().optional(),
     remarks: z.string().optional(),
+    halteName: z.string().optional(),
   }),
 
   // New Location (for installation/moving)
@@ -53,6 +56,11 @@ const requestFormSchema = z.object({
     required: z.boolean(),
     type: z.enum(["bestrating", "fundering", "beide"]).optional(),
     remarks: z.string().optional(),
+        vrijgraven: z.boolean().optional(),
+    aanvullen: z.boolean().optional(),
+    herstraten: z.boolean().optional(),
+    materiaalLevering: z.boolean().optional(),
+    overtolligeGrondAdres: z.string().optional(),
   }),
 
   electricity: z.object({
@@ -61,6 +69,15 @@ const requestFormSchema = z.object({
     meterNumber: z.string().optional(),
     remarks: z.string().optional(),
   }),
+
+    billing: z.object({
+    municipality: z.string().optional(),
+    postcode: z.string().optional(),
+    department: z.string().optional(),
+    poBox: z.string().optional(),
+    attention: z.string().optional(),
+    reference: z.string().optional(),
+    }),
 
   // Costs
   costs: z.object({
@@ -104,10 +121,13 @@ export default function CreateRequest() {
       actionType: "plaatsen",
       objectNumber: "",
       desiredDate: "",
+            objectFormat: "standard",
+
       currentLocation: {
         address: "",
         coordinates: "",
         remarks: "",
+        halteName: "",
       },
       newLocation: {
         address: "",
@@ -117,12 +137,25 @@ export default function CreateRequest() {
       streetwork: {
         required: false,
         remarks: "",
+          vrijgraven: false,
+        aanvullen: false,
+        herstraten: false,
+        materiaalLevering: false,
+        overtolligeGrondAdres: "",
       },
       electricity: {
         required: false,
         connection: "geen",
         remarks: "",
       },
+        billing: {
+        municipality: "",
+        postcode: "",
+        department: "",
+        poBox: "",
+        attention: "",
+        reference: "",
+        },
       costs: {
         estimate: "",
         approved: false,
@@ -131,6 +164,8 @@ export default function CreateRequest() {
       generalRemarks: "",
     },
   });
+
+    const municipality = form.watch("municipality");
 
   const createMutation = useMutation({
     mutationFn: async (data: RequestFormData) => {
@@ -345,6 +380,34 @@ export default function CreateRequest() {
                   )}
                 />
               </div>
+                {/* Amsterdam-specific fields */}
+                {municipality === "amsterdam" && (
+                  <FormField
+                    control={form.control}
+                    name="objectFormat"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Abri Formaat</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecteer formaat" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="standard">Standaard</SelectItem>
+                            <SelectItem value="large">Groot</SelectItem>
+                            <SelectItem value="custom">Aangepast</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
             </CardContent>
           </Card>
 
@@ -367,6 +430,19 @@ export default function CreateRequest() {
                   </FormItem>
                 )}
               />
+                <FormField
+                  control={form.control}
+                  name="currentLocation.halteName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Haltenaam (optioneel)</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               <FormField
                 control={form.control}
                 name="currentLocation.remarks"
@@ -447,6 +523,7 @@ export default function CreateRequest() {
                 />
 
                 {requiresStreetwork && (
+                  <>
                   <FormField
                     control={form.control}
                     name="streetwork.type"
@@ -472,6 +549,92 @@ export default function CreateRequest() {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="streetwork.vrijgraven"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-2">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="h-4 w-4"
+                          />
+                        </FormControl>
+                        <FormLabel className="!mt-0">Vrijgraven</FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="streetwork.aanvullen"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-2">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="h-4 w-4"
+                          />
+                        </FormControl>
+                        <FormLabel className="!mt-0">Aanvullen</FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="streetwork.herstraten"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-2">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="h-4 w-4"
+                          />
+                        </FormControl>
+                        <FormLabel className="!mt-0">Herstraten</FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="streetwork.materiaalLevering"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center gap-2">
+                        <FormControl>
+                          <input
+                            type="checkbox"
+                            checked={field.value}
+                            onChange={field.onChange}
+                            className="h-4 w-4"
+                          />
+                        </FormControl>
+                        <FormLabel className="!mt-0">Materiaal Levering</FormLabel>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="streetwork.overtolligeGrondAdres"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Afleveradres Overtollige Grond</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  </>
                 )}
               </div>
 
@@ -539,6 +702,101 @@ export default function CreateRequest() {
               </div>
             </CardContent>
           </Card>
+
+            {/* Expanded Billing Section */}
+            <Card>
+              <CardHeader className="p-4">
+                <CardTitle className="text-base">Facturering</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 pt-0 space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="billing.municipality"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gemeente</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="billing.postcode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Postcode</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="billing.department"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Afdeling</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="billing.poBox"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Postbus</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="billing.attention"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Ter Attentie Van</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="billing.reference"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Uw Referentie</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                </div>
+              </CardContent>
+            </Card>
 
           {/* Costs */}
           <Card>
