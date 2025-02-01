@@ -4,14 +4,9 @@ import { relations } from "drizzle-orm";
 
 export const workOrders = pgTable("work_orders", {
   id: serial("id").primaryKey(),
-  type: text("type").notNull(), // 'work_order' or 'request'
   orderNumber: text("order_number").notNull(),
-  requestType: text("request_type").notNull(), // placement, removal, etc
-  status: text("status").notNull().default("draft"),
-  objectType: text("object_type").notNull(), // Abri, Mupi, etc
-  objectFormat: text("object_format"), // For Amsterdam-specific formats
 
-  // Contact Information
+  // Contact Information (CSV rows 1-7)
   requestorName: text("requestor_name").notNull(),
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
@@ -20,33 +15,64 @@ export const workOrders = pgTable("work_orders", {
   executionPhone: text("execution_phone").notNull(),
   executionEmail: text("execution_email").notNull(),
 
-  // Location Information
-  currentLocation: jsonb("current_location").notNull(), // {address, postcode, coordinates, halteName, remarks}
-  newLocation: jsonb("new_location"), // {address, postcode, coordinates, halteName, remarks}
+  // Work Details (CSV rows 8-16)
+  type: text("type").notNull(), // 'work_order' or 'request'
+  requestType: text("request_type").notNull(), // verwijderen, verplaatsen, etc.
+  objectType: text("object_type").notNull(), // Abri, Mupi, etc.
+  objectNumber: text("object_number"),
+  objectFormat: text("object_format"), // For Amsterdam specific
+  city: text("city").notNull(),
+  status: text("status").notNull().default("draft"),
+  desiredDate: timestamp("desired_date").notNull(),
 
-  // Infrastructure
+  // Location Information (CSV rows 19-26)
+  currentLocation: jsonb("current_location").notNull(), // {
+    // street: string,
+    // postcode: string,
+    // city: string,
+    // coordinates: { x: string, y: string },
+    // halteName: string,
+    // remarks: string
+  // }
+
+  newLocation: jsonb("new_location"), // Same structure as currentLocation
+
+  // Street Work (CSV rows 30-40)
   streetwork: jsonb("streetwork").notNull(), // {
-    // required, type, remarks
-    // vrijgraven, aanvullen, herstraten
-    // materiaalLevering, overtolligeGrondAdres
+    // jcdecauxExecution: boolean,
+    // required: boolean,
+    // vrijgraven: boolean,
+    // aanvullen: boolean,
+    // herstraten: boolean,
+    // materiaalLevering: boolean,
+    // cunetGraven: boolean,
+    // overtolligeGrondAdres: string,
+    // remarks: string
   // }
 
+  // Electrical Work (CSV rows 42-44)
   electricity: jsonb("electricity").notNull(), // {
-    // required, connection, meterNumber, remarks
-    // afkoppelen, aankoppelen, type
+    // jcdecauxRequest: boolean,
+    // afkoppelen: boolean,
+    // aansluiten: boolean,
+    // meterNumber: string,
+    // remarks: string
   // }
 
-  // Costs and Billing
+  // Billing Information (CSV rows 46-53)
   billing: jsonb("billing").notNull(), // {
-    // municipality, postcode, city, poBox,
-    // department, attention, reference
+    // municipality: string,
+    // postcode: string,
+    // city: string,
+    // poBox: string,
+    // department: string,
+    // attention: string,
+    // reference: string
   // }
 
   // Additional Information
   generalRemarks: text("general_remarks"),
   documentationFiles: jsonb("documentation_files"), // For location sketches (PDF/AutoCAD)
-  desiredDate: timestamp("desired_date").notNull(),
-  formData: jsonb("form_data").notNull(), // For storing additional dynamic form fields
   termsApproved: boolean("terms_approved").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

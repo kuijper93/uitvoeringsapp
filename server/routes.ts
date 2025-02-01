@@ -15,11 +15,34 @@ export function registerRoutes(app: Express): Server {
 
   app.post("/api/work-orders", async (req, res) => {
     const orderNumber = nanoid(8).toUpperCase();
+    const { type = "work_order", ...data } = req.body;
 
     const order = await db.insert(workOrders).values({
-      ...req.body,
+      ...data,
+      type,
       orderNumber,
       status: "draft",
+      // Ensure all required fields are present
+      currentAddress: data.currentAddress || {
+        street: "",
+        number: "",
+        postcode: "",
+        city: "",
+        coordinates: { x: "", y: "" },
+      },
+      streetwork: data.streetwork || {
+        required: false,
+        vrijgraven: false,
+        aanvullen: false,
+        herstraten: false,
+        materiaalLevering: false,
+      },
+      electricity: data.electricity || {
+        required: false,
+        afkoppelen: false,
+        aansluiten: false,
+      },
+      billing: data.billing || {},
     }).returning();
 
     res.json(order[0]);
@@ -48,12 +71,34 @@ export function registerRoutes(app: Express): Server {
 
   app.post("/api/requests", async (req, res) => {
     const orderNumber = nanoid(8).toUpperCase();
+    const data = req.body;
 
     const request = await db.insert(workOrders).values({
-      ...req.body,
+      ...data,
       orderNumber,
       type: "request",
       status: "draft",
+      // Ensure all required fields are present
+      currentAddress: data.currentAddress || {
+        street: "",
+        number: "",
+        postcode: "",
+        city: "",
+        coordinates: { x: "", y: "" },
+      },
+      streetwork: data.streetwork || {
+        required: false,
+        vrijgraven: false,
+        aanvullen: false,
+        herstraten: false,
+        materiaalLevering: false,
+      },
+      electricity: data.electricity || {
+        required: false,
+        afkoppelen: false,
+        aansluiten: false,
+      },
+      billing: data.billing || {},
     }).returning();
 
     res.json(request[0]);

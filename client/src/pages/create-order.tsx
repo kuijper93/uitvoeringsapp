@@ -48,13 +48,6 @@ export default function CreateOrder() {
 
   const createMutation = useMutation({
     mutationFn: async (data: WorkOrderFormData) => {
-      if (!data.location.lat || !data.location.lng) {
-        data.location = {
-          ...data.location,
-          lat: initialFormData.location.lat,
-          lng: initialFormData.location.lng,
-        };
-      }
       await apiRequest("POST", "/api/work-orders", data);
     },
     onSuccess: () => {
