@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { workOrderFormSchema, type WorkOrderFormData } from "@/lib/forms";
+import { workOrderFormSchema, type WorkOrderFormData, initialWorkOrderData } from "@/lib/forms";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -47,6 +47,7 @@ export default function CreateOrder() {
   const { toast } = useToast();
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
+    defaultValues: initialWorkOrderData,
   });
 
   const municipality = form.watch("municipality")?.toLowerCase();
@@ -161,7 +162,7 @@ export default function CreateOrder() {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="executionContact"
+                  name="executionContactName"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contactpersoon Uitvoering (gemeente)</FormLabel>
@@ -174,7 +175,7 @@ export default function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="executionPhone"
+                  name="executionContactPhone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tel. Nr. Uitvoering (gemeente)</FormLabel>
@@ -189,7 +190,7 @@ export default function CreateOrder() {
 
               <FormField
                 control={form.control}
-                name="executionEmail"
+                name="executionContactEmail"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email Uitvoering (gemeente)</FormLabel>
@@ -372,7 +373,7 @@ export default function CreateOrder() {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="currentLocation.street"
+                  name="removalDetails.street"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Straat</FormLabel>
@@ -385,7 +386,7 @@ export default function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="currentLocation.postcode"
+                  name="removalDetails.postcode"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Postcode</FormLabel>
@@ -408,7 +409,7 @@ export default function CreateOrder() {
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="newLocation.xCoordinate"
+                  name="installationDetails.coordinates.x"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>X coördinaten</FormLabel>
@@ -421,7 +422,7 @@ export default function CreateOrder() {
                 />
                 <FormField
                   control={form.control}
-                  name="newLocation.yCoordinate"
+                  name="installationDetails.coordinates.y"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Y coördinaten</FormLabel>
@@ -436,7 +437,7 @@ export default function CreateOrder() {
 
               <FormField
                 control={form.control}
-                name="newLocation.streetAndNumber"
+                name="installationDetails.streetAndNumber"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Straatnaam + huisnummer</FormLabel>
@@ -450,7 +451,7 @@ export default function CreateOrder() {
 
               <FormField
                 control={form.control}
-                name="newLocation.busStopName"
+                name="installationDetails.busStopName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Haltenaam</FormLabel>
@@ -464,7 +465,7 @@ export default function CreateOrder() {
 
               <FormField
                 control={form.control}
-                name="newLocation.postcode"
+                name="installationDetails.postcode"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Postcode</FormLabel>
@@ -486,7 +487,7 @@ export default function CreateOrder() {
             <CardContent className="space-y-6">
               <FormField
                 control={form.control}
-                name="jcdecaux.executionRequired"
+                name="jcdecauxExecution.required"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-2">
                     <FormControl>
@@ -505,7 +506,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="jcdecaux.streetwork.remove"
+                    name="jcdecauxExecution.existingWork.removeStreetwork"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -520,7 +521,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="jcdecaux.streetwork.excavate"
+                    name="jcdecauxExecution.existingWork.excavate"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -538,7 +539,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="jcdecaux.streetwork.fill"
+                    name="jcdecauxExecution.existingWork.fill"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -553,7 +554,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="jcdecaux.streetwork.repave"
+                    name="jcdecauxExecution.existingWork.repave"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -570,7 +571,7 @@ export default function CreateOrder() {
 
                 <FormField
                   control={form.control}
-                  name="jcdecaux.streetwork.provideMaterials"
+                  name="jcdecauxExecution.existingWork.provideMaterials"
                   render={({ field }) => (
                     <FormItem className="flex items-center gap-2">
                       <FormControl>
@@ -590,7 +591,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="jcdecaux.newInstallation.digFoundation"
+                    name="jcdecauxExecution.newWork.digFoundation"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -605,7 +606,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="jcdecaux.newInstallation.fill"
+                    name="jcdecauxExecution.newWork.fill"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -623,7 +624,7 @@ export default function CreateOrder() {
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name="jcdecaux.newInstallation.pave"
+                    name="jcdecauxExecution.newWork.pave"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -638,7 +639,7 @@ export default function CreateOrder() {
                   />
                   <FormField
                     control={form.control}
-                    name="jcdecaux.newInstallation.provideMaterials"
+                    name="jcdecauxExecution.newWork.provideMaterials"
                     render={({ field }) => (
                       <FormItem className="flex items-center gap-2">
                         <FormControl>
@@ -656,7 +657,7 @@ export default function CreateOrder() {
 
               <FormField
                 control={form.control}
-                name="jcdecaux.excessSoilAddress"
+                name="jcdecauxExecution.excessSoilAddress"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Afleveradres overtollige grond</FormLabel>
