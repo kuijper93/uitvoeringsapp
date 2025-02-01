@@ -221,7 +221,7 @@ export default function CreateRequest() {
               <div key={section.id} className="flex items-center">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    formSections.findIndex(s => s.id === currentSection) >= index
+                    section.id === currentSection
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground'
                   }`}
@@ -970,7 +970,7 @@ export default function CreateRequest() {
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                                  />
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
