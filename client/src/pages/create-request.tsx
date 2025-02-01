@@ -189,25 +189,21 @@ export default function CreateRequest() {
 
   const createMutation = useMutation({
     mutationFn: async (data: RequestFormData) => {
-      // Transform data to match database requirements
       const transformedData = {
         ...data,
-        executionContactName: data.executionContactName,
+        // Remove any undefined or empty values
+        ...Object.fromEntries(
+          Object.entries(data).filter(([_, v]) => v != null && v !== "")
+        ),
         status: "PENDING",
-        // Ensure dates are properly formatted
+        // Format dates properly
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        // Convert desiredDate to ISO string
         desiredDate: data.desiredDate ? new Date(data.desiredDate).toISOString() : null,
       };
-  
-      try {
-        const response = await apiRequest("POST", "/api/requests", transformedData);
-        return response;
-      } catch (error) {
-        console.error("API request error:", error);
-        throw error;
-      }
+
+      const response = await apiRequest("POST", "/api/requests", transformedData);
+      return response;
     },
     onSuccess: () => {
       toast({
@@ -967,7 +963,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="billingPostcode"
                     render={({ field }) => (
-                      <FormItem>
+                      <FormItem><replit_final_file>
                         <FormLabel>Postcode</FormLabel>
                         <FormControl>
                           <Input {...field} />

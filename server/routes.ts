@@ -24,15 +24,13 @@ export function registerRoutes(app: Express): Server {
       const orderNumber = nanoid(8).toUpperCase();
       const data = req.body;
 
-      // Ensure dates are properly formatted
-      const now = new Date().toISOString();
+      // Format the data
       const formattedData = {
         ...data,
         orderNumber,
         status: "PENDING",
-        createdAt: now,
-        updatedAt: now,
-        // Handle desiredDate if present
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
         desiredDate: data.desiredDate ? new Date(data.desiredDate).toISOString() : null,
       };
 
