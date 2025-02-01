@@ -334,9 +334,9 @@ export default function CreateOrder() {
                   <FormItem>
                     <FormLabel>Locatieschets (PDF en autocad NLCS-DWG)</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="file" 
-                        accept=".pdf,.dwg" 
+                      <Input
+                        type="file"
+                        accept=".pdf,.dwg"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
                           field.onChange(file);
@@ -350,121 +350,126 @@ export default function CreateOrder() {
             </CardContent>
           </Card>
 
-          {/* Verwijderen / verplaatsen */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Verwijderen / verplaatsen</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="removalLocation.street"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Straat</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="removalLocation.postcode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Postcode</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
+          {/* Location Cards - Conditional Rendering */}
+          {(form.watch("actionType") === "Verwijderen" || form.watch("actionType") === "Verplaatsen") && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Huidige Locatie</CardTitle>
+                <CardDescription>Details van de huidige locatie</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="removalLocation.street"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Straat</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="removalLocation.postcode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postcode</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
-          {/* Plaatsen / verplaatsen */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Plaatsen / verplaatsen</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="installationLocation.xCoordinate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>X coördinaten</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="installationLocation.yCoordinate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Y coördinaten</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+          {(form.watch("actionType") === "Plaatsen" || form.watch("actionType") === "Verplaatsen") && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Nieuwe Locatie</CardTitle>
+                <CardDescription>Details van de nieuwe locatie</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="installationLocation.xCoordinate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>X coördinaten</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="bijv. 52.3676" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="installationLocation.yCoordinate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Y coördinaten</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="bijv. 4.9041" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="installationLocation.streetAndNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Straatnaam + huisnummer</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="installationLocation.streetAndNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Straatnaam + huisnummer</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="installationLocation.busStopName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Haltenaam</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  <FormField
+                    control={form.control}
+                    name="installationLocation.postcode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postcode</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              <FormField
-                control={form.control}
-                name="installationLocation.postcode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postcode</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
+                  <FormField
+                    control={form.control}
+                    name="installationLocation.busStopName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Haltenaam (optioneel)</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Bespreken met Arthur */}
           <Card>
