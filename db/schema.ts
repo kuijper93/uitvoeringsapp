@@ -9,30 +9,45 @@ export const workOrders = pgTable("work_orders", {
   requestType: text("request_type").notNull(), // placement, removal, etc
   status: text("status").notNull().default("draft"),
   objectType: text("object_type").notNull(), // Abri, Mupi, etc
+  objectFormat: text("object_format"), // For Amsterdam-specific formats
 
   // Contact Information
   requestorName: text("requestor_name").notNull(),
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
   municipality: text("municipality").notNull(),
-  executionContact: text("execution_contact"),
-  executionPhone: text("execution_phone"),
-  executionEmail: text("execution_email"),
+  executionContact: text("execution_contact").notNull(),
+  executionPhone: text("execution_phone").notNull(),
+  executionEmail: text("execution_email").notNull(),
 
   // Location Information
-  currentLocation: jsonb("current_location").notNull(), // {address, coordinates, remarks}
-  newLocation: jsonb("new_location"), // {address, coordinates, remarks}
+  currentLocation: jsonb("current_location").notNull(), // {address, postcode, coordinates, halteName, remarks}
+  newLocation: jsonb("new_location"), // {address, postcode, coordinates, halteName, remarks}
 
   // Infrastructure
-  streetwork: jsonb("streetwork").notNull(), // {required, type, remarks}
-  electricity: jsonb("electricity").notNull(), // {required, connection, meterNumber, remarks}
+  streetwork: jsonb("streetwork").notNull(), // {
+    // required, type, remarks
+    // vrijgraven, aanvullen, herstraten
+    // materiaalLevering, overtolligeGrondAdres
+  // }
 
-  // Costs
-  costs: jsonb("costs"), // {estimate, approved, remarks}
+  electricity: jsonb("electricity").notNull(), // {
+    // required, connection, meterNumber, remarks
+    // afkoppelen, aankoppelen, type
+  // }
 
+  // Costs and Billing
+  billing: jsonb("billing").notNull(), // {
+    // municipality, postcode, city, poBox,
+    // department, attention, reference
+  // }
+
+  // Additional Information
   generalRemarks: text("general_remarks"),
+  documentationFiles: jsonb("documentation_files"), // For location sketches (PDF/AutoCAD)
   desiredDate: timestamp("desired_date").notNull(),
   formData: jsonb("form_data").notNull(), // For storing additional dynamic form fields
+  termsApproved: boolean("terms_approved").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
