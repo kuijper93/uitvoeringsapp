@@ -419,26 +419,31 @@ export default function CreateRequest() {
 
                 {showLocationSketch && (
                   <FormField
-                    control={form.control}
-                    name="locationSketch"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Locatieschets</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="file" 
-                            accept=".pdf,.dwg" 
-                            {...field} 
-                            className="border-0 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
-                          />
-                        </FormControl>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          PDF en autocad (NLCS-DWG)
-                        </p>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      control={form.control}
+                      name="locationSketch"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Locatieschets</FormLabel>
+                          <FormControl>
+                            <div className="relative">
+                              <Input 
+                                type="file" 
+                                accept=".pdf,.dwg" 
+                                {...field} 
+                                className="opacity-0 absolute inset-0 w-[140px] h-8 cursor-pointer"
+                              />
+                              <div className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                                Bestand kiezen
+                              </div>
+                            </div>
+                          </FormControl>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            PDF en autocad (NLCS-DWG)
+                          </p>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                 )}
               </div>
 
@@ -513,7 +518,7 @@ export default function CreateRequest() {
               </CardContent>
             </Card>
           )}
-
+          
                 {/* Installation Location */}
                 {showInstallationLocation && (
                   <Card>
