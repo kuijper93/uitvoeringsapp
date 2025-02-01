@@ -1,75 +1,70 @@
 import { z } from "zod";
 
 export const workOrderFormSchema = z.object({
-  // Contact Information (CSV rows 1-7)
+  // Contact (rows 1-7)
   requestorName: z.string().min(1, "Naam opdrachtgever is verplicht"),
-  requestorPhone: z.string().min(1, "Telefoonnummer opdrachtgever is verplicht"),
-  requestorEmail: z.string().email("Ongeldig e-mailadres opdrachtgever"),
+  requestorPhone: z.string().min(1, "Tel. Nr. Opdrachtgever is verplicht"),
+  requestorEmail: z.string().email("Ongeldig e-mailadres"),
   municipality: z.string().min(1, "Gemeente is verplicht"),
-  executionContact: z.string().min(1, "Contactpersoon uitvoering is verplicht"),
-  executionPhone: z.string().min(1, "Telefoonnummer uitvoering is verplicht"),
-  executionEmail: z.string().email("Ongeldig e-mailadres uitvoering"),
+  executionContact: z.string().min(1, "Contactpersoon Uitvoering is verplicht"),
+  executionPhone: z.string().min(1, "Tel. Nr. Uitvoering is verplicht"),
+  executionEmail: z.string().email("Ongeldig e-mailadres Uitvoering"),
 
-  // Work Details (CSV rows 8-16)
-  type: z.enum(["work_order", "request"]),
-  requestType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
-  objectType: z.enum([
-    "Abri", "Mupi", "Vitrine", "Digitaal object", "Billboard",
+  // Gegevens werkzaamheden (rows 8-17)
+  abriFormat: z.string().optional(), // Only for Amsterdam
+  streetFurnitureType: z.enum([
+    "Abri", "Mupi", "Vitrine", "Digitaal object", "Billboard", 
     "Zuil", "Toilet", "Hekwerk", "Haltepaal", "Prullenbak", "Overig"
   ]),
-  objectFormat: z.enum(["standard", "large", "custom"]).optional(), // For Amsterdam only
-  objectNumber: z.string().optional(),
+  actionType: z.enum(["Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"]),
+  objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format: NL-AB-12345").optional(),
   city: z.string().min(1, "Stad is verplicht"),
   desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
+  additionalNotes: z.string().optional(),
+  locationSketch: z.any().optional(), // PDF and AutoCAD (NLCS-DWG)
 
-  // Location Information (CSV rows 19-26)
+  // Verwijderen / verplaatsen (rows 19-21)
   currentLocation: z.object({
     street: z.string().min(1, "Straat is verplicht"),
-    postcode: z.string().min(1, "Postcode is verplicht"),
-    city: z.string().min(1, "Stad is verplicht"),
-    coordinates: z.object({
-      x: z.string().optional(),
-      y: z.string().optional(),
-    }),
-    halteName: z.string().optional(), // For AB only
-    remarks: z.string().optional(),
+    postcode: z.string().min(1, "Postcode is verplicht")
   }),
 
+  // Plaatsen / verplaatsen (rows 22-26)
   newLocation: z.object({
-    street: z.string().optional(),
-    postcode: z.string().optional(),
-    city: z.string().optional(),
-    coordinates: z.object({
-      x: z.string().optional(),
-      y: z.string().optional(),
-    }),
-    halteName: z.string().optional(),
-    remarks: z.string().optional(),
+    xCoordinate: z.string().optional(),
+    yCoordinate: z.string().optional(),
+    streetAndNumber: z.string().optional(),
+    busStopName: z.string().optional(), // Optional - only for AB
+    postcode: z.string().optional()
   }).optional(),
 
-  // Street Work (CSV rows 30-40)
-  streetwork: z.object({
-    jcdecauxExecution: z.boolean().default(false), // Row 20
-    required: z.boolean().default(false),
-    vrijgraven: z.boolean().default(false),
-    aanvullen: z.boolean().default(false),
-    herstraten: z.boolean().default(false),
-    materiaalLevering: z.boolean().default(false),
-    cunetGraven: z.boolean().default(false), // Row 26
-    overtolligeGrondAdres: z.string().optional(),
-    remarks: z.string().optional(),
+  // Infrastructure (rows 29-40)
+  jcdecaux: z.object({
+    executionRequired: z.boolean().default(false),
+    streetwork: z.object({
+      remove: z.boolean().default(false),
+      excavate: z.boolean().default(false),
+      fill: z.boolean().default(false),
+      repave: z.boolean().default(false),
+      provideMaterials: z.boolean().default(false),
+    }),
+    newInstallation: z.object({
+      digFoundation: z.boolean().default(false),
+      fill: z.boolean().default(false),
+      pave: z.boolean().default(false),
+      provideMaterials: z.boolean().default(false),
+    }),
+    excessSoilAddress: z.string().optional()
   }),
 
-  // Electrical Work (CSV rows 42-44)
-  electricity: z.object({
-    jcdecauxRequest: z.boolean().default(false), // Row 32
-    afkoppelen: z.boolean().default(false),
-    aansluiten: z.boolean().default(false),
-    meterNumber: z.string().optional(),
-    remarks: z.string().optional(),
+  // Elektra (rows 42-44)
+  electrical: z.object({
+    jcdecauxRequest: z.boolean().default(false),
+    disconnect: z.boolean().default(false),
+    connect: z.boolean().default(false)
   }),
 
-  // Billing Information (CSV rows 46-53)
+  // Kosten (rows 46-53)
   billing: z.object({
     municipality: z.string().optional(),
     postcode: z.string().optional(),
@@ -77,13 +72,11 @@ export const workOrderFormSchema = z.object({
     poBox: z.string().optional(),
     department: z.string().optional(),
     attention: z.string().optional(),
-    reference: z.string().optional(),
+    reference: z.string().optional()
   }),
 
-  // Additional Information
-  generalRemarks: z.string().optional(),
-  documentationFiles: z.any().optional(), // For location sketches (PDF/AutoCAD)
-  termsApproved: z.boolean().default(false),
+  // Additional settings
+  termsAccepted: z.boolean().default(false)
 });
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
@@ -96,56 +89,51 @@ export const initialFormData: WorkOrderFormData = {
   executionContact: "",
   executionPhone: "",
   executionEmail: "",
-  type: "work_order",
-  requestType: "plaatsen",
-  objectType: "Abri",
-  objectFormat: "standard",
+
+  abriFormat: undefined,
+  streetFurnitureType: "Abri",
+  actionType: "Plaatsen",
   objectNumber: "",
   city: "",
   desiredDate: "",
+  additionalNotes: "",
+  locationSketch: null,
 
   currentLocation: {
     street: "",
-    postcode: "",
-    city: "",
-    coordinates: {
-      x: "",
-      y: "",
-    },
-    halteName: "",
-    remarks: "",
+    postcode: ""
   },
 
   newLocation: {
-    street: "",
-    postcode: "",
-    city: "",
-    coordinates: {
-      x: "",
-      y: "",
+    xCoordinate: "",
+    yCoordinate: "",
+    streetAndNumber: "",
+    busStopName: "",
+    postcode: ""
+  },
+
+  jcdecaux: {
+    executionRequired: false,
+    streetwork: {
+      remove: false,
+      excavate: false,
+      fill: false,
+      repave: false,
+      provideMaterials: false
     },
-    halteName: "",
-    remarks: "",
+    newInstallation: {
+      digFoundation: false,
+      fill: false,
+      pave: false,
+      provideMaterials: false
+    },
+    excessSoilAddress: ""
   },
 
-  streetwork: {
-    jcdecauxExecution: false,
-    required: false,
-    vrijgraven: false,
-    aanvullen: false,
-    herstraten: false,
-    materiaalLevering: false,
-    cunetGraven: false,
-    overtolligeGrondAdres: "",
-    remarks: "",
-  },
-
-  electricity: {
+  electrical: {
     jcdecauxRequest: false,
-    afkoppelen: false,
-    aansluiten: false,
-    meterNumber: "",
-    remarks: "",
+    disconnect: false,
+    connect: false
   },
 
   billing: {
@@ -155,10 +143,8 @@ export const initialFormData: WorkOrderFormData = {
     poBox: "",
     department: "",
     attention: "",
-    reference: "",
+    reference: ""
   },
 
-  generalRemarks: "",
-  documentationFiles: null,
-  termsApproved: false,
+  termsAccepted: false
 };

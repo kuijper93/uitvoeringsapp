@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 
@@ -6,7 +6,7 @@ export const workOrders = pgTable("work_orders", {
   id: serial("id").primaryKey(),
   orderNumber: text("order_number").notNull(),
 
-  // Contact Information (CSV rows 1-7)
+  // Contact (rows 1-7)
   requestorName: text("requestor_name").notNull(),
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
@@ -15,72 +15,41 @@ export const workOrders = pgTable("work_orders", {
   executionPhone: text("execution_phone").notNull(),
   executionEmail: text("execution_email").notNull(),
 
-  // Work Details (CSV rows 8-16)
-  type: text("type").notNull(), // 'work_order' or 'request'
-  requestType: text("request_type").notNull(), // verwijderen, verplaatsen, etc.
-  objectType: text("object_type").notNull(), // Abri, Mupi, etc.
+  // Gegevens werkzaamheden (rows 8-17)
+  abriFormat: text("abri_format"),
+  streetFurnitureType: text("street_furniture_type").notNull(),
+  actionType: text("action_type").notNull(),
   objectNumber: text("object_number"),
-  objectFormat: text("object_format"), // For Amsterdam specific
   city: text("city").notNull(),
-  status: text("status").notNull().default("draft"),
   desiredDate: timestamp("desired_date").notNull(),
+  additionalNotes: text("additional_notes"),
+  locationSketch: jsonb("location_sketch"),
 
-  // Location Information (CSV rows 19-26)
-  currentLocation: jsonb("current_location").notNull(), // {
-    // street: string,
-    // postcode: string,
-    // city: string,
-    // coordinates: { x: string, y: string },
-    // halteName: string,
-    // remarks: string
-  // }
+  // Verwijderen / verplaatsen (rows 19-21)
+  currentLocation: jsonb("current_location").notNull(),
 
-  newLocation: jsonb("new_location"), // Same structure as currentLocation
+  // Plaatsen / verplaatsen (rows 22-26)
+  newLocation: jsonb("new_location"),
 
-  // Street Work (CSV rows 30-40)
-  streetwork: jsonb("streetwork").notNull(), // {
-    // jcdecauxExecution: boolean,
-    // required: boolean,
-    // vrijgraven: boolean,
-    // aanvullen: boolean,
-    // herstraten: boolean,
-    // materiaalLevering: boolean,
-    // cunetGraven: boolean,
-    // overtolligeGrondAdres: string,
-    // remarks: string
-  // }
+  // Infrastructure (rows 29-40)
+  jcdecaux: jsonb("jcdecaux").notNull(),
 
-  // Electrical Work (CSV rows 42-44)
-  electricity: jsonb("electricity").notNull(), // {
-    // jcdecauxRequest: boolean,
-    // afkoppelen: boolean,
-    // aansluiten: boolean,
-    // meterNumber: string,
-    // remarks: string
-  // }
+  // Elektra (rows 42-44)
+  electrical: jsonb("electrical").notNull(),
 
-  // Billing Information (CSV rows 46-53)
-  billing: jsonb("billing").notNull(), // {
-    // municipality: string,
-    // postcode: string,
-    // city: string,
-    // poBox: string,
-    // department: string,
-    // attention: string,
-    // reference: string
-  // }
+  // Kosten (rows 46-53)
+  billing: jsonb("billing").notNull(),
 
-  // Additional Information
-  generalRemarks: text("general_remarks"),
-  documentationFiles: jsonb("documentation_files"), // For location sketches (PDF/AutoCAD)
-  termsApproved: boolean("terms_approved").notNull().default(false),
+  // Additional fields
+  status: text("status").notNull().default("draft"),
+  termsAccepted: boolean("terms_accepted").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const workOrderLogs = pgTable("work_order_logs", {
   id: serial("id").primaryKey(),
-  workOrderId: integer("work_order_id").notNull().references(() => workOrders.id),
+  workOrderId: serial("work_order_id").references(() => workOrders.id),
   status: text("status").notNull(),
   note: text("note"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
