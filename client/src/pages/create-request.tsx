@@ -189,19 +189,29 @@ export default function CreateRequest() {
 
   const createMutation = useMutation({
     mutationFn: async (data: RequestFormData) => {
-      await apiRequest("POST", "/api/requests", data);
+      // Transform data to match database requirements
+      const transformedData = {
+        ...data,
+        execution_contact: data.executionContactName, // Add missing required field
+        status: "PENDING",
+        orderNumber: `F_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      await apiRequest("POST", "/api/requests", transformedData);
     },
     onSuccess: () => {
       toast({
-        title: "Succes",
-        description: "Aanvraag succesvol ingediend",
+        title: "Succes!",
+        description: "Uw aanvraag is succesvol ingediend.",
+        variant: "default",
       });
       navigate("/requests");
     },
     onError: (error) => {
       toast({
-        title: "Fout",
-        description: error.message,
+        title: "Er is een fout opgetreden",
+        description: "Controleer of alle verplichte velden zijn ingevuld.",
         variant: "destructive",
       });
     },
@@ -957,8 +967,7 @@ export default function CreateRequest() {
                       </FormItem>
                     )}
                   />
-                </div>
-                <FormField
+                </div>                <FormField
                   control={form.control}
                   name="billingAddress"
                   render={({ field }) => (
