@@ -59,7 +59,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 <Link href="/work-orders/new">
                   <Button className="w-full">
                     <Plus className="mr-2 h-4 w-4" />
-                    Nieuwe Mutatie doorgeven
+                    Nieuwe Mutatie
                   </Button>
                 </Link>
               </li>

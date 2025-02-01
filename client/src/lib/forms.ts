@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const workOrderFormSchema = z.object({
-  requestType: z.enum(["placement", "removal", "relocation", "maintenance"]),
+  requestType: z.enum(["plaatsen", "verwijderen", "verplaatsen", "ophogen"]),
   objectType: z.enum(["Abri", "Mupi", "Vitrine", "Digitaal object", "Billboard", "Zuil", "Toilet", "Hekwerk", "Haltepaal", "Prullenbak", "Overig"]),
   location: z.object({
     lat: z.number(),
@@ -19,7 +19,7 @@ export const workOrderFormSchema = z.object({
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
 
 export const initialFormData: WorkOrderFormData = {
-  requestType: "placement",
+  requestType: "plaatsen",
   objectType: "Abri",
   location: {
     lat: 52.3676,

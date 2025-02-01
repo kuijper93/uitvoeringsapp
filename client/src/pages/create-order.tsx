@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { nl } from "date-fns/locale";
 import {
   Select,
   SelectContent,
@@ -35,7 +36,6 @@ export default function CreateOrder() {
 
   const createMutation = useMutation({
     mutationFn: async (data: WorkOrderFormData) => {
-      // Set default location if not provided
       if (!data.location.lat || !data.location.lng) {
         data.location = {
           ...data.location,
@@ -47,14 +47,14 @@ export default function CreateOrder() {
     },
     onSuccess: () => {
       toast({
-        title: "Success",
-        description: "Work order created successfully",
+        title: "Succes",
+        description: "Mutatie succesvol aangemaakt",
       });
       navigate("/work-orders");
     },
     onError: (error) => {
       toast({
-        title: "Error",
+        title: "Fout",
         description: error.message,
         variant: "destructive",
       });
@@ -67,7 +67,7 @@ export default function CreateOrder() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Create Work Order</h1>
+      <h1 className="text-2xl font-bold">Nieuwe Mutatie</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -77,21 +77,21 @@ export default function CreateOrder() {
               name="requestType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Request Type</FormLabel>
+                  <FormLabel>Type Aanvraag</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
+                        <SelectValue placeholder="Selecteer type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="placement">Placement</SelectItem>
-                      <SelectItem value="removal">Removal</SelectItem>
-                      <SelectItem value="relocation">Relocation</SelectItem>
-                      <SelectItem value="maintenance">Maintenance</SelectItem>
+                      <SelectItem value="plaatsen">Plaatsen</SelectItem>
+                      <SelectItem value="verwijderen">Verwijderen</SelectItem>
+                      <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
+                      <SelectItem value="ophogen">Ophogen</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -104,23 +104,21 @@ export default function CreateOrder() {
               name="objectType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Object Type</FormLabel>
+                  <FormLabel>Type Object</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select object type" />
+                        <SelectValue placeholder="Selecteer object type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="Abri">Abri</SelectItem>
                       <SelectItem value="Mupi">Mupi</SelectItem>
                       <SelectItem value="Vitrine">Vitrine</SelectItem>
-                      <SelectItem value="Digitaal object">
-                        Digitaal object
-                      </SelectItem>
+                      <SelectItem value="Digitaal object">Digitaal object</SelectItem>
                       <SelectItem value="Billboard">Billboard</SelectItem>
                       <SelectItem value="Zuil">Zuil</SelectItem>
                       <SelectItem value="Toilet">Toilet</SelectItem>
@@ -141,9 +139,9 @@ export default function CreateOrder() {
             name="requestorName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Requestor Name</FormLabel>
+                <FormLabel>Naam Aanvrager</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter name" {...field} />
+                  <Input placeholder="Vul naam in" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,9 +154,9 @@ export default function CreateOrder() {
               name="requestorEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>E-mail</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Enter email" {...field} />
+                    <Input type="email" placeholder="Vul e-mail in" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -170,9 +168,9 @@ export default function CreateOrder() {
               name="requestorPhone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone</FormLabel>
+                  <FormLabel>Telefoon</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter phone number" {...field} />
+                    <Input placeholder="Vul telefoonnummer in" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,9 +183,9 @@ export default function CreateOrder() {
             name="municipality"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Municipality</FormLabel>
+                <FormLabel>Gemeente</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter municipality" {...field} />
+                  <Input placeholder="Vul gemeente in" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -199,7 +197,7 @@ export default function CreateOrder() {
             name="desiredDate"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Desired Date</FormLabel>
+                <FormLabel>Gewenste Uitvoeringsdatum</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -211,9 +209,9 @@ export default function CreateOrder() {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(field.value, "PPP", { locale: nl })
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Kies een datum</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
@@ -228,6 +226,7 @@ export default function CreateOrder() {
                         date < new Date() || date < new Date("1900-01-01")
                       }
                       initialFocus
+                      locale={nl}
                     />
                   </PopoverContent>
                 </Popover>
@@ -241,9 +240,9 @@ export default function CreateOrder() {
             name="location.address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Location Address</FormLabel>
+                <FormLabel>Locatie Adres</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter location address" {...field} />
+                  <Input placeholder="Vul adres in" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -256,10 +255,10 @@ export default function CreateOrder() {
               variant="outline"
               onClick={() => navigate("/work-orders")}
             >
-              Cancel
+              Annuleren
             </Button>
             <Button type="submit" disabled={createMutation.isPending}>
-              Create Work Order
+              Aanmaken
             </Button>
           </div>
         </form>

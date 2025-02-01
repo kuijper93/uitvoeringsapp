@@ -28,7 +28,7 @@ export default function WorkOrders() {
         <Link href="/work-orders/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Nieuwe Mutatie doorgeven
+            Nieuwe Mutatie
           </Button>
         </Link>
       </div>
