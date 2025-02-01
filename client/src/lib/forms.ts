@@ -46,36 +46,36 @@ export const workOrderFormSchema = z.object({
 
   // Work details
   abriFormat: z.string().optional(),
-  streetFurnitureType: z.enum(straatmeubilairTypes),
+  streetFurnitureType: z.enum(straatmeubilairTypes).optional(),
   actionType: z.enum(actieTypes),
   objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format moet zijn: NL-AB-12345").optional(),
   city: z.string().min(1, "Stad is verplicht"),
   desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
   additionalNotes: z.string().optional(),
   locationSketch: z.any().optional(),
-
+  
   // Location details
   currentLocation: locationSchema.optional(),
   newLocation: locationSchema.optional(),
 
-  // Work requirements
-  jcdecauxWork: z.object({
-    required: z.boolean(),
-    existingWork: z.object({
-      removeStreetwork: z.boolean(),
-      excavate: z.boolean(),
-      fill: z.boolean(),
-      repave: z.boolean(),
-      provideMaterials: z.boolean()
-    }),
-    newWork: z.object({
-      digFoundation: z.boolean(),
-      fill: z.boolean(),
-      pave: z.boolean(),
-      provideMaterials: z.boolean()
-    }),
-    excessSoilAddress: z.string().optional()
-  }).optional(),
+    // Work requirements
+    jcdecauxWork: z.object({
+      required: z.boolean(),
+      existingWork: z.object({
+        removeStreetwork: z.boolean(),
+        excavate: z.boolean(),
+        fill: z.boolean(),
+        repave: z.boolean(),
+        provideMaterials: z.boolean()
+      }),
+      newWork: z.object({
+        digFoundation: z.boolean(),
+        fill: z.boolean(),
+        pave: z.boolean(),
+        provideMaterials: z.boolean()
+      }),
+      excessSoilAddress: z.string().optional()
+    }).optional(),
 
   // Electrical work
   electrical: z.object({
@@ -94,21 +94,27 @@ export const workOrderFormSchema = z.object({
     attention: z.string().optional(),
     reference: z.string().optional()
   })
-}).refine((data) => {
+}).superRefine((data, ctx) => {
+  // Skip validation if no action is selected
   if (data.actionType === "") return true;
 
-  // Validation for removal and relocation
+  // Validate current location for remove and relocate actions
   if (["Verwijderen", "Verplaatsen"].includes(data.actionType) && !data.currentLocation) {
-    return false;
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Huidige locatie is verplicht voor verwijderen en verplaatsen",
+      path: ["currentLocation"]
+    });
   }
-  // Validation for placement and relocation
+
+  // Validate new location for place and relocate actions
   if (["Plaatsen", "Verplaatsen"].includes(data.actionType) && !data.newLocation) {
-    return false;
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Nieuwe locatie is verplicht voor plaatsen en verplaatsen",
+      path: ["newLocation"]
+    });
   }
-  return true;
-}, {
-  message: "Location information is required based on the selected action type",
-  path: ["actionType"]
 });
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
