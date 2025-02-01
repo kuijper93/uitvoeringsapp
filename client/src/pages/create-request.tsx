@@ -309,7 +309,7 @@ export default function CreateRequest() {
                   )}
                 />
               </div>
-
+              
               <div className="grid grid-cols-2 gap-4">
                 {showAbriFormat && (
                   <FormField
@@ -361,21 +361,21 @@ export default function CreateRequest() {
                     )}
                   />
                 )}
-              </div>
 
-              <FormField
-                control={form.control}
-                name="desiredDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="desiredDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
