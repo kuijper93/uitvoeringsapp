@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { workOrderFormSchema, type WorkOrderFormData, defaultFormValues } from "@/lib/forms";
+import { workOrderFormSchema, type WorkOrderFormData } from "@/lib/forms";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,6 @@ export default function CreateOrder() {
 
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
-    defaultValues: defaultFormValues,
   });
 
   const actionType = form.watch("actionType");
@@ -346,7 +345,7 @@ export default function CreateOrder() {
           </Card>
 
           {/* Conditional Location Cards */}
-          {(actionType === "Verwijderen" || actionType === "Verplaatsen") && (
+          {actionType && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Huidige Locatie</CardTitle>
@@ -385,7 +384,7 @@ export default function CreateOrder() {
             </Card>
           )}
 
-          {(actionType === "Plaatsen" || actionType === "Verplaatsen") && (
+          {actionType && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Nieuwe Locatie</CardTitle>

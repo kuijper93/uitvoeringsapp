@@ -109,30 +109,3 @@ export const workOrderFormSchema = z.object({
 });
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
-
-// Default form values
-export const defaultFormValues: Partial<WorkOrderFormData> = {
-  streetFurnitureType: "Abri",
-  actionType: "Plaatsen",
-  jcdecauxWork: {
-    required: false,
-    existingWork: {
-      removeStreetwork: false,
-      excavate: false,
-      fill: false,
-      repave: false,
-      provideMaterials: false
-    },
-    newWork: {
-      digFoundation: false,
-      fill: false,
-      pave: false,
-      provideMaterials: false
-    }
-  },
-  electrical: {
-    jcdecauxRequest: false,
-    disconnect: false,
-    connect: false
-  }
-};
