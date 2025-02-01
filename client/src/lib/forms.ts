@@ -1,53 +1,68 @@
 import { z } from "zod";
 
+// Define the exact options from the CSV
+const straatmeubilairTypes = [
+  "Abri",
+  "Mupi", 
+  "Vitrine",
+  "Digitaal object",
+  "Billboard",
+  "Zuil",
+  "Toilet",
+  "Hekwerk", 
+  "Haltepaal",
+  "Prullenbak",
+  "Overig"
+] as const;
+
+const actieTypes = [
+  "Verwijderen",
+  "Verplaatsen", 
+  "Ophogen",
+  "Plaatsen"
+] as const;
+
 export const workOrderFormSchema = z.object({
   // Contact (fields 1-7)
   requestorName: z.string().min(1, "Naam opdrachtgever is verplicht"),
   requestorPhone: z.string().min(1, "Tel. Nr. Opdrachtgever is verplicht"),
-  requestorEmail: z.string().email("Ongeldig e-mailadres voor opdrachtgever"),
+  requestorEmail: z.string().email("Ongeldig e-mailadres"),
   municipality: z.string().min(1, "Gemeente is verplicht"),
-  executionContactName: z.string().min(1, "Contactpersoon Uitvoering (gemeente) is verplicht"),
-  executionContactPhone: z.string().min(1, "Tel. Nr. Uitvoering (gemeente) is verplicht"),
-  executionContactEmail: z.string().email("Ongeldig e-mailadres voor uitvoering"),
+  executionContact: z.string().min(1, "Contactpersoon Uitvoering is verplicht"),
+  executionPhone: z.string().min(1, "Tel. Nr. Uitvoering is verplicht"),
+  executionEmail: z.string().email("Ongeldig e-mailadres"),
 
   // Gegevens werkzaamheden (fields 8-18, 46)
   abriFormat: z.string().optional(), // Only for Amsterdam
-  streetFurnitureType: z.enum([
-    "Abri", "Mupi", "Vitrine", "Digitaal object", "Billboard", 
-    "Zuil", "Toilet", "Hekwerk", "Haltepaal", "Prullenbak", "Overig"
-  ], {
-    required_error: "Type straatmeubilair is verplicht"
+  streetFurnitureType: z.enum(straatmeubilairTypes, {
+    required_error: "Type straatmeubilair is verplicht",
   }),
-  actionType: z.enum([
-    "Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"
-  ], {
-    required_error: "Uit te voeren actie is verplicht"
+  actionType: z.enum(actieTypes, {
+    required_error: "Uit te voeren actie is verplicht",
   }),
   objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format: NL-AB-12345").optional(),
   city: z.string().min(1, "Stad is verplicht"),
   desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
   additionalNotes: z.string().optional(),
-  locationSketch: z.any().optional(), // PDF and AutoCAD (NLCS-DWG)
+  locationSketch: z.any().optional(), // PDF and AutoCAD files
 
-  // Verwijderen / verplaatsen (fields 12, 12B)
-  removalDetails: z.object({
+  // Verwijderen/verplaatsen (fields 12, 12B)
+  removalLocation: z.object({
     street: z.string().min(1, "Straat is verplicht"),
     postcode: z.string().min(1, "Postcode is verplicht")
   }),
 
-  // Plaatsen / verplaatsen (fields 14-17, 12C)
-  installationDetails: z.object({
-    coordinates: z.object({
-      x: z.string().min(1, "X coördinaten is verplicht"),
-      y: z.string().min(1, "Y coördinaten is verplicht")
-    }),
+  // Plaatsen/verplaatsen (fields 14-17, 12C)
+  installationLocation: z.object({
+    xCoordinate: z.string().min(1, "X coördinaten is verplicht"),
+    yCoordinate: z.string().min(1, "Y coördinaten is verplicht"),
     streetAndNumber: z.string().min(1, "Straatnaam + huisnummer is verplicht"),
     busStopName: z.string().optional(),
     postcode: z.string().min(1, "Postcode is verplicht")
   }),
 
   // Bespreken met Arthur (fields 20-30)
-  jcdecauxExecution: z.object({
+  jcdecauxWork: z.object({
     required: z.boolean(),
     existingWork: z.object({
       removeStreetwork: z.boolean(),
@@ -86,15 +101,17 @@ export const workOrderFormSchema = z.object({
 
 export type WorkOrderFormData = z.infer<typeof workOrderFormSchema>;
 
-export const initialWorkOrderData: WorkOrderFormData = {
+export const initialFormData: WorkOrderFormData = {
+  // Contact
   requestorName: "",
   requestorPhone: "",
   requestorEmail: "",
   municipality: "",
-  executionContactName: "",
-  executionContactPhone: "",
-  executionContactEmail: "",
+  executionContact: "",
+  executionPhone: "",
+  executionEmail: "",
 
+  // Gegevens werkzaamheden
   abriFormat: undefined,
   streetFurnitureType: "Abri",
   actionType: "Plaatsen",
@@ -104,22 +121,23 @@ export const initialWorkOrderData: WorkOrderFormData = {
   additionalNotes: "",
   locationSketch: null,
 
-  removalDetails: {
+  // Verwijderen/verplaatsen
+  removalLocation: {
     street: "",
     postcode: ""
   },
 
-  installationDetails: {
-    coordinates: {
-      x: "",
-      y: ""
-    },
+  // Plaatsen/verplaatsen
+  installationLocation: {
+    xCoordinate: "",
+    yCoordinate: "",
     streetAndNumber: "",
     busStopName: "",
     postcode: ""
   },
 
-  jcdecauxExecution: {
+  // Bespreken met Arthur
+  jcdecauxWork: {
     required: false,
     existingWork: {
       removeStreetwork: false,
@@ -137,12 +155,14 @@ export const initialWorkOrderData: WorkOrderFormData = {
     excessSoilAddress: ""
   },
 
+  // Elektra
   electrical: {
     jcdecauxRequest: false,
     disconnect: false,
     connect: false
   },
 
+  // Kosten
   billing: {
     municipality: "",
     postcode: "",

@@ -2,11 +2,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { workOrderFormSchema, type WorkOrderFormData, initialWorkOrderData } from "@/lib/forms";
+import { workOrderFormSchema, type WorkOrderFormData, initialFormData } from "@/lib/forms";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
@@ -20,98 +19,62 @@ import { useToast } from "@/hooks/use-toast";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
-const municipalities = ["Amsterdam", "Rotterdam", "Den Haag", "Utrecht"];
-const streetFurnitureTypes = [
-  "Abri",
-  "Mupi",
-  "Vitrine",
-  "Digitaal object",
-  "Billboard",
-  "Zuil",
-  "Toilet",
-  "Hekwerk",
-  "Haltepaal",
-  "Prullenbak",
-  "Overig",
-];
-
-const actionTypes = ["Verwijderen", "Verplaatsen", "Ophogen", "Plaatsen"];
+const municipalities = ["Amsterdam", "Rotterdam", "Den Haag", "Utrecht"] as const;
 
 export default function CreateOrder() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
-    defaultValues: initialWorkOrderData,
+    defaultValues: initialFormData,
   });
-
-  const municipality = form.watch("municipality")?.toLowerCase();
 
   const createMutation = useMutation({
     mutationFn: async (data: WorkOrderFormData) => {
-      await apiRequest("POST", "/api/work-orders", data);
+      return await apiRequest("/api/work-orders", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
     },
     onSuccess: () => {
       toast({
-        title: "Succes",
-        description: "Werk order succesvol aangemaakt",
+        title: "Werk order aangemaakt",
+        description: "De werk order is succesvol aangemaakt.",
       });
       navigate("/work-orders");
     },
     onError: (error) => {
       toast({
-        title: "Fout",
-        description: error.message,
+        title: "Error",
+        description: "Er is een fout opgetreden bij het aanmaken van de werk order.",
         variant: "destructive",
       });
     },
   });
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 p-4">
-      <h1 className="text-2xl font-bold">Nieuwe Werk Order</h1>
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <h1 className="text-3xl font-bold">Nieuwe aanvraag</h1>
 
       <Form {...form}>
-        <form 
-          onSubmit={(e) => {
-            e.preventDefault();
-            const data = form.getValues();
-            createMutation.mutate(data);
-          }} 
-          className="space-y-6"
-        >
+        <form onSubmit={form.handleSubmit(createMutation.mutate)} className="space-y-8">
           {/* Contact Information */}
           <Card>
             <CardHeader>
-              <CardTitle>Contact Informatie</CardTitle>
+              <CardTitle>Contact</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="requestorName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Naam opdrachtgever</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
-                  name="requestorPhone"
+                  name="requestorName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tel. Nr. Opdrachtgever</FormLabel>
+                      <FormLabel>Naam opdrachtgever</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -119,6 +82,21 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="requestorPhone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tel. Nr. Opdrachtgever</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="tel" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="requestorEmail"
@@ -132,37 +110,35 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <FormField
-                control={form.control}
-                name="municipality"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gemeente</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Selecteer gemeente" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {municipalities.map((municipality) => (
-                          <SelectItem key={municipality} value={municipality.toLowerCase()}>
-                            {municipality}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="executionContactName"
+                  name="municipality"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gemeente</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecteer gemeente" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {municipalities.map((municipality) => (
+                            <SelectItem key={municipality} value={municipality}>
+                              {municipality}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="executionContact"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contactpersoon Uitvoering (gemeente)</FormLabel>
@@ -173,34 +149,35 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
-                  name="executionContactPhone"
+                  name="executionPhone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tel. Nr. Uitvoering (gemeente)</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} type="tel" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="executionEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Uitvoering (gemeente)</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="email" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
-
-              <FormField
-                control={form.control}
-                name="executionContactEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email Uitvoering (gemeente)</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </CardContent>
           </Card>
 
@@ -209,33 +186,33 @@ export default function CreateOrder() {
             <CardHeader>
               <CardTitle>Gegevens werkzaamheden</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              {municipality === "amsterdam" && (
-                <FormField
-                  control={form.control}
-                  name="abriFormat"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Abri formaat</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecteer formaat" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="standard">Standaard</SelectItem>
-                          <SelectItem value="large">Groot</SelectItem>
-                          <SelectItem value="custom">Aangepast</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {form.watch("municipality")?.toLowerCase() === "amsterdam" && (
+                  <FormField
+                    control={form.control}
+                    name="abriFormat"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Abri formaat</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Selecteer formaat" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="2m²">2m²</SelectItem>
+                            <SelectItem value="2,16m²">2,16m²</SelectItem>
+                            <SelectItem value="2,5m²">2,5m²</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
-              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="streetFurnitureType"
@@ -249,11 +226,17 @@ export default function CreateOrder() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {streetFurnitureTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="Abri">Abri</SelectItem>
+                          <SelectItem value="Mupi">Mupi</SelectItem>
+                          <SelectItem value="Vitrine">Vitrine</SelectItem>
+                          <SelectItem value="Digitaal object">Digitaal object</SelectItem>
+                          <SelectItem value="Billboard">Billboard</SelectItem>
+                          <SelectItem value="Zuil">Zuil</SelectItem>
+                          <SelectItem value="Toilet">Toilet</SelectItem>
+                          <SelectItem value="Hekwerk">Hekwerk</SelectItem>
+                          <SelectItem value="Haltepaal">Haltepaal</SelectItem>
+                          <SelectItem value="Prullenbak">Prullenbak</SelectItem>
+                          <SelectItem value="Overig">Overig</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -274,20 +257,17 @@ export default function CreateOrder() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {actionTypes.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="Verwijderen">Verwijderen</SelectItem>
+                          <SelectItem value="Verplaatsen">Verplaatsen</SelectItem>
+                          <SelectItem value="Ophogen">Ophogen</SelectItem>
+                          <SelectItem value="Plaatsen">Plaatsen</SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="objectNumber"
@@ -315,21 +295,21 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-              </div>
 
-              <FormField
-                control={form.control}
-                name="desiredDate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormField
+                  control={form.control}
+                  name="desiredDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
+                      <FormControl>
+                        <Input type="date" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
               <FormField
                 control={form.control}
@@ -352,318 +332,15 @@ export default function CreateOrder() {
                   <FormItem>
                     <FormLabel>Locatieschets (PDF en autocad NLCS-DWG)</FormLabel>
                     <FormControl>
-                      <Input type="file" {...field} value={field.value?.filename} onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        field.onChange(file);
-                      }} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Location Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Verwijderen / verplaatsen</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="removalDetails.street"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Straat</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="removalDetails.postcode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Postcode</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Plaatsen / verplaatsen</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="installationDetails.coordinates.x"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>X coördinaten</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="installationDetails.coordinates.y"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Y coördinaten</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="installationDetails.streetAndNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Straatnaam + huisnummer</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="installationDetails.busStopName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Haltenaam</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="installationDetails.postcode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Postcode</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-
-          {/* Infrastructure */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Bespreken met Arthur</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <FormField
-                control={form.control}
-                name="jcdecauxExecution.required"
-                render={({ field }) => (
-                  <FormItem className="flex items-center gap-2">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
+                      <Input 
+                        type="file" 
+                        accept=".pdf,.dwg" 
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          field.onChange(file);
+                        }}
                       />
                     </FormControl>
-                    <FormLabel className="!mt-0">Uitvoering voor JCDecaux gewenst</FormLabel>
-                  </FormItem>
-                )}
-              />
-
-              <div className="space-y-4">
-                <h4 className="font-medium">Straatwerk bij verwijderen/verplaatsen</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.existingWork.removeStreetwork"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Straatwerk opnemen</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.existingWork.excavate"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Vrijgraven</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.existingWork.fill"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Aanvullen</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.existingWork.repave"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Herstraten</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="jcdecauxExecution.existingWork.provideMaterials"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="!mt-0">Leveren materiaal</FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="space-y-4">
-                <h4 className="font-medium">Straatwerk bij plaatsen/verplaatsen</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.newWork.digFoundation"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Cunet graven</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.newWork.fill"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Aanvullen</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.newWork.pave"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Herstraten</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="jcdecauxExecution.newWork.provideMaterials"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center gap-2">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Leveren materiaal</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              <FormField
-                control={form.control}
-                name="jcdecauxExecution.excessSoilAddress"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Afleveradres overtollige grond</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -671,174 +348,7 @@ export default function CreateOrder() {
             </CardContent>
           </Card>
 
-          {/* Electrical Work */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Elektra</CardTitle>
-              <CardDescription>Aanvinken indien JCDecaux dit dient aan te vragen</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="electrical.jcdecauxRequest"
-                render={({ field }) => (
-                  <FormItem className="flex items-center gap-2">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormLabel className="!mt-0">JCDecaux aanvraag</FormLabel>
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="electrical.disconnect"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="!mt-0">Afkoppelen</FormLabel>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="electrical.connect"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="!mt-0">Aansluiten</FormLabel>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Billing Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>In rekening brengen aan</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="billing.municipality"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gemeente</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="billing.postcode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Postcode</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="billing.city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Plaats</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="billing.poBox"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Postbus</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="billing.department"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Afdeling</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="billing.attention"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ter attentie van</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="billing.reference"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Uw referentie</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end space-x-4">
             <Button
               type="button"
               variant="outline"
@@ -847,7 +357,7 @@ export default function CreateOrder() {
               Annuleren
             </Button>
             <Button type="submit" disabled={createMutation.isPending}>
-              Aanmaken
+              {createMutation.isPending ? "Bezig met opslaan..." : "Opslaan"}
             </Button>
           </div>
         </form>
