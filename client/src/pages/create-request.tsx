@@ -192,13 +192,22 @@ export default function CreateRequest() {
       // Transform data to match database requirements
       const transformedData = {
         ...data,
-        execution_contact: data.executionContactName,
+        executionContactName: data.executionContactName,
         status: "PENDING",
-        orderNumber: `F_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        // Ensure dates are properly formatted
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        // Convert desiredDate to ISO string
+        desiredDate: data.desiredDate ? new Date(data.desiredDate).toISOString() : null,
       };
-      await apiRequest("POST", "/api/requests", transformedData);
+  
+      try {
+        const response = await apiRequest("POST", "/api/requests", transformedData);
+        return response;
+      } catch (error) {
+        console.error("API request error:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -209,12 +218,12 @@ export default function CreateRequest() {
       navigate("/requests");
     },
     onError: (error) => {
+      console.error("Form submission error:", error);
       toast({
         title: "Er is een fout opgetreden",
         description: "Controleer of alle verplichte velden zijn ingevuld.",
         variant: "destructive",
       });
-      console.error("Form submission error:", error);
     },
   });
 
@@ -954,8 +963,7 @@ export default function CreateRequest() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
-                  <FormField
+                  />                  <FormField
                     control={form.control}
                     name="billingPostcode"
                     render={({ field }) => (
