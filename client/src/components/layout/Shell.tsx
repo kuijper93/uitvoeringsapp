@@ -19,17 +19,17 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
-    <div className="flex h-screen">
-      <div className="fixed inset-y-0 z-50 flex w-64 flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebar px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
+    <div className="min-h-screen flex">
+      <div className="fixed inset-y-0 z-50 w-64">
+        <div className="flex h-full flex-col overflow-y-auto bg-sidebar border-r">
+          <div className="flex h-16 shrink-0 items-center px-6">
             <img
               className="h-8 w-auto"
               src="https://www.jcdecaux.com/sites/default/files/assets/logo_jcdecaux_2.svg"
               alt="JCDecaux"
             />
           </div>
-          <nav className="flex flex-1 flex-col">
+          <nav className="flex-1 px-6 pb-4">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
@@ -85,11 +85,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="pl-64 w-full">
-        <main className="py-6">
-          <div className="px-6">{children}</div>
-        </main>
-      </div>
+      <main className="flex-1 pl-64">
+        <div className="p-6 max-w-7xl mx-auto">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
