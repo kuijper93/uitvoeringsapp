@@ -5,7 +5,6 @@ import {
   ClipboardList,
   Settings,
   LogOut,
-  Plus,
   Calendar,
   Wrench,
   Box,
@@ -65,14 +64,6 @@ export function Shell({ children }: { children: React.ReactNode }) {
                     </li>
                   ))}
                 </ul>
-              </li>
-              <li>
-                <Link href="/requests/new">
-                  <Button className="w-full">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Nieuwe Aanvraag
-                  </Button>
-                </Link>
               </li>
               <li className="mt-auto">
                 <Separator className="mb-4" />
