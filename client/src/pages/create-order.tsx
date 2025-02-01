@@ -28,7 +28,7 @@ export default function CreateOrder() {
   const form = useForm<WorkOrderFormData>({
     resolver: zodResolver(workOrderFormSchema),
     defaultValues: {
-      actionType: "",
+      actionType: "Selecteer een actie",
       electrical: {
         jcdecauxRequest: false,
         disconnect: false,
@@ -249,7 +249,6 @@ export default function CreateOrder() {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="actionType"
@@ -262,11 +261,11 @@ export default function CreateOrder() {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecteer actie" />
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">Selecteer een actie</SelectItem>
+                          <SelectItem value="Selecteer een actie">Selecteer een actie</SelectItem>
                           <SelectItem value="Verwijderen">Verwijderen</SelectItem>
                           <SelectItem value="Verplaatsen">Verplaatsen</SelectItem>
                           <SelectItem value="Ophogen">Ophogen</SelectItem>
@@ -357,7 +356,7 @@ export default function CreateOrder() {
           </Card>
 
           {/* Conditional Location Cards */}
-           {actionType && actionType !== "" && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
+          {actionType !== "Selecteer een actie" && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Huidige Locatie</CardTitle>
@@ -396,7 +395,7 @@ export default function CreateOrder() {
             </Card>
           )}
 
-          {actionType && actionType !== "" && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
+          {actionType !== "Selecteer een actie" && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Nieuwe Locatie</CardTitle>
