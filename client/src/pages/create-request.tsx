@@ -157,89 +157,97 @@ export default function CreateRequest() {
               />
 
               <div className="grid grid-cols-2 divide-x">
-                <div className="pr-4 space-y-2">
+                <div className="pr-4">
                   <h3 className="text-sm font-medium text-muted-foreground mb-3">Aanvrager</h3>
-                  <FormField
-                    control={form.control}
-                    name="requestorName"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>Naam</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="requestorPhone"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>Telefoon</FormLabel>
-                        <FormControl>
-                          <Input type="tel" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="requestorEmail"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>E-mail</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="requestorName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-1">
+                          <FormLabel>Naam</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <FormField
+                        control={form.control}
+                        name="requestorPhone"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1">
+                            <FormLabel>Telefoon</FormLabel>
+                            <FormControl>
+                              <Input type="tel" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="requestorEmail"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1">
+                            <FormLabel>E-mail</FormLabel>
+                            <FormControl>
+                              <Input type="email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="pl-4 space-y-2 bg-muted/5">
+                <div className="pl-4 bg-muted/5">
                   <h3 className="text-sm font-medium text-muted-foreground mb-3">Voor Uitvoering</h3>
-                  <FormField
-                    control={form.control}
-                    name="executionContactName"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>Naam</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="executionContactPhone"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>Telefoon</FormLabel>
-                        <FormControl>
-                          <Input type="tel" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="executionContactEmail"
-                    render={({ field }) => (
-                      <FormItem className="space-y-1">
-                        <FormLabel>E-mail</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="space-y-2">
+                    <FormField
+                      control={form.control}
+                      name="executionContactName"
+                      render={({ field }) => (
+                        <FormItem className="space-y-1">
+                          <FormLabel>Naam</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="grid grid-cols-2 gap-2">
+                      <FormField
+                        control={form.control}
+                        name="executionContactPhone"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1">
+                            <FormLabel>Telefoon</FormLabel>
+                            <FormControl>
+                              <Input type="tel" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="executionContactEmail"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1">
+                            <FormLabel>E-mail</FormLabel>
+                            <FormControl>
+                              <Input type="email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -315,56 +323,59 @@ export default function CreateRequest() {
                 )}
               />
 
-              {showAbriFormat && (
-                <FormField
-                  control={form.control}
-                  name="abriFormat"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Abri formaat</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+              {/* Conditional fields grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {showAbriFormat && (
+                  <FormField
+                    control={form.control}
+                    name="abriFormat"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Abri formaat</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
-              {showObjectNumber && (
-                <FormField
-                  control={form.control}
-                  name="objectNumber"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Objectnummer</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+                {showObjectNumber && (
+                  <FormField
+                    control={form.control}
+                    name="objectNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Objectnummer</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
 
-              {showLocationSketch && (
-                <FormField
-                  control={form.control}
-                  name="locationSketch"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Locatieschets</FormLabel>
-                      <FormControl>
-                        <Input type="file" accept=".pdf,.dwg" {...field} />
-                      </FormControl>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        PDF en autocad (NLCS-DWG)
-                      </p>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+                {showLocationSketch && (
+                  <FormField
+                    control={form.control}
+                    name="locationSketch"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Locatieschets</FormLabel>
+                        <FormControl>
+                          <Input type="file" accept=".pdf,.dwg" {...field} />
+                        </FormControl>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          PDF en autocad (NLCS-DWG)
+                        </p>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+              </div>
 
               <FormField
                 control={form.control}
