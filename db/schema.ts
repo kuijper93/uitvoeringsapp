@@ -1,4 +1,4 @@
-import { pgTable, text, serial, boolean, timestamp, jsonb, date } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { relations } from "drizzle-orm";
 import { z } from "zod";
@@ -10,6 +10,9 @@ export const workOrders = pgTable("work_orders", {
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
   municipality: text("municipality").notNull(),
+  executionContactName: text("execution_contact_name").notNull(),
+  executionContactPhone: text("execution_contact_phone").notNull(),
+  executionContactEmail: text("execution_contact_email").notNull(),
   status: text("status").notNull().default("PENDING"),
   actionType: text("action_type").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),

@@ -18,6 +18,11 @@ const requestFormSchema = z.object({
   requestorEmail: z.string().email("Ongeldig e-mailadres"),
   municipality: z.string().min(1, "Gemeente is verplicht"),
 
+  // Operational Contact
+  executionContactName: z.string().min(1, "Naam uitvoerder is verplicht"),
+  executionContactPhone: z.string().min(1, "Telefoonnummer uitvoerder is verplicht"),
+  executionContactEmail: z.string().email("Ongeldig e-mailadres uitvoerder"),
+
   // Action Type
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
 });
@@ -47,6 +52,9 @@ export default function CreateRequest() {
       requestorPhone: "",
       requestorEmail: "",
       municipality: "",
+      executionContactName: "",
+      executionContactPhone: "",
+      executionContactEmail: "",
     },
   });
 
@@ -85,81 +93,124 @@ export default function CreateRequest() {
             <CardHeader className="p-4">
               <CardTitle className="text-base">Contactgegevens</CardTitle>
             </CardHeader>
-            <CardContent className="p-4 pt-0 space-y-4">
+            <CardContent className="p-4 pt-0 grid gap-4">
               <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="requestorName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Naam Aanvrager</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="municipality"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Gemeente</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium">Aanvrager</h3>
+                  <FormField
+                    control={form.control}
+                    name="requestorName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Naam</FormLabel>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecteer gemeente" />
-                          </SelectTrigger>
+                          <Input {...field} />
                         </FormControl>
-                        <SelectContent>
-                          {municipalities.map((municipality) => (
-                            <SelectItem
-                              key={municipality.toLowerCase()}
-                              value={municipality.toLowerCase()}
-                            >
-                              {municipality}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="requestorPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telefoon</FormLabel>
+                        <FormControl>
+                          <Input type="tel" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="requestorEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>E-mail</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium">Voor Uitvoering</h3>
+                  <FormField
+                    control={form.control}
+                    name="executionContactName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Naam</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="executionContactPhone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Telefoon</FormLabel>
+                        <FormControl>
+                          <Input type="tel" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="executionContactEmail"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>E-mail</FormLabel>
+                        <FormControl>
+                          <Input type="email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="requestorPhone"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Telefoonnummer</FormLabel>
+              <FormField
+                control={form.control}
+                name="municipality"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gemeente</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
-                        <Input type="tel" {...field} />
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecteer gemeente" />
+                        </SelectTrigger>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="requestorEmail"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>E-mail</FormLabel>
-                      <FormControl>
-                        <Input type="email" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                      <SelectContent>
+                        {municipalities.map((municipality) => (
+                          <SelectItem
+                            key={municipality.toLowerCase()}
+                            value={municipality.toLowerCase()}
+                          >
+                            {municipality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </CardContent>
           </Card>
 
