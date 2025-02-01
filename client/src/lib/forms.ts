@@ -1,105 +1,31 @@
 import { z } from "zod";
 
-// Define the exact options from the CSV
-const straatmeubilairTypes = [
-  "Abri",
-  "Mupi",
-  "Vitrine",
-  "Digitaal object",
-  "Billboard",
-  "Zuil",
-  "Toilet",
-  "Hekwerk",
-  "Haltepaal",
-  "Prullenbak",
-  "Overig"
-] as const;
-
+// Define the core action types
 const actieTypes = [
-  "",
+  "",  // Empty state for initial selection
   "Verwijderen",
   "Verplaatsen",
   "Ophogen",
   "Plaatsen"
 ] as const;
 
-// Location schema
+// Keep the location schema simple
 const locationSchema = z.object({
   street: z.string().min(1, "Straat is verplicht"),
-  postcode: z.string().min(1, "Postcode is verplicht"),
-  busStopName: z.string().optional(),
-  coordinates: z.object({
-    x: z.string().min(1, "X coördinaat is verplicht"),
-    y: z.string().min(1, "Y coördinaat is verplicht")
-  }).optional()
+  postcode: z.string().min(1, "Postcode is verplicht")
 });
 
+// Start with a minimal form schema
 export const workOrderFormSchema = z.object({
-  // Contact information
-  requestorName: z.string().min(1, "Naam opdrachtgever is verplicht"),
-  requestorPhone: z.string().min(1, "Tel. Nr. Opdrachtgever is verplicht"),
-  requestorEmail: z.string().email("Ongeldig e-mailadres"),
-  municipality: z.string().min(1, "Gemeente is verplicht"),
-  executionContact: z.string().min(1, "Contactpersoon Uitvoering is verplicht"),
-  executionPhone: z.string().min(1, "Tel. Nr. Uitvoering is verplicht"),
-  executionEmail: z.string().email("Ongeldig e-mailadres"),
-
-  // Work details
-  abriFormat: z.string().optional(),
-  streetFurnitureType: z.enum(straatmeubilairTypes).optional(),
   actionType: z.enum(actieTypes),
-  objectNumber: z.string().regex(/^NL-AB-\d{5}$/, "Format moet zijn: NL-AB-12345").optional(),
-  city: z.string().min(1, "Stad is verplicht"),
-  desiredDate: z.string().min(1, "Gewenste uitvoeringsdatum is verplicht"),
-  additionalNotes: z.string().optional(),
-  locationSketch: z.any().optional(),
-  
-  // Location details
   currentLocation: locationSchema.optional(),
   newLocation: locationSchema.optional(),
-
-    // Work requirements
-    jcdecauxWork: z.object({
-      required: z.boolean(),
-      existingWork: z.object({
-        removeStreetwork: z.boolean(),
-        excavate: z.boolean(),
-        fill: z.boolean(),
-        repave: z.boolean(),
-        provideMaterials: z.boolean()
-      }),
-      newWork: z.object({
-        digFoundation: z.boolean(),
-        fill: z.boolean(),
-        pave: z.boolean(),
-        provideMaterials: z.boolean()
-      }),
-      excessSoilAddress: z.string().optional()
-    }).optional(),
-
-  // Electrical work
-  electrical: z.object({
-    jcdecauxRequest: z.boolean(),
-    disconnect: z.boolean(),
-    connect: z.boolean()
-  }),
-
-  // Billing information
-  billing: z.object({
-    municipality: z.string().optional(),
-    postcode: z.string().optional(),
-    city: z.string().optional(),
-    poBox: z.string().optional(),
-    department: z.string().optional(),
-    attention: z.string().optional(),
-    reference: z.string().optional()
-  })
 }).superRefine((data, ctx) => {
-  // Skip validation if no action is selected
-  if (data.actionType === "") return true;
+  // Don't validate if no action is selected
+  if (!data.actionType || data.actionType === "") return true;
 
-  // Validate current location for remove and relocate actions
-  if (["Verwijderen", "Verplaatsen"].includes(data.actionType) && !data.currentLocation) {
+  // Validate current location for removal and relocation
+  if ((data.actionType === "Verwijderen" || data.actionType === "Verplaatsen") && !data.currentLocation) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: "Huidige locatie is verplicht voor verwijderen en verplaatsen",
@@ -107,8 +33,8 @@ export const workOrderFormSchema = z.object({
     });
   }
 
-  // Validate new location for place and relocate actions
-  if (["Plaatsen", "Verplaatsen"].includes(data.actionType) && !data.newLocation) {
+  // Validate new location for placement and relocation
+  if ((data.actionType === "Plaatsen" || data.actionType === "Verplaatsen") && !data.newLocation) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       message: "Nieuwe locatie is verplicht voor plaatsen en verplaatsen",

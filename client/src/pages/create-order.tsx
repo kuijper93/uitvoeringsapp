@@ -6,7 +6,6 @@ import { workOrderFormSchema, type WorkOrderFormData } from "@/lib/forms";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -15,11 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-
-const municipalities = ["Amsterdam", "Rotterdam", "Den Haag", "Utrecht"] as const;
 
 export default function CreateOrder() {
   const [, navigate] = useLocation();
@@ -29,18 +25,13 @@ export default function CreateOrder() {
     resolver: zodResolver(workOrderFormSchema),
     defaultValues: {
       actionType: "",
-      electrical: {
-        jcdecauxRequest: false,
-        disconnect: false,
-        connect: false
-      }
     }
   });
 
   const actionType = form.watch("actionType");
 
   const createMutation = useMutation({
-    mutationFn: async (data: WorkOrderFormData) => {
+    mutationFn: (data: WorkOrderFormData) => {
       return apiRequest("/api/work-orders", {
         method: "POST",
         body: JSON.stringify(data)
@@ -62,7 +53,7 @@ export default function CreateOrder() {
     },
   });
 
-  const handleSubmit = form.handleSubmit((data) => {
+  const onSubmit = form.handleSubmit((data) => {
     createMutation.mutate(data);
   });
 
@@ -71,20 +62,21 @@ export default function CreateOrder() {
       <h1 className="text-3xl font-bold">Nieuwe aanvraag</h1>
 
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={onSubmit} className="space-y-8">
           {/* Basic Information */}
           <Card>
             <CardHeader>
-              <CardTitle>Basis informatie</CardTitle>
+              <CardTitle>Type Actie</CardTitle>
+              <CardDescription>Selecteer het type actie dat uitgevoerd moet worden</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent>
               <FormField
                 control={form.control}
                 name="actionType"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Type Actie</FormLabel>
-                    <Select 
+                    <Select
                       onValueChange={field.onChange}
                       value={field.value}
                     >
@@ -108,7 +100,7 @@ export default function CreateOrder() {
             </CardContent>
           </Card>
 
-          {/* Only show location forms if an action is selected */}
+          {/* Show location forms only when an action is selected */}
           {actionType && actionType !== "" && (
             <>
               {/* Current Location - Only for Verwijderen and Verplaatsen */}
@@ -118,35 +110,33 @@ export default function CreateOrder() {
                     <CardTitle>Huidige Locatie</CardTitle>
                     <CardDescription>Vul de details van de huidige locatie in</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="currentLocation.street"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Straat</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="currentLocation.postcode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Postcode</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  <CardContent className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="currentLocation.street"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Straat</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="currentLocation.postcode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Postcode</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </CardContent>
                 </Card>
               )}
@@ -158,35 +148,33 @@ export default function CreateOrder() {
                     <CardTitle>Nieuwe Locatie</CardTitle>
                     <CardDescription>Vul de details van de nieuwe locatie in</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <FormField
-                        control={form.control}
-                        name="newLocation.street"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Straat</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="newLocation.postcode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Postcode</FormLabel>
-                            <FormControl>
-                              <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
+                  <CardContent className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="newLocation.street"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Straat</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="newLocation.postcode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Postcode</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </CardContent>
                 </Card>
               )}
