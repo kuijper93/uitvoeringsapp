@@ -38,6 +38,27 @@ export function registerRoutes(app: Express): Server {
     res.json(order[0]);
   });
 
+  app.get("/api/requests", async (_req, res) => {
+    const requests = await db.query.workOrders.findMany({
+      where: eq(workOrders.type, "request"),
+      orderBy: [desc(workOrders.createdAt)],
+    });
+    res.json(requests);
+  });
+
+  app.post("/api/requests", async (req, res) => {
+    const orderNumber = nanoid(8).toUpperCase();
+
+    const request = await db.insert(workOrders).values({
+      ...req.body,
+      orderNumber,
+      type: "request",
+      status: "draft",
+    }).returning();
+
+    res.json(request[0]);
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

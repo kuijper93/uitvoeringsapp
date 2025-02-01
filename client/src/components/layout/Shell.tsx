@@ -6,13 +6,25 @@ import {
   Settings,
   LogOut,
   Plus,
+  Calendar,
+  Wrench,
+  Box,
+  Settings2,
+  Construction
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
-  { name: "Mutaties", href: "/work-orders", icon: ClipboardList },
+  { name: "Losse aanvragen", href: "/requests", icon: ClipboardList },
+  { name: "Projecten", href: "/projects", icon: Construction },
+  { name: "Werkorders", href: "/work-orders", icon: Wrench },
+  { name: "Planning", href: "/planning", icon: Calendar },
+  { name: "TEMP voorraad", href: "/temp-inventory", icon: Box },
+  { name: "Configurator", href: "/configurator", icon: Settings2 },
+  { name: "Elektra", href: "/elektra", icon: Settings },
+  { name: "Elektra box", href: "/elektra-box", icon: Box },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -56,10 +68,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 </ul>
               </li>
               <li>
-                <Link href="/work-orders/new">
+                <Link href="/requests/new">
                   <Button className="w-full">
                     <Plus className="mr-2 h-4 w-4" />
-                    Nieuwe Mutatie
+                    Nieuwe Aanvraag
                   </Button>
                 </Link>
               </li>

@@ -4,6 +4,7 @@ import { relations } from "drizzle-orm";
 
 export const workOrders = pgTable("work_orders", {
   id: serial("id").primaryKey(),
+  type: text("type").notNull(), // 'work_order' or 'request'
   orderNumber: text("order_number").notNull(),
   requestType: text("request_type").notNull(), // placement, removal, etc
   status: text("status").notNull().default("draft"),
@@ -13,8 +14,11 @@ export const workOrders = pgTable("work_orders", {
   requestorPhone: text("requestor_phone").notNull(),
   requestorEmail: text("requestor_email").notNull(),
   municipality: text("municipality").notNull(),
+  executionContact: text("execution_contact"),
+  executionPhone: text("execution_phone"),
+  executionEmail: text("execution_email"),
   desiredDate: timestamp("desired_date").notNull(),
-  formData: jsonb("form_data").notNull(),
+  formData: jsonb("form_data").notNull(), // For storing additional form fields
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
