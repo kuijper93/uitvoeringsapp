@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import JCDecauxLogo from "../../assets/jcdecaux-logo.svg";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -36,7 +37,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <div className="flex h-16 shrink-0 items-center px-6">
             <img
               className="h-8 w-auto"
-              src="https://www.jcdecaux.com/sites/default/files/assets/logo_jcdecaux_2.svg"
+              src={JCDecauxLogo}
               alt="JCDecaux"
             />
           </div>
