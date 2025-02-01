@@ -87,7 +87,8 @@ export default function CreateRequest() {
   });
 
   const showAbriFormat = form.watch("municipality")?.toLowerCase() === "amsterdam" && 
-                        form.watch("furnitureType") === "abri";
+                        form.watch("furnitureType") === "abri" &&
+                        form.watch("actionType") === "plaatsen";
 
   const showLocationSketch = ["plaatsen", "verplaatsen"].includes(form.watch("actionType") || "");
 
