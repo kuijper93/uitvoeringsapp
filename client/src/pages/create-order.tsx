@@ -29,6 +29,11 @@ export default function CreateOrder() {
     resolver: zodResolver(workOrderFormSchema),
     defaultValues: {
       actionType: "",
+      electrical: {
+        jcdecauxRequest: false,
+        disconnect: false,
+        connect: false
+      }
     }
   });
 
@@ -251,7 +256,10 @@ export default function CreateOrder() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Uit te voeren actie</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue="" value={field.value || ""}>
+                      <Select 
+                        onValueChange={field.onChange} 
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecteer actie" />
@@ -349,7 +357,7 @@ export default function CreateOrder() {
           </Card>
 
           {/* Conditional Location Cards */}
-          {actionType && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
+           {actionType && actionType !== "" && (actionType === "Verwijderen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Huidige Locatie</CardTitle>
@@ -388,7 +396,7 @@ export default function CreateOrder() {
             </Card>
           )}
 
-          {actionType && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
+          {actionType && actionType !== "" && (actionType === "Plaatsen" || actionType === "Verplaatsen") && (
             <Card>
               <CardHeader>
                 <CardTitle>Nieuwe Locatie</CardTitle>
