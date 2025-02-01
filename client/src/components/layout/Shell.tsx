@@ -19,8 +19,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
-    <div className="flex min-h-screen">
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <div className="flex h-screen">
+      <div className="fixed inset-y-0 z-50 flex w-64 flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-sidebar px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
             <img
@@ -85,9 +85,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="lg:pl-72">
-        <main className="py-10">
-          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+      <div className="pl-64 w-full">
+        <main className="py-6">
+          <div className="px-6">{children}</div>
         </main>
       </div>
     </div>
