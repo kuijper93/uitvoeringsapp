@@ -57,7 +57,7 @@ export default function Requests() {
                   Laden...
                 </TableCell>
               </TableRow>
-            ) : requests?.length === 0 ? (
+            ) : !requests || requests.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="text-center py-8">
                   <p className="text-muted-foreground">
@@ -71,7 +71,7 @@ export default function Requests() {
                 </TableCell>
               </TableRow>
             ) : (
-              requests?.map((request) => (
+              requests.map((request) => (
                 <TableRow key={request.id}>
                   <TableCell className="font-medium">
                     {request.orderNumber}
@@ -89,12 +89,12 @@ export default function Requests() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    {formatDistance(new Date(request.createdAt), new Date(), {
+                    {request.createdAt && formatDistance(new Date(request.createdAt), new Date(), {
                       addSuffix: true,
                       locale: nl,
                     })}
                   </TableCell>
-                  <TableCell>{request.execution_contact}</TableCell>
+                  <TableCell>{request.executionContactName}</TableCell>
                 </TableRow>
               ))
             )}

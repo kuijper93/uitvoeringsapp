@@ -192,11 +192,11 @@ export default function CreateRequest() {
       // Transform data to match database requirements
       const transformedData = {
         ...data,
-        execution_contact: data.executionContactName, // Add missing required field
+        execution_contact: data.executionContactName,
         status: "PENDING",
         orderNumber: `F_${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
       await apiRequest("POST", "/api/requests", transformedData);
     },
@@ -214,6 +214,7 @@ export default function CreateRequest() {
         description: "Controleer of alle verplichte velden zijn ingevuld.",
         variant: "destructive",
       });
+      console.error("Form submission error:", error);
     },
   });
 
@@ -962,7 +963,7 @@ export default function CreateRequest() {
                         <FormLabel>Postcode</FormLabel>
                         <FormControl>
                           <Input {...field} />
-                        </FormControl>
+                                                </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
