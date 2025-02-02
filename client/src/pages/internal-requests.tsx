@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const mockWorkOrders = [
   { 
@@ -71,6 +72,8 @@ export default function InternalRequests() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("alle");
   const [selectedStatus, setSelectedStatus] = useState("alle");
+    const [isContactOpen, setIsContactOpen] = useState(true);
+
 
   const filteredWorkOrders = mockWorkOrders.filter(order => {
     const matchesSearch = order.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -291,65 +294,67 @@ export default function InternalRequests() {
         <ResizablePanel defaultSize={25}>
           <div className="flex h-full flex-col">
             <div className="border-b py-1 px-2">
-              <h3 className="text-xs font-medium">Contact gemeente</h3>
-            </div>
-            <div className="flex-1 overflow-auto p-2 space-y-1">
-              {/* Contact Information - More compact */}
-              <div className="text-xs space-y-0.5">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-medium">Aanvrager:</span>
-                  <span>Ronald de Wit</span>
+              <Collapsible
+                open={isContactOpen}
+                onOpenChange={setIsContactOpen}
+                className="w-full"
+              >
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xs font-medium">Contact gemeente</h3>
+                  <CollapsibleTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      {isContactOpen ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </CollapsibleTrigger>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Email:</span>
-                  <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tel:</span>
-                  <span>06-85285859</span>
-                </div>
-              </div>
+                <CollapsibleContent>
+                  <div className="flex-1 overflow-auto p-2 space-y-1">
+                    <div className="text-xs space-y-0.5">
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-medium">Aanvrager:</span>
+                        <span>Ronald de Wit</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Email:</span>
+                        <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Tel:</span>
+                        <span>06-85285859</span>
+                      </div>
+                    </div>
 
-              <Separator className="my-1" />
+                    <Separator className="my-1" />
 
-              <div className="text-xs space-y-0.5">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-medium">Uitvoering:</span>
-                  <span>Pietje Put</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Email:</span>
-                  <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tel:</span>
-                  <span>06-12234578</span>
-                </div>
-              </div>
+                    <div className="text-xs space-y-0.5">
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-medium">Uitvoering:</span>
+                        <span>Pietje Put</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Email:</span>
+                        <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Tel:</span>
+                        <span>06-12234578</span>
+                      </div>
+                    </div>
 
-              <Separator className="my-1" />
+                    <Separator className="my-1" />
 
-              {/* Location Information */}
-              <div className="text-xs space-y-1">
-                <p className="font-medium">Locatiegegevens</p>
-                <div className="space-y-0.5">
-                  <p><span className="text-muted-foreground">Aanwezige objecten:</span> 4 objecten in de buurt</p>
-                  <p><span className="text-muted-foreground">Reclamelocatie:</span> Met reclame</p>
-                  <p><span className="text-muted-foreground">Commercieel:</span> A en B zijde commercieel</p>
-                </div>
-              </div>
-
-              {/* Notes Section */}
-              <div className="text-xs space-y-1 pt-1">
-                <p className="font-medium">Overige opmerkingen</p>
-                <p>Steen huis Straatwerk / 06-85285859</p>
-              </div>
-
-              {/* Municipality Notes */}
-              <div className="text-xs space-y-1 pt-1">
-                <p className="font-medium">Gemeente notities</p>
-                <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
-              </div>
+                    {/* Municipality Notes */}
+                    <div className="text-xs space-y-1 pt-1">
+                      <p className="font-medium">Gemeente notities</p>
+                      <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+                    </div>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
           </div>
         </ResizablePanel>
