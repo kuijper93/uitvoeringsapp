@@ -343,6 +343,7 @@ export default function InternalRequests() {
                             </div>
                           </div>
                           
+                           {/* Four sections grid */}
                           <div className="grid grid-cols-4 gap-4 mt-2">
                             {/* Aangevraagde services Column */}
                             <div className="space-y-2 bg-blue-50 p-2 rounded">
@@ -350,7 +351,7 @@ export default function InternalRequests() {
                               <div className="space-y-2">
                                 <div className="flex items-center space-x-1">
                                   <Checkbox id="elektra" className="h-3 w-3" />
-                                  <label htmlFor="elektra" className="text-xs">Elektra door JCDecaux</label>
+                                  <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                                 </div>
                                 <div className="flex items-center space-x-1">
                                   <Checkbox id="cunet" className="h-3 w-3" />
@@ -449,6 +450,15 @@ export default function InternalRequests() {
                               <label className="text-xs block mb-1">Gemeente notities</label>
                               <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
                             </div>
+                          </div>
+
+                          {/* Full-width comments section */}
+                          <div className="mt-4 bg-gray-50 p-2 rounded">
+                            <label className="text-xs block mb-1">Opmerkingen</label>
+                            <textarea 
+                              className="w-full h-24 text-xs p-2 rounded border border-input bg-white resize-none focus:outline-none focus:ring-1 focus:ring-ring" 
+                              placeholder="Plaats hier opmerkingen..."
+                            />
                           </div>
                         </div>
                       </div>
