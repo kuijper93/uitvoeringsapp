@@ -82,41 +82,41 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
   return (
     <div className="grid grid-cols-[1fr,2fr,1fr] gap-2">
       {/* Left section - Objectgegevens */}
-      <Card className="bg-amber-50/50 p-2 rounded-sm h-[360px] overflow-y-auto">
-        <div className="space-y-2">
+      <Card className="bg-amber-50/50 p-2 rounded-sm h-[300px] overflow-y-auto">
+        <div className="space-y-1">
           <div>
             <Label className="text-xs">Local Model</Label>
             <Input 
               value={form.watch("localModel")}
               onChange={(e) => onFormChange("localModel", e.target.value)}
-              className="h-6 text-xs bg-amber-50" 
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
             />
           </div>
-          <div>
+          <div className="mt-1">
             <Label className="text-xs">Abri formaat</Label>
             <Input 
               value={form.watch("abriFormat")}
               onChange={(e) => onFormChange("abriFormat", e.target.value)}
-              className="h-6 text-xs bg-amber-50" 
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
             />
           </div>
-          <div>
+          <div className="mt-1">
             <Label className="text-xs">Objectnummer</Label>
             <Input 
               value={form.watch("objectNumber")}
               onChange={(e) => onFormChange("objectNumber", e.target.value)}
-              className="h-6 text-xs bg-amber-50" 
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
             />
           </div>
-          <div>
+          <div className="mt-1">
             <Label className="text-xs">Type actie</Label>
             <Input 
               value={form.watch("actionType")}
               onChange={(e) => onFormChange("actionType", e.target.value)}
-              className="h-6 text-xs bg-amber-50" 
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
             />
           </div>
-          <div className="mt-2">
+          <div className="mt-1">
             <div className="flex items-center">
               <Checkbox 
                 id="new-object" 
@@ -133,7 +133,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
       </Card>
 
       {/* Middle section - Map */}
-      <div className="h-[360px] relative">
+      <div className="h-[300px] relative">
         <MapContainer
           center={[52.3676, 4.9041]}
           zoom={13}
@@ -161,10 +161,10 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
       </div>
 
       {/* Right section - Services */}
-      <div className="space-y-1 h-[360px] overflow-y-auto">
-        <div className="mb-2">
+      <div className="space-y-0.5 h-[300px] overflow-y-auto">
+        <div className="mb-1">
           <h3 className="text-xs font-medium">Aangevraagde services</h3>
-          <div className="space-y-1 mt-1">
+          <div className="space-y-0.5 mt-0.5">
             <div className="flex items-center">
               <Checkbox 
                 id="elektra" 
@@ -174,7 +174,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 }
                 className="h-3 w-3" 
               />
-              <label htmlFor="elektra" className="text-xs ml-2">
+              <label htmlFor="elektra" className="text-xs ml-1.5">
                 Elektra door JCD
               </label>
             </div>
@@ -187,7 +187,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 }
                 className="h-3 w-3" 
               />
-              <label htmlFor="vergunning" className="text-xs ml-2">
+              <label htmlFor="vergunning" className="text-xs ml-1.5">
                 Vergunning
               </label>
             </div>
@@ -200,7 +200,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 }
                 className="h-3 w-3" 
               />
-              <label htmlFor="aarding" className="text-xs ml-2">
+              <label htmlFor="aarding" className="text-xs ml-1.5">
                 Aarding
               </label>
             </div>
@@ -213,14 +213,14 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 }
                 className="h-3 w-3" 
               />
-              <label htmlFor="klic" className="text-xs ml-2">
+              <label htmlFor="klic" className="text-xs ml-1.5">
                 Klic
               </label>
             </div>
           </div>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-1">
           <Label className="text-xs">Verkeersplan</Label>
           <Select
             value={form.watch("verkeersplan")}
@@ -238,7 +238,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-1">
           <Label className="text-xs">Aannemer</Label>
           <Select
             value={form.watch("aannemer")}
@@ -255,7 +255,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-1">
           <Label className="text-xs">Prio</Label>
           <Select
             value={form.watch("prio")}
