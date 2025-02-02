@@ -502,7 +502,7 @@ export default function InternalRequests() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       {/* Top section - Request info */}
-                      <div className="bg-white p-3 rounded border">
+                      <div className="bg-orange-50 p-3 rounded border">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <p className="text-xs text-gray-500">Local Model</p>
@@ -527,7 +527,7 @@ export default function InternalRequests() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-8"
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-10"
                           >
                             Kies configuratie
                           </Button>
@@ -544,7 +544,7 @@ export default function InternalRequests() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-8"
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-10"
                           >
                             TEMP voorraad bekijken
                           </Button>
@@ -563,25 +563,25 @@ export default function InternalRequests() {
                   <div className="grid grid-cols-4 gap-2">
                     <Button 
                       variant="outline" 
-                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-xs h-10 bg-blue-600 text-white hover:bg-blue-700"
                     >
                       Exporteer object/locatie gegevens
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-xs h-10 bg-blue-600 text-white hover:bg-blue-700"
                     >
                       Gereed voor uitvoering
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-xs h-10 bg-blue-600 text-white hover:bg-blue-700"
                     >
                       Document uploaden
                     </Button>
                     <Button 
                       variant="outline" 
-                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full text-xs h-10 bg-blue-600 text-white hover:bg-blue-700"
                     >
                       Naar documenten
                     </Button>
