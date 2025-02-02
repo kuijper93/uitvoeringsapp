@@ -10,7 +10,7 @@ export default function Dashboard() {
   });
 
   if (isLoading) {
-    return <Skeleton className="w-full h-[400px]" />;
+    return <Skeleton className="w-full h-[400px] rounded-lg" />;
   }
 
   const workloadData = [
@@ -25,7 +25,7 @@ export default function Dashboard() {
       <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <Card className="bg-card">
+        <Card className="bg-card rounded-lg">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">Totaal Mutaties</CardTitle>
           </CardHeader>
@@ -36,30 +36,30 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card">
+        <Card className="bg-card rounded-lg">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">In Behandeling</CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
             <div className="text-xl font-bold text-card-foreground">
-              {workOrders?.filter((wo) => wo.status === "in_progress").length || 0}
+              {workOrders?.filter((wo) => wo.status === "IN_PROGRESS").length || 0}
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-card">
+        <Card className="bg-card rounded-lg">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">Deze Week Afgerond</CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0">
             <div className="text-xl font-bold text-card-foreground">
-              {workOrders?.filter((wo) => wo.status === "completed").length || 0}
+              {workOrders?.filter((wo) => wo.status === "COMPLETED").length || 0}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="bg-card">
+      <Card className="bg-card rounded-lg">
         <CardHeader className="p-4">
           <CardTitle className="text-card-foreground text-base">Werkbelasting Trend</CardTitle>
         </CardHeader>
@@ -83,6 +83,7 @@ export default function Dashboard() {
                     border: "1px solid hsl(var(--border))",
                     color: "hsl(var(--foreground))",
                     fontSize: 12,
+                    borderRadius: "8px",
                   }}
                 />
                 <Line
