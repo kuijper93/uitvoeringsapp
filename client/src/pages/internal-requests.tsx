@@ -165,191 +165,180 @@ export default function InternalRequests() {
               </p>
             </div>
             <div className="flex-1 overflow-auto p-4">
-              <div className="grid grid-cols-5 gap-4">
-                <div className="col-span-4 space-y-4">
-                  <Card>
-                    <CardHeader className="py-2">
+              <div className="space-y-4">
+                <Card>
+                  <CardHeader className="py-2">
+                    <div className="flex justify-between items-center">
                       <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-3 pt-0">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-blue-100 p-2 rounded text-xs">
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
-                            </div>
-                            <div>
-                              <label className="text-xs font-medium">X, Y coördinaten</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="bg-orange-50 p-2 rounded">
-                        <div className="space-y-2">
-                          <div>
-                            <label className="text-xs font-medium">Commercieel type</label>
-                            <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
-                          </div>
-                          <div>
-                            <label className="text-xs font-medium">Reclamelocatie</label>
-                            <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="text-xs font-medium">Aangevraagde services:</label>
-                        <div className="grid grid-cols-2 gap-2 mt-1">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
-                            <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="herstrate" className="text-xs">Herstraten</label>
-                          </div>
-                           <div className="flex items-center space-x-2">
-                            <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="vergunning" className="h-3 w-3" />
-                            <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox id="klic" className="h-3 w-3" defaultChecked />
-                            <label htmlFor="klic" className="text-xs">Klic</label>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader className="py-2">
-                      <CardTitle className="text-sm">Objectgegevens</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-3 pt-0">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-orange-100 p-2 rounded">
-                          <label className="text-xs font-medium">Object model</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.objectModel}</p>
-                        </div>
-                        <div className="bg-orange-100 p-2 rounded">
-                          <label className="text-xs font-medium">Object kleur</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.objectColor}</p>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                         <div className="bg-orange-100 p-2 rounded">
-                          <label className="text-xs font-medium">Materiaal</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.material}</p>
-                        </div>
-                        <div className="bg-orange-100 p-2 rounded">
-                          <label className="text-xs font-medium">Object</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.objectNumber}</p>
-                        </div>
-                      </div>
-                       <div className="flex items-center space-x-2 pt-2">
-                        <Checkbox id="nieuw" className="h-3 w-3" />
-                        <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <div className="grid grid-cols-4 gap-2">
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
-                      Exporteer object/locatie gegevens
-                    </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
-                      Gereed voor uitvoering
-                    </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
-                      Document uploaden
-                    </Button>
-                     <Button variant="outline" className="w-full text-xs p-2 h-auto">
-                      Naar documenten
-                    </Button>
-                  </div>
-                </div>
-                <div className="col-span-1">
-                  <Collapsible
-                    open={isContactOpen}
-                    onOpenChange={setIsContactOpen}
-                    className="rounded-lg border bg-background"
-                  >
-                    <div className="border-b py-1 px-2">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xs font-medium">Contact gemeente</h3>
+                      <Collapsible
+                        open={isContactOpen}
+                        onOpenChange={setIsContactOpen}
+                        className="w-auto"
+                      >
                         <CollapsibleTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
-                            {isContactOpen ? (
-                              <ChevronUp className="h-4 w-4" />
-                            ) : (
-                              <ChevronDown className="h-4 w-4" />
-                            )}
+                          <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
+                            Contact gemeente {isContactOpen ? <ChevronUp className="h-3 w-3 ml-1" /> : <ChevronDown className="h-3 w-3 ml-1" />}
                           </Button>
                         </CollapsibleTrigger>
+                        <CollapsibleContent className="mt-2 space-y-2">
+                          <div className="rounded-lg border bg-background p-2">
+                            <div className="text-xs space-y-0.5">
+                              <div className="flex justify-between items-baseline">
+                                <span className="font-medium">Aanvrager:</span>
+                                <span>Ronald de Wit</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Email:</span>
+                                <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Tel:</span>
+                                <span>06-85285859</span>
+                              </div>
+                            </div>
+
+                            <Separator className="my-1" />
+
+                            <div className="text-xs space-y-0.5">
+                              <div className="flex justify-between items-baseline">
+                                <span className="font-medium">Uitvoering:</span>
+                                <span>Pietje Put</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Email:</span>
+                                <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">Tel:</span>
+                                <span>06-12234578</span>
+                              </div>
+                            </div>
+
+                            <Separator className="my-1" />
+
+                            <div className="text-xs space-y-1">
+                              <p className="font-medium">Gemeente notities</p>
+                              <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+                            </div>
+                          </div>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="grid gap-3 pt-0">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-blue-100 p-2 rounded text-xs">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
+                            <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                          </div>
+                          <div>
+                            <label className="text-xs font-medium">X, Y coördinaten</label>
+                            <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <CollapsibleContent>
-                      <div className="p-2 space-y-1">
-                        <div className="text-xs space-y-0.5">
-                          <div className="flex justify-between items-baseline">
-                            <span className="font-medium">Aanvrager:</span>
-                            <span>Ronald de Wit</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Email:</span>
-                            <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Tel:</span>
-                            <span>06-85285859</span>
-                          </div>
+
+                    <div className="bg-orange-50 p-2 rounded">
+                      <div className="space-y-2">
+                        <div>
+                          <label className="text-xs font-medium">Commercieel type</label>
+                          <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
                         </div>
-
-                        <Separator className="my-1" />
-
-                        <div className="text-xs space-y-0.5">
-                          <div className="flex justify-between items-baseline">
-                            <span className="font-medium">Uitvoering:</span>
-                            <span>Pietje Put</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Email:</span>
-                            <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Tel:</span>
-                            <span>06-12234578</span>
-                          </div>
-                        </div>
-
-                        <Separator className="my-1" />
-
-                        <div className="text-xs space-y-1 pt-1">
-                          <p className="font-medium">Gemeente notities</p>
-                          <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+                        <div>
+                          <label className="text-xs font-medium">Reclamelocatie</label>
+                          <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
                         </div>
                       </div>
-                    </CollapsibleContent>
-                  </Collapsible>
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-medium">Aangevraagde services:</label>
+                      <div className="grid grid-cols-2 gap-2 mt-1">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
+                          <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="herstrate" className="text-xs">Herstraten</label>
+                        </div>
+                         <div className="flex items-center space-x-2">
+                          <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="vergunning" className="h-3 w-3" />
+                          <label htmlFor="vergunning" className="text-xs">Vergunning</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="klic" className="h-3 w-3" defaultChecked />
+                          <label htmlFor="klic" className="text-xs">Klic</label>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader className="py-2">
+                    <CardTitle className="text-sm">Objectgegevens</CardTitle>
+                  </CardHeader>
+                  <CardContent className="grid gap-3 pt-0">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-orange-100 p-2 rounded">
+                        <label className="text-xs font-medium">Object model</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.objectModel}</p>
+                      </div>
+                      <div className="bg-orange-100 p-2 rounded">
+                        <label className="text-xs font-medium">Object kleur</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.objectColor}</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                       <div className="bg-orange-100 p-2 rounded">
+                        <label className="text-xs font-medium">Materiaal</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.material}</p>
+                      </div>
+                      <div className="bg-orange-100 p-2 rounded">
+                        <label className="text-xs font-medium">Object</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.objectNumber}</p>
+                      </div>
+                    </div>
+                     <div className="flex items-center space-x-2 pt-2">
+                      <Checkbox id="nieuw" className="h-3 w-3" />
+                      <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="grid grid-cols-4 gap-2">
+                  <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    Exporteer object/locatie gegevens
+                  </Button>
+                  <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    Gereed voor uitvoering
+                  </Button>
+                  <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    Document uploaden
+                  </Button>
+                   <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    Naar documenten
+                  </Button>
                 </div>
               </div>
             </div>
