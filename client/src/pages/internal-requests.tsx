@@ -154,7 +154,7 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={60}>
+        <ResizablePanel defaultSize={70}>
           <div className="flex h-full flex-col">
             <div className="border-b p-3">
               <h2 className="text-sm font-medium">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
@@ -291,7 +291,7 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={25}>
+        <ResizablePanel defaultSize={15} minSize={10}>
           <div className="flex h-full flex-col">
             <div className="border-b py-1 px-2">
               <Collapsible
