@@ -440,7 +440,7 @@ export default function CreateRequest() {
                               <SelectItem
                                 key={value}
                                 value={value}
-                                className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-2"
+                                className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-4 flex items-center"
                               >
                                 {label}
                               </SelectItem>
@@ -464,28 +464,29 @@ export default function CreateRequest() {
                               <SelectValue placeholder="Selecteer type actie" />
                             </SelectTrigger>
                           </FormControl>
+                          
                           <SelectContent className="bg-white">
                             <SelectItem 
                               value="plaatsen"
-                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-2"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-4 flex items-center"
                             >
                               Plaatsen
                             </SelectItem>
                             <SelectItem 
                               value="verwijderen"
-                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-2"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-4 flex items-center"
                             >
                               Verwijderen
                             </SelectItem>
                             <SelectItem 
                               value="verplaatsen"
-                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-2"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-4 flex items-center"
                             >
                               Verplaatsen
                             </SelectItem>
                             <SelectItem 
                               value="ophogen"
-                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-2"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900 [&_[data-state=checked]]:pr-4 flex items-center"
                             >
                               Ophogen
                             </SelectItem>
