@@ -8,6 +8,7 @@ import { Shell } from "@/components/layout/Shell";
 import Dashboard from "./pages/dashboard";
 import Requests from "./pages/requests";
 import CreateRequest from "./pages/create-request";
+import RequestDetails from "./pages/request-details";
 import WorkOrders from "./pages/work-orders";
 import NotFound from "./pages/not-found";
 
@@ -17,6 +18,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/requests" component={Requests} />
+        <Route path="/requests/:id" component={RequestDetails} />
         <Route path="/create-request" component={CreateRequest} />
         <Route path="/work-orders" component={WorkOrders} />
         <Route component={NotFound} />
