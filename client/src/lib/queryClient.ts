@@ -1,5 +1,9 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+const API_URL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:5000'
+  : '';
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     let errorMessage;
@@ -19,9 +23,7 @@ export async function apiRequest(
   data?: unknown | undefined,
 ): Promise<any> {
   try {
-    const apiUrl = process.env.NODE_ENV === 'development' 
-      ? `${window.location.origin}${url}`
-      : url;
+    const apiUrl = `${API_URL}${url}`;
 
     const res = await fetch(apiUrl, {
       method,
@@ -54,9 +56,7 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     try {
-      const apiUrl = process.env.NODE_ENV === 'development'
-        ? `${window.location.origin}${queryKey[0]}`
-        : queryKey[0] as string;
+      const apiUrl = `${API_URL}${queryKey[0]}`;
 
       const res = await fetch(apiUrl, {
         credentials: "include",
