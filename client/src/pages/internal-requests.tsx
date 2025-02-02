@@ -14,6 +14,7 @@ import type { LatLngTuple } from "leaflet";
 import type { SelectWorkOrder } from "@db/schema";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { ExternalLink } from "lucide-react";
 
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -286,28 +287,48 @@ export default function InternalRequests() {
                     <CardContent className="grid gap-2 pt-0">
                       <div className="grid grid-cols-12 gap-4">
                         {/* Map section - 4 columns (1/3 width) */}
-                        <div className="col-span-4 h-[200px] rounded-lg overflow-hidden border">
-                          <MapContainer
-                            center={getCoordinates(
-                              selectedWorkOrder.installationXCoord,
-                              selectedWorkOrder.installationYCoord
-                            )}
-                            zoom={13}
-                            style={{ height: "100%", width: "100%" }}
+                        <div className="col-span-4 relative">
+                          <div className="h-[200px] rounded-lg overflow-hidden border">
+                            <MapContainer
+                              center={getCoordinates(
+                                selectedWorkOrder.installationXCoord,
+                                selectedWorkOrder.installationYCoord
+                              )}
+                              zoom={13}
+                              style={{ height: "100%", width: "100%" }}
+                            >
+                              <TileLayer
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                              />
+                              <Marker position={getCoordinates(
+                                selectedWorkOrder.installationXCoord,
+                                selectedWorkOrder.installationYCoord
+                              )}>
+                                <Popup>
+                                  {selectedWorkOrder.installationAddress || 'Location'}
+                                </Popup>
+                              </Marker>
+                            </MapContainer>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="absolute top-2 right-2 z-[1000] bg-white"
+                            onClick={() => {
+                              const [lat, lng] = getCoordinates(
+                                selectedWorkOrder.installationXCoord,
+                                selectedWorkOrder.installationYCoord
+                              );
+                              window.open(
+                                `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`,
+                                '_blank'
+                              );
+                            }}
                           >
-                            <TileLayer
-                              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                            />
-                            <Marker position={getCoordinates(
-                              selectedWorkOrder.installationXCoord,
-                              selectedWorkOrder.installationYCoord
-                            )}>
-                              <Popup>
-                                {selectedWorkOrder.installationAddress || 'Location'}
-                              </Popup>
-                            </Marker>
-                          </MapContainer>
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                            Street View
+                          </Button>
                         </div>
 
                         {/* Details section - 8 columns (2/3 width) */}
