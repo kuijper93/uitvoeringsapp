@@ -7,7 +7,7 @@ import {
   LogOut,
   FileText,
   Plus,
-  Wrench,
+  Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Aanvragen", href: "/requests", icon: ClipboardList },
-  { name: "Werkorders", href: "/work-orders", icon: Wrench },
+  { name: "Objecten", href: "/objects", icon: Map },
 ];
 
 const actions = [
