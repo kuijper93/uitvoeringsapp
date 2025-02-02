@@ -62,17 +62,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Register API routes first
-const server = registerRoutes(app);
-
-// Error handling middleware
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  const status = err.status || err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  console.error("Server error:", err);
-  res.status(status).json({ message });
-});
-
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(webpackConfig);
@@ -85,24 +74,35 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackHotMiddleware(compiler));
 }
 
+// Register API routes
+const server = registerRoutes(app);
+
+// Error handling middleware
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  console.error("Server error:", err);
+  res.status(status).json({ message });
+});
+
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist/public')));
 }
 
 // Handle all routes - This should be the last middleware
-app.use('*', (req, res, next) => {
+app.get('*', (req, res) => {
   // Skip API routes
-  if (req.path.startsWith('/api')) {
-    return next();
+  if (req.originalUrl.startsWith('/api')) {
+    return;
   }
 
   // Send the appropriate index.html file
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile(path.join(__dirname, '../dist/public/index.html'));
-  } else {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
-  }
+  const indexPath = process.env.NODE_ENV === 'production'
+    ? path.join(__dirname, '../dist/public/index.html')
+    : path.join(__dirname, '../client/index.html');
+
+  res.sendFile(indexPath);
 });
 
 const PORT = Number(process.env.PORT) || 5000;
