@@ -38,26 +38,22 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  try {
-    const server = registerRoutes(app);
+  const server = registerRoutes(app);
 
-    // Error handling middleware
-    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-      const status = err.status || err.statusCode || 500;
-      const message = err.message || "Internal Server Error";
-      console.error("Server error:", err);
-      res.status(status).json({ message });
-    });
+  // Error handling middleware
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    console.error("Server error:", err);
+    res.status(status).json({ message });
+  });
 
-    // Set up Vite for development
-    await setupVite(app, server);
+  // Set up Vite for development
+  await setupVite(app, server);
 
-    const PORT = 5000; // Force port 5000
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server running at http://0.0.0.0:${PORT}`);
-    });
-  } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  }
+  // ALWAYS serve on port 5000
+  const PORT = process.env.PORT || 5000;
+  server.listen(PORT, "0.0.0.0", () => {
+    log(`Server running at http://0.0.0.0:${PORT}`);
+  });
 })();
