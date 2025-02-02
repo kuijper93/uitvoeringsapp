@@ -418,9 +418,9 @@ export default function InternalRequests() {
                                 </div>
 
                                 {/* Right side - Aannemer items */}
-                                <div className="space-y-2">
-                                  <div className="space-y-1">
-                                    <label className="text-xs">Aannemer</label>
+                                <div className="grid gap-1">
+                                  <div>
+                                    <label className="text-xs block mb-0.5">Aannemer</label>
                                     <Select defaultValue="geen">
                                       <SelectTrigger className="h-6 text-xs py-0">
                                         <SelectValue placeholder="Selecteer aannemer" />
@@ -432,8 +432,8 @@ export default function InternalRequests() {
                                       </SelectContent>
                                     </Select>
                                   </div>
-                                  <div className="space-y-1">
-                                    <label className="text-xs">Prio</label>
+                                  <div>
+                                    <label className="text-xs block mb-0.5">Prio</label>
                                     <Select defaultValue="geen">
                                       <SelectTrigger className="h-6 text-xs py-0">
                                         <SelectValue placeholder="Selecteer prio" />
@@ -446,8 +446,8 @@ export default function InternalRequests() {
                                       </SelectContent>
                                     </Select>
                                   </div>
-                                  <div className="space-y-1">
-                                    <label className="text-xs">Combi</label>
+                                  <div>
+                                    <label className="text-xs block mb-0.5">Combi</label>
                                     <Input className="h-6 text-xs" placeholder="Voer combi in" />
                                   </div>
                                 </div>
