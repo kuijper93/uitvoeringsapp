@@ -13,6 +13,14 @@ export function registerRoutes(app: Express): Server {
     res.json(requests);
   });
 
+  // Alias /api/work-orders to /api/requests for backward compatibility
+  app.get("/api/work-orders", async (_req, res) => {
+    const requests = await db.query.workOrders.findMany({
+      orderBy: [desc(workOrders.createdAt)],
+    });
+    res.json(requests);
+  });
+
   app.post("/api/requests", async (req, res) => {
     const orderNumber = nanoid(8).toUpperCase();
     const data = req.body;

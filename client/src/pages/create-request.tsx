@@ -222,7 +222,7 @@ export default function CreateRequest() {
             {formSections.map((section, index) => (
               <div key={section.id} className="flex items-center flex-1">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
+                  className={`w-10 h-10 rounded-2xl flex items-center justify-center text-sm font-medium transition-all ${
                     section.id === currentSection
                       ? 'bg-primary text-primary-foreground shadow-lg scale-110'
                       : index < formSections.findIndex(s => s.id === currentSection)
@@ -259,7 +259,7 @@ export default function CreateRequest() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-4">
           {/* Contact Information */}
           <section data-section="contact" className="space-y-8">
-            <Card className="transition-all hover:shadow-md">
+            <Card className="transition-all hover:shadow-md rounded-2xl">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-lg">Contactgegevens</CardTitle>
                 <p className="text-sm text-muted-foreground">
@@ -275,7 +275,7 @@ export default function CreateRequest() {
                       <FormLabel className="text-base">Gemeente</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="h-12">
+                          <SelectTrigger className="h-12 rounded-xl">
                             <SelectValue placeholder="Selecteer gemeente" />
                           </SelectTrigger>
                         </FormControl>
@@ -307,7 +307,7 @@ export default function CreateRequest() {
                           <FormItem>
                             <FormLabel>Naam</FormLabel>
                             <FormControl>
-                              <Input {...field} className="h-12" />
+                              <Input {...field} className="h-12 rounded-xl" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -321,7 +321,7 @@ export default function CreateRequest() {
                             <FormItem>
                               <FormLabel>Telefoon</FormLabel>
                               <FormControl>
-                                <Input type="tel" {...field} className="h-12" />
+                                <Input type="tel" {...field} className="h-12 rounded-xl" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -334,7 +334,7 @@ export default function CreateRequest() {
                             <FormItem>
                               <FormLabel>E-mail</FormLabel>
                               <FormControl>
-                                <Input type="email" {...field} className="h-12" />
+                                <Input type="email" {...field} className="h-12 rounded-xl" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -354,7 +354,7 @@ export default function CreateRequest() {
                           <FormItem>
                             <FormLabel>Naam</FormLabel>
                             <FormControl>
-                              <Input {...field} className="h-12" />
+                              <Input {...field} className="h-12 rounded-xl" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -368,7 +368,7 @@ export default function CreateRequest() {
                             <FormItem>
                               <FormLabel>Telefoon</FormLabel>
                               <FormControl>
-                                <Input type="tel" {...field} className="h-12" />
+                                <Input type="tel" {...field} className="h-12 rounded-xl" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -381,7 +381,7 @@ export default function CreateRequest() {
                             <FormItem>
                               <FormLabel>E-mail</FormLabel>
                               <FormControl>
-                                <Input type="email" {...field} className="h-12" />
+                                <Input type="email" {...field} className="h-12 rounded-xl" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -397,7 +397,7 @@ export default function CreateRequest() {
 
           {/* Work Details */}
           <section data-section="details" className="space-y-8">
-            <Card className="transition-all hover:shadow-md">
+            <Card className="transition-all hover:shadow-md rounded-2xl">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-lg">Werkzaamheden</CardTitle>
                 <p className="text-sm text-muted-foreground">
@@ -414,7 +414,7 @@ export default function CreateRequest() {
                         <FormLabel>Type straatmeubilair</FormLabel>
                         <Select onValueChange={field.onChange}>
                           <FormControl>
-                            <SelectTrigger className="h-12">
+                            <SelectTrigger className="h-12 rounded-xl">
                               <SelectValue placeholder="Selecteer het object" />
                             </SelectTrigger>
                           </FormControl>
@@ -439,7 +439,7 @@ export default function CreateRequest() {
                         <FormLabel>Type actie</FormLabel>
                         <Select onValueChange={field.onChange}>
                           <FormControl>
-                            <SelectTrigger className="h-12">
+                            <SelectTrigger className="h-12 rounded-xl">
                               <SelectValue placeholder="Selecteer type actie" />
                             </SelectTrigger>
                           </FormControl>
@@ -465,7 +465,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Abri formaat</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12" />
+                            <Input {...field} className="h-12 rounded-xl" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -481,7 +481,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Objectnummer</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12" />
+                            <Input {...field} className="h-12 rounded-xl" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -496,7 +496,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} className="h-12" />
+                          <Input type="date" {...field} className="h-12 rounded-xl" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -515,7 +515,7 @@ export default function CreateRequest() {
                               type="url" 
                               placeholder="https://voorbeeld.nl/locatieschets.pdf"
                               {...field} 
-                              className="h-12"
+                              className="h-12 rounded-xl"
                             />
                           </FormControl>
                            <p className="text-sm text-muted-foreground mt-1">
@@ -537,7 +537,7 @@ export default function CreateRequest() {
                       <FormControl>
                         <Textarea
                           placeholder="Voeg hier eventuele opmerkingen toe..."
-                          className="min-h-[100px]"
+                          className="min-h-[100px] rounded-xl"
                           {...field}
                         />
                       </FormControl>
@@ -552,7 +552,7 @@ export default function CreateRequest() {
           {/* Location Information */}
           <section data-section="location" className="space-y-8">
             {showRemovalLocation && (
-              <Card className="transition-all hover:shadow-md">
+              <Card className="transition-all hover:shadow-md rounded-2xl">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-lg">Verwijderlocatie</CardTitle>
                     <p className="text-sm text-muted-foreground">
@@ -568,7 +568,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Stad</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12" />
+                            <Input {...field} className="h-12 rounded-xl" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -581,7 +581,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Straat</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12" />
+                            <Input {...field} className="h-12 rounded-xl" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -594,7 +594,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Postcode</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12" />
+                            <Input {...field} className="h-12 rounded-xl" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -605,7 +605,7 @@ export default function CreateRequest() {
               </Card>
             )}
             {showInstallationLocation && (
-               <Card className="transition-all hover:shadow-md">
+               <Card className="transition-all hover:shadow-md rounded-2xl">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-lg">Installatielocatie</CardTitle>
                     <p className="text-sm text-muted-foreground">
@@ -621,7 +621,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Stad</FormLabel>
                           <FormControl>
-                            <Input {...field} value={municipality || ''} className="h-12"/>
+                            <Input {...field} value={municipality || ''} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -634,7 +634,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Haltenaam (optioneel)</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12"/>
+                            <Input {...field} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -649,7 +649,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>X coördinaat</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12"/>
+                            <Input {...field} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -662,7 +662,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Y coördinaat</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12"/>
+                            <Input {...field} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -677,7 +677,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Straatnaam + huisnummer</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12"/>
+                            <Input {...field} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -690,7 +690,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Postcode</FormLabel>
                           <FormControl>
-                            <Input {...field} className="h-12"/>
+                            <Input {...field} className="h-12 rounded-xl"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -705,7 +705,7 @@ export default function CreateRequest() {
           {/* Ground Work */}
           <section data-section="groundwork" className="space-y-8">
             {showGroundRemoval && (
-              <Card className="transition-all hover:shadow-md">
+              <Card className="transition-all hover:shadow-md rounded-2xl">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-lg">
                     Grond en straatwerk verwijderen
@@ -796,7 +796,7 @@ export default function CreateRequest() {
               </Card>
             )}
             {showGroundInstallation && (
-               <Card className="transition-all hover:shadow-md">
+               <Card className="transition-all hover:shadow-md rounded-2xl">
                 <CardHeader className="space-y-1">
                   <CardTitle className="text-lg">
                     Grond en straatwerk plaatsen
@@ -875,7 +875,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Afleveradres overtollige grond</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12" />
+                          <Input {...field} className="h-12 rounded-xl" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -887,7 +887,7 @@ export default function CreateRequest() {
           </section>
 
           {/* Electrical Work */}
-          <Card className="transition-all hover:shadow-md">
+          <Card className="transition-all hover:shadow-md rounded-2xl">
             <CardHeader className="space-y-1">
               <CardTitle className="text-lg">
                 Elektra
@@ -938,7 +938,7 @@ export default function CreateRequest() {
 
           {/* Billing Information */}
           <section data-section="billing" className="space-y-8">
-            <Card className="transition-all hover:shadow-md">
+            <Card className="transition-all hover:shadow-md rounded-2xl">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-lg">
                   Facturatie gegevens
@@ -956,7 +956,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Plaats</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12"/>
+                          <Input {...field} className="h-12 rounded-xl"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -969,7 +969,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Postcode</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12"/>
+                          <Input {...field} className="h-12 rounded-xl"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -983,7 +983,7 @@ export default function CreateRequest() {
                     <FormItem>
                       <FormLabel>Adres</FormLabel>
                       <FormControl>
-                        <Input {...field} className="h-12"/>
+                        <Input {...field} className="h-12 rounded-xl"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -997,7 +997,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Afdeling</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12"/>
+                          <Input {...field} className="h-12 rounded-xl"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -1010,7 +1010,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Ter attentie van</FormLabel>
                         <FormControl>
-                          <Input {...field} className="h-12"/>
+                          <Input {...field} className="h-12 rounded-xl"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -1024,7 +1024,7 @@ export default function CreateRequest() {
                     <FormItem>
                       <FormLabel>Uw referentie</FormLabel>
                       <FormControl>
-                        <Input {...field} className="h-12"/>
+                        <Input {...field} className="h-12 rounded-xl"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1034,21 +1034,22 @@ export default function CreateRequest() {
             </Card>
           </section>
 
-          <div className="flex justify-end">
+          {/* Submit Button */}
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate("/requests")}
+              className="rounded-xl px-6"
+            >
+              Annuleren
+            </Button>
             <Button 
-              type="submit" 
-              size="lg"
-              className="min-w-[200px]"
+              type="submit"
+              className="rounded-xl px-6"
               disabled={createMutation.isPending}
             >
-              {createMutation.isPending ? (
-                <span className="flex items-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent"></span>
-                  Verwerken...
-                </span>
-              ) : (
-                "Aanvraag Indienen"
-              )}
+              {createMutation.isPending ? "Bezig met indienen..." : "Indienen"}
             </Button>
           </div>
         </form>

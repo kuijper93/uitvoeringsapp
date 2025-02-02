@@ -29,9 +29,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex bg-background">
       {/* Sidebar */}
       <div className="fixed inset-y-0 z-50 w-64">
-        <div className="flex h-full flex-col bg-white border-r">
+        <div className="flex h-full flex-col bg-white shadow-lg rounded-r-3xl">
           {/* Logo */}
-          <div className="flex h-16 shrink-0 items-center px-6 border-b bg-primary">
+          <div className="flex h-16 shrink-0 items-center px-6 bg-primary rounded-tr-3xl">
             <h1 className="text-xl font-bold tracking-tight text-primary-foreground">JCDecaux</h1>
           </div>
 
@@ -48,7 +48,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                           item.href === location
                             ? "bg-primary/10 text-primary"
                             : "text-gray-700 hover:bg-gray-50",
-                          "group flex gap-x-3 rounded-sm p-2 text-sm font-medium transition-all"
+                          "group flex gap-x-3 rounded-xl p-3 text-sm font-medium transition-all"
                         )}
                       >
                         <item.icon
@@ -79,7 +79,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                           item.href === location
                             ? "bg-primary text-primary-foreground"
                             : "bg-primary/5 text-primary hover:bg-primary hover:text-primary-foreground",
-                          "group flex gap-x-3 rounded-sm p-2 text-sm font-medium transition-all"
+                          "group flex gap-x-3 rounded-xl p-3 text-sm font-medium transition-all"
                         )}
                       >
                         <item.icon
@@ -99,17 +99,17 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </li>
 
               {/* Footer Actions */}
-              <li className="mt-auto space-y-1">
+              <li className="mt-auto space-y-2">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-x-3 px-2 py-1.5 h-9 text-gray-700 hover:bg-gray-50"
+                  className="w-full justify-start gap-x-3 px-3 py-2.5 h-auto text-gray-700 hover:bg-gray-50 rounded-xl"
                 >
                   <Settings className="h-5 w-5 text-gray-400" />
                   <span>Instellingen</span>
                 </Button>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-x-3 px-2 py-1.5 h-9 text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                  className="w-full justify-start gap-x-3 px-3 py-2.5 h-auto text-destructive hover:text-destructive-foreground hover:bg-destructive rounded-xl"
                 >
                   <LogOut className="h-5 w-5" />
                   Uitloggen
