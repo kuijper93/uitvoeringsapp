@@ -9,7 +9,7 @@ import Dashboard from "./pages/dashboard";
 import Requests from "./pages/requests";
 import CreateRequest from "./pages/create-request";
 import RequestDetails from "./pages/request-details";
-import WorkOrders from "./pages/work-orders";
+import Objects from "./pages/objects";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -20,7 +20,7 @@ function Router() {
         <Route path="/requests" component={Requests} />
         <Route path="/requests/:id" component={RequestDetails} />
         <Route path="/create-request" component={CreateRequest} />
-        <Route path="/work-orders" component={WorkOrders} />
+        <Route path="/objects" component={Objects} />
         <Route component={NotFound} />
       </Switch>
     </Shell>
