@@ -20,9 +20,9 @@ const mockWorkOrders = [
     orderDetails: {
       plannedDate: "23-12-2024",
       coordinates: "852.258582",
-      street: "Apeldoornseweg 58",
+      street: "Leidseplein 58",
       postalCode: "1000AA",
-      city: "Apeldoorn",
+      city: "Amsterdam",
       objectModel: "Abdriss",
       objectColor: "RAL7016",
       material: "NL-123456",
@@ -171,11 +171,11 @@ export default function InternalRequests() {
                 </CardHeader>
                 <CardContent className="grid gap-3 pt-0">
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
+                    <div className="bg-blue-100 p-2 rounded">
                       <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.plannedDate}</p>
                     </div>
-                    <div>
+                    <div className="bg-blue-100 p-2 rounded">
                       <label className="text-xs font-medium">X, Y coördinaten</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
                     </div>
@@ -210,21 +210,21 @@ export default function InternalRequests() {
                 </CardHeader>
                 <CardContent className="grid gap-3 pt-0">
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
+                     <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object model</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.objectModel}</p>
                     </div>
-                    <div>
+                    <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object kleur</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.objectColor}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
+                    <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Materiaal</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.material}</p>
                     </div>
-                    <div>
+                     <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.objectNumber}</p>
                     </div>
@@ -235,6 +235,21 @@ export default function InternalRequests() {
                   </div>
                 </CardContent>
               </Card>
+
+              <div className="grid grid-cols-4 gap-2">
+                <Button variant="outline" className="w-full text-xs">
+                  Exporteer object/locatie gegevens
+                </Button>
+                <Button variant="outline" className="w-full text-xs">
+                  Gereed voor uitvoering
+                </Button>
+                <Button variant="outline" className="w-full text-xs">
+                  Document uploaden
+                </Button>
+                <Button variant="outline" className="w-full text-xs">
+                  Naar documenten
+                </Button>
+              </div>
             </div>
           </div>
         </ResizablePanel>
@@ -249,8 +264,8 @@ export default function InternalRequests() {
             </div>
             <div className="flex-1 overflow-auto p-4 space-y-4">
               <Card>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
+                <CardContent className="pt-3">
+                  <div className="space-y-1">
                     <div>
                       <label className="text-xs font-medium">Aanvrager</label>
                       <p className="text-sm">{selectedWorkOrder.contacts?.requester.name}</p>
@@ -265,8 +280,8 @@ export default function InternalRequests() {
               </Card>
 
               <Card>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
+                <CardContent className="pt-3">
+                  <div className="space-y-1">
                     <div>
                       <label className="text-xs font-medium">Uitvoering</label>
                       <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>

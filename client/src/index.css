@@ -13,6 +13,19 @@
 }
 
 @layer components {
+  /* Department field colors */
+  .gemeente-field {
+    @apply bg-blue-50 rounded-sm px-2 py-1;
+  }
+
+  .eb-field {
+    @apply bg-orange-50 rounded-sm px-2 py-1;
+  }
+
+  .realization-field {
+    @apply bg-green-50 rounded-sm px-2 py-1;
+  }
+
   /* Style for select dropdowns */
   .select-content {
     @apply bg-white border rounded-md shadow-md;
@@ -21,5 +34,18 @@
   /* Style for select items on hover */
   .select-item[data-highlighted] {
     @apply bg-gray-100;
+  }
+
+  /* Compact card styles */
+  .compact-card {
+    @apply p-2;
+  }
+
+  .compact-card-header {
+    @apply py-1 px-2;
+  }
+
+  .compact-card-content {
+    @apply p-2 text-xs;
   }
 }
