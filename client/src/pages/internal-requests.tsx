@@ -458,7 +458,7 @@ export default function InternalRequests() {
                   </Card>
 
                   {/* Object Details Section */}
-                  <Card>
+                  <Card className="w-1/2">
                     <CardHeader className="py-2">
                       <CardTitle className="text-sm">Objectgegevens</CardTitle>
                     </CardHeader>
@@ -472,8 +472,6 @@ export default function InternalRequests() {
                           <label className="text-xs font-medium">Abri formaat</label>
                           <p className="text-xs">{selectedWorkOrder.abriFormat || '-'}</p>
                         </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
                         <div className="bg-orange-50 p-2 rounded">
                           <label className="text-xs font-medium">Objectnummer</label>
                           <p className="text-xs">{selectedWorkOrder.objectNumber || '-'}</p>
