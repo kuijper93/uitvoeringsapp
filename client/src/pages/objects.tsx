@@ -58,7 +58,6 @@ function MapController({ city }: { city: string | null }) {
 export default function Objects() {
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
-  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
 
   const { data: objects, isLoading } = useQuery<SelectWorkOrder[]>({
     queryKey: ["/api/requests"],
@@ -93,14 +92,14 @@ export default function Objects() {
               <SelectValue placeholder="Filter op gemeente" />
             </SelectTrigger>
             <SelectContent className="bg-white z-[1000]">
-              <SelectItem value="all">Alle gemeenten</SelectItem>
+              <SelectItem value="all" className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors">
+                Alle gemeenten
+              </SelectItem>
               {municipalities.map((municipality) => (
                 <SelectItem
                   key={municipality.toLowerCase()}
                   value={municipality.toLowerCase()}
-                  onMouseEnter={() => setHoveredCity(municipality.toLowerCase())}
-                  onMouseLeave={() => setHoveredCity(null)}
-                  className="cursor-pointer hover:bg-primary/10"
+                  className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors"
                 >
                   {municipality}
                 </SelectItem>
@@ -118,11 +117,14 @@ export default function Objects() {
               <SelectValue placeholder="Filter op type" />
             </SelectTrigger>
             <SelectContent className="bg-white z-[1000]">
-              <SelectItem value="all">Alle types</SelectItem>
+              <SelectItem value="all" className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors">
+                Alle types
+              </SelectItem>
               {objectTypes.map((type) => (
                 <SelectItem
                   key={type}
                   value={type}
+                  className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors"
                 >
                   {getFurnitureTypeLabel(type)}
                 </SelectItem>
@@ -154,7 +156,6 @@ export default function Objects() {
                     <Marker
                       key={obj.id}
                       position={cityData.coords}
-                      opacity={hoveredCity ? (hoveredCity === obj.municipality.toLowerCase() ? 1 : 0.5) : 1}
                     >
                       <Popup>
                         <div className="p-2">
