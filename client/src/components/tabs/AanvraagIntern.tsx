@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,10 +80,10 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
   };
 
   return (
-    <div className="grid grid-cols-[1fr,2fr,1fr] gap-2 p-2">
+    <div className="grid grid-cols-[1fr,2fr,1fr] gap-2">
       {/* Left section - Objectgegevens */}
-      <Card className="bg-amber-50/50 p-3 rounded-sm h-[420px] overflow-y-auto">
-        <div className="space-y-4">
+      <Card className="bg-amber-50/50 p-2 rounded-sm h-[360px] overflow-y-auto">
+        <div className="space-y-2">
           <div>
             <Label className="text-xs">Local Model</Label>
             <Input 
@@ -115,24 +116,24 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
               className="h-6 text-xs bg-amber-50" 
             />
           </div>
-        </div>
-
-        <div className="mt-4">
-          <div className="flex items-center">
-            <Checkbox 
-              id="new-object" 
-              checked={form.watch("newObject")}
-              onCheckedChange={(checked) => onFormChange("newObject", checked)}
-              className="h-4 w-4" 
-            />
-            <label htmlFor="new-object" className="text-xs ml-2">
-              Nieuw object aanmaken
-            </label>
+          <div className="mt-2">
+            <div className="flex items-center">
+              <Checkbox 
+                id="new-object" 
+                checked={form.watch("newObject")}
+                onCheckedChange={(checked) => onFormChange("newObject", checked)}
+                className="h-3 w-3" 
+              />
+              <label htmlFor="new-object" className="text-xs ml-2">
+                Nieuw object aanmaken
+              </label>
+            </div>
           </div>
         </div>
       </Card>
+
       {/* Middle section - Map */}
-      <div className="h-[420px] relative">
+      <div className="h-[360px] relative">
         <MapContainer
           center={[52.3676, 4.9041]}
           zoom={13}
@@ -158,11 +159,12 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           Street View
         </Button>
       </div>
+
       {/* Right section - Services */}
-      <div className="space-y-1 h-[420px] overflow-y-auto">
-        <div>
-          <h3 className="text-xs font-medium mb-1">Aangevraagde services</h3>
-          <div className="space-y-1">
+      <div className="space-y-1 h-[360px] overflow-y-auto">
+        <div className="mb-2">
+          <h3 className="text-xs font-medium">Aangevraagde services</h3>
+          <div className="space-y-1 mt-1">
             <div className="flex items-center">
               <Checkbox 
                 id="elektra" 
@@ -170,7 +172,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 onCheckedChange={(checked) => 
                   onFormChange("services", { ...form.watch("services"), elektra: checked })
                 }
-                className="h-4 w-4" 
+                className="h-3 w-3" 
               />
               <label htmlFor="elektra" className="text-xs ml-2">
                 Elektra door JCD
@@ -183,7 +185,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 onCheckedChange={(checked) => 
                   onFormChange("services", { ...form.watch("services"), vergunning: checked })
                 }
-                className="h-4 w-4" 
+                className="h-3 w-3" 
               />
               <label htmlFor="vergunning" className="text-xs ml-2">
                 Vergunning
@@ -196,7 +198,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 onCheckedChange={(checked) => 
                   onFormChange("services", { ...form.watch("services"), aarding: checked })
                 }
-                className="h-4 w-4" 
+                className="h-3 w-3" 
               />
               <label htmlFor="aarding" className="text-xs ml-2">
                 Aarding
@@ -209,7 +211,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
                 onCheckedChange={(checked) => 
                   onFormChange("services", { ...form.watch("services"), klic: checked })
                 }
-                className="h-4 w-4" 
+                className="h-3 w-3" 
               />
               <label htmlFor="klic" className="text-xs ml-2">
                 Klic
@@ -218,7 +220,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </div>
         </div>
 
-        <div>
+        <div className="mb-2">
           <Label className="text-xs">Verkeersplan</Label>
           <Select
             value={form.watch("verkeersplan")}
@@ -236,7 +238,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div>
+        <div className="mb-2">
           <Label className="text-xs">Aannemer</Label>
           <Select
             value={form.watch("aannemer")}
@@ -253,7 +255,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div>
+        <div className="mb-2">
           <Label className="text-xs">Prio</Label>
           <Select
             value={form.watch("prio")}
