@@ -11,11 +11,72 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import { z } from "zod";
+import type { SelectWorkOrder } from "@db/schema";
 
-export default function AanvraagIntern() {
-  const form = useForm();
+const aanvraagInternSchema = z.object({
+  localModel: z.string(),
+  abriFormat: z.string(),
+  objectNumber: z.string(),
+  actionType: z.string(),
+  newObject: z.boolean().default(false),
+  services: z.object({
+    elektra: z.boolean().default(false),
+    vergunning: z.boolean().default(false),
+    aarding: z.boolean().default(false),
+    klic: z.boolean().default(false),
+  }),
+  verkeersplan: z.string(),
+  aannemer: z.string(),
+  prio: z.string(),
+  combi: z.string(),
+});
+
+type AanvraagInternFormData = z.infer<typeof aanvraagInternSchema>;
+
+interface AanvraagInternProps {
+  workOrder?: SelectWorkOrder;
+  onUpdate?: (data: Partial<SelectWorkOrder>) => void;
+}
+
+export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternProps) {
+  const form = useForm<AanvraagInternFormData>({
+    resolver: zodResolver(aanvraagInternSchema),
+    defaultValues: {
+      localModel: workOrder?.furnitureType || "abri",
+      abriFormat: workOrder?.abriFormat || "4x2",
+      objectNumber: workOrder?.objectNumber || "",
+      actionType: workOrder?.actionType || "plaatsen",
+      newObject: false,
+      services: {
+        elektra: workOrder?.electricalConnect || false,
+        vergunning: false,
+        aarding: false,
+        klic: false,
+      },
+      verkeersplan: "geen",
+      aannemer: "geen",
+      prio: "geen",
+      combi: "",
+    },
+  });
+
+  const onFormChange = (fieldName: keyof AanvraagInternFormData, value: any) => {
+    form.setValue(fieldName, value);
+    if (onUpdate) {
+      const updateData: Partial<SelectWorkOrder> = {
+        furnitureType: form.getValues("localModel"),
+        abriFormat: form.getValues("abriFormat"),
+        objectNumber: form.getValues("objectNumber"),
+        actionType: form.getValues("actionType"),
+        electricalConnect: form.getValues("services").elektra,
+      };
+      onUpdate(updateData);
+    }
+  };
 
   return (
     <div className="grid grid-cols-[1fr,2fr,1fr] gap-4 p-2">
@@ -24,25 +85,46 @@ export default function AanvraagIntern() {
         <div className="space-y-4">
           <div>
             <Label className="text-xs">Local Model</Label>
-            <Input defaultValue="abri" readOnly className="h-6 text-xs bg-amber-50" />
+            <Input 
+              value={form.watch("localModel")}
+              onChange={(e) => onFormChange("localModel", e.target.value)}
+              className="h-6 text-xs bg-amber-50" 
+            />
           </div>
           <div>
             <Label className="text-xs">Abri formaat</Label>
-            <Input defaultValue="4x2" readOnly className="h-6 text-xs bg-amber-50" />
+            <Input 
+              value={form.watch("abriFormat")}
+              onChange={(e) => onFormChange("abriFormat", e.target.value)}
+              className="h-6 text-xs bg-amber-50" 
+            />
           </div>
           <div>
             <Label className="text-xs">Objectnummer</Label>
-            <Input defaultValue="NL-AB-199009" readOnly className="h-6 text-xs bg-amber-50" />
+            <Input 
+              value={form.watch("objectNumber")}
+              onChange={(e) => onFormChange("objectNumber", e.target.value)}
+              className="h-6 text-xs bg-amber-50" 
+            />
           </div>
           <div>
             <Label className="text-xs">Type actie</Label>
-            <Input defaultValue="plaatsen" readOnly className="h-6 text-xs bg-amber-50" />
+            <Input 
+              value={form.watch("actionType")}
+              onChange={(e) => onFormChange("actionType", e.target.value)}
+              className="h-6 text-xs bg-amber-50" 
+            />
           </div>
         </div>
 
         <div className="mt-4">
           <div className="flex items-center">
-            <Checkbox id="new-object" className="h-4 w-4" />
+            <Checkbox 
+              id="new-object" 
+              checked={form.watch("newObject")}
+              onCheckedChange={(checked) => onFormChange("newObject", checked)}
+              className="h-4 w-4" 
+            />
             <label htmlFor="new-object" className="text-xs ml-2">
               Nieuw object aanmaken
             </label>
@@ -67,6 +149,12 @@ export default function AanvraagIntern() {
           variant="secondary" 
           size="sm" 
           className="absolute top-2 right-2 z-[1000] text-xs"
+          onClick={() => {
+            window.open(
+              `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=52.3676,4.9041`,
+              '_blank'
+            );
+          }}
         >
           Street View
         </Button>
@@ -78,25 +166,53 @@ export default function AanvraagIntern() {
           <h3 className="text-xs font-medium mb-1">Aangevraagde services</h3>
           <div className="space-y-1">
             <div className="flex items-center">
-              <Checkbox id="elektra" className="h-4 w-4" />
+              <Checkbox 
+                id="elektra" 
+                checked={form.watch("services.elektra")}
+                onCheckedChange={(checked) => 
+                  onFormChange("services", { ...form.watch("services"), elektra: checked })
+                }
+                className="h-4 w-4" 
+              />
               <label htmlFor="elektra" className="text-xs ml-2">
                 Elektra door JCD
               </label>
             </div>
             <div className="flex items-center">
-              <Checkbox id="vergunning" className="h-4 w-4" />
+              <Checkbox 
+                id="vergunning" 
+                checked={form.watch("services.vergunning")}
+                onCheckedChange={(checked) => 
+                  onFormChange("services", { ...form.watch("services"), vergunning: checked })
+                }
+                className="h-4 w-4" 
+              />
               <label htmlFor="vergunning" className="text-xs ml-2">
                 Vergunning
               </label>
             </div>
             <div className="flex items-center">
-              <Checkbox id="aarding" className="h-4 w-4" />
+              <Checkbox 
+                id="aarding" 
+                checked={form.watch("services.aarding")}
+                onCheckedChange={(checked) => 
+                  onFormChange("services", { ...form.watch("services"), aarding: checked })
+                }
+                className="h-4 w-4" 
+              />
               <label htmlFor="aarding" className="text-xs ml-2">
                 Aarding
               </label>
             </div>
             <div className="flex items-center">
-              <Checkbox id="klic" className="h-4 w-4" />
+              <Checkbox 
+                id="klic" 
+                checked={form.watch("services.klic")}
+                onCheckedChange={(checked) => 
+                  onFormChange("services", { ...form.watch("services"), klic: checked })
+                }
+                className="h-4 w-4" 
+              />
               <label htmlFor="klic" className="text-xs ml-2">
                 Klic
               </label>
@@ -106,43 +222,63 @@ export default function AanvraagIntern() {
 
         <div>
           <Label className="text-xs">Verkeersplan</Label>
-          <Select>
+          <Select
+            value={form.watch("verkeersplan")}
+            onValueChange={(value) => onFormChange("verkeersplan", value)}
+          >
             <SelectTrigger className="w-full h-6 text-xs">
               <SelectValue placeholder="Geen" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="geen">Geen</SelectItem>
+              <SelectItem value="zelf">Zelf uitvoeren</SelectItem>
+              <SelectItem value="werk">In het werk</SelectItem>
+              <SelectItem value="buko">BUKO</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
           <Label className="text-xs">Aannemer</Label>
-          <Select>
+          <Select
+            value={form.watch("aannemer")}
+            onValueChange={(value) => onFormChange("aannemer", value)}
+          >
             <SelectTrigger className="w-full h-6 text-xs">
               <SelectValue placeholder="Geen" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="geen">Geen</SelectItem>
+              <SelectItem value="geen">Geen aannemer</SelectItem>
+              <SelectItem value="henk">Aannemer Henk</SelectItem>
+              <SelectItem value="piet">Aannemer Piet</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
           <Label className="text-xs">Prio</Label>
-          <Select>
+          <Select
+            value={form.watch("prio")}
+            onValueChange={(value) => onFormChange("prio", value)}
+          >
             <SelectTrigger className="w-full h-6 text-xs">
               <SelectValue placeholder="Geen" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="geen">Geen</SelectItem>
+              <SelectItem value="geen">Geen prio</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div>
           <Label className="text-xs">Combi</Label>
-          <Select>
+          <Select
+            value={form.watch("combi")}
+            onValueChange={(value) => onFormChange("combi", value)}
+          >
             <SelectTrigger className="w-full h-6 text-xs">
               <SelectValue placeholder="Voer combi" />
             </SelectTrigger>
