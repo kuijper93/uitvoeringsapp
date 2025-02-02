@@ -2,7 +2,11 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
 import { fileURLToPath } from 'url';
-import { setupVite, serveStatic } from "./vite";
+import webpack from "webpack";
+import webpackDevMiddleware from "webpack-dev-middleware";
+import webpackHotMiddleware from "webpack-hot-middleware";
+// @ts-ignore - webpack config is a JavaScript file
+import webpackConfig from "../webpack.config.js";
 
 // ESM module support
 const __filename = fileURLToPath(import.meta.url);
@@ -69,11 +73,39 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(status).json({ message });
 });
 
-if (process.env.NODE_ENV === 'production') {
-  serveStatic(app);
-} else {
-  await setupVite(app, server);
+// Set up webpack middleware in development
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Setting up webpack middleware...');
+  const compiler = webpack(webpackConfig);
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath || '/',
+      writeToDisk: true,
+    })
+  );
+  app.use(webpackHotMiddleware(compiler, {
+    log: console.log,
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
+  }));
 }
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist/public')));
+}
+
+// Always handle client-side routing by serving index.html for non-API routes
+app.get('*', (req, res, next) => {
+  if (req.url.startsWith('/api')) {
+    return next();
+  }
+  const indexPath = process.env.NODE_ENV === 'production'
+    ? path.join(__dirname, '../dist/public/index.html')
+    : path.join(__dirname, '../client/index.html');
+
+  res.sendFile(indexPath);
+});
 
 const PORT = Number(process.env.PORT) || 5000;
 server.listen(PORT, "0.0.0.0", () => {

@@ -1,13 +1,18 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import webpack from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: ['./client/src/main.tsx'],
+  entry: [
+    // Add webpack-hot-middleware entry points
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
+    './client/src/main.tsx'
+  ],
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].[contenthash].js',
@@ -31,7 +36,21 @@ export default {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  'tailwindcss',
+                  'autoprefixer',
+                ],
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -47,29 +66,26 @@ export default {
     },
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './client/index.html',
       filename: 'index.html',
     }),
+    // Add environment variables that should be available in the client
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    }),
   ],
-  devServer: {
-    historyApiFallback: {
-      disableDotRule: true,
-      index: '/'
-    },
-    hot: true,
-    port: 3000,
-    host: '0.0.0.0',
-    proxy: {
-      '/api': 'http://localhost:5000',
-    },
-    static: {
-      directory: path.join(__dirname, 'dist/public'),
-      publicPath: '/',
-    },
-    client: {
-      overlay: true,
+  // Source maps for better debugging
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
+  // Optimization settings
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
     },
   },
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
+  // Performance hints
+  performance: {
+    hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
+  },
 };

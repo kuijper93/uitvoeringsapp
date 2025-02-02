@@ -8,9 +8,17 @@ if (!rootElement) throw new Error("Failed to find the root element");
 
 const root = createRoot(rootElement);
 
-// Ensure the app is wrapped in StrictMode for better development experience
-root.render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+function render() {
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}
+
+render();
+
+// Enable Hot Module Replacement
+if (module.hot) {
+  module.hot.accept('./App', render);
+}
