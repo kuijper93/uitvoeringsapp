@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -40,11 +41,14 @@ const mockWorkOrders = [
       notes: "Steen huis Straatwerk / 06-85285859"
     }
   },
-  { id: "WO-002", status: "open", address: "Verplaatsen Arnhemseweg" },
-  { id: "WO-003", status: "ingepland", address: "Verplaatsen Rotterdamseweg" },
-  { id: "WO-004", status: "uitgevoerd", address: "Plaatsen Amsterdamestraat" },
-  { id: "WO-005", status: "aanvraagfase", address: "Verwijderen Utrechtseweg" },
+  { id: "WO-002", status: "open", address: "Verplaatsen Arnhemseweg", orderDetails: { city: "Arnhem" } },
+  { id: "WO-003", status: "ingepland", address: "Verplaatsen Rotterdamseweg", orderDetails: { city: "Rotterdam" } },
+  { id: "WO-004", status: "uitgevoerd", address: "Plaatsen Amsterdamestraat", orderDetails: { city: "Amsterdam" } },
+  { id: "WO-005", status: "aanvraagfase", address: "Verwijderen Utrechtseweg", orderDetails: { city: "Utrecht" } },
 ];
+
+const statuses = ["alle", "ingepland", "open", "uitgevoerd", "aanvraagfase"];
+const cities = ["alle", "Amsterdam", "Rotterdam", "Utrecht", "Arnhem", "Apeldoorn"];
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -64,12 +68,17 @@ const getStatusColor = (status: string) => {
 export default function InternalRequests() {
   const [selectedWorkOrder, setSelectedWorkOrder] = useState(mockWorkOrders[0]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCity, setSelectedCity] = useState("alle");
+  const [selectedStatus, setSelectedStatus] = useState("alle");
 
-  // Filter work orders based on search query
-  const filteredWorkOrders = mockWorkOrders.filter(order => 
-    order.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    order.id.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter work orders based on search query, city and status
+  const filteredWorkOrders = mockWorkOrders.filter(order => {
+    const matchesSearch = order.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         order.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCity = selectedCity === "alle" || order.orderDetails?.city === selectedCity;
+    const matchesStatus = selectedStatus === "alle" || order.status === selectedStatus;
+    return matchesSearch && matchesCity && matchesStatus;
+  });
 
   return (
     <div className="h-[calc(100vh-6rem)]">
@@ -80,7 +89,7 @@ export default function InternalRequests() {
         {/* Left Panel - Work Orders List */}
         <ResizablePanel defaultSize={20} minSize={15}>
           <div className="flex h-full flex-col">
-            <div className="px-3 py-4">
+            <div className="space-y-2 px-3 py-4">
               <div className="relative">
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input 
@@ -89,6 +98,32 @@ export default function InternalRequests() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Select value={selectedCity} onValueChange={setSelectedCity}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Stad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem key={city} value={city}>
+                        {city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {statuses.map((status) => (
+                      <SelectItem key={status} value={status}>
+                        {status}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <Separator />
@@ -121,64 +156,80 @@ export default function InternalRequests() {
         <ResizablePanel defaultSize={45}>
           <div className="flex h-full flex-col">
             <div className="border-b p-4">
-              <h2 className="text-lg font-semibold">{selectedWorkOrder.address}</h2>
+              <h2 className="text-lg font-semibold">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
               <p className="text-sm text-muted-foreground">
-                Ingepland voor {selectedWorkOrder.orderDetails?.plannedDate || 'Niet gepland'}
+                {selectedWorkOrder.id} door Justin
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Ingepland voor {selectedWorkOrder.orderDetails?.plannedDate}
               </p>
             </div>
-            <div className="flex-1 overflow-auto p-4">
-              <Card className="mb-4">
-                <CardHeader>
+            <div className="flex-1 overflow-auto p-4 space-y-4">
+              <Card>
+                <CardHeader className="py-3">
                   <CardTitle className="text-base">Opdrachtgegevens</CardTitle>
                 </CardHeader>
-                <CardContent className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <CardContent className="grid gap-3 pt-0">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="text-sm font-medium">Gemeente uitvoeringsdatum</label>
+                      <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.plannedDate}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">X, Y coördinaten</label>
+                      <label className="text-xs font-medium">X, Y coördinaten</label>
                       <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Straat</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.street}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Postcode</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.postalCode}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Stad</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.city}</p>
+                    <label className="text-xs font-medium">Aangevraagde services</label>
+                    <div className="grid grid-cols-2 gap-2 mt-1">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="elektra" />
+                        <label htmlFor="elektra" className="text-sm">Elektra door JCD</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="graaf" />
+                        <label htmlFor="graaf" className="text-sm">Graaf graven</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="vergunning" />
+                        <label htmlFor="vergunning" className="text-sm">Vergunning</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="materiaal" />
+                        <label htmlFor="materiaal" className="text-sm">Materiaal</label>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
               <Card>
-                <CardHeader>
+                <CardHeader className="py-3">
                   <CardTitle className="text-base">Objectgegevens</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Object model</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.objectModel}</p>
+                <CardContent className="grid gap-3 pt-0">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-medium">Object model</label>
+                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectModel}</p>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium">Object kleur</label>
+                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectColor}</p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium">Object kleur</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.objectColor}</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs font-medium">Materiaal</label>
+                      <p className="text-sm">{selectedWorkOrder.orderDetails?.material}</p>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium">Object</label>
+                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectNumber}</p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium">Materiaal</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.material}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Object</label>
-                    <p className="text-sm">{selectedWorkOrder.orderDetails?.objectNumber}</p>
-                  </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 pt-2">
                     <Checkbox id="nieuw" />
                     <label htmlFor="nieuw" className="text-sm">Nieuw object aanmaken</label>
                   </div>
@@ -196,16 +247,16 @@ export default function InternalRequests() {
             <div className="border-b p-4">
               <h3 className="font-semibold">Contact gemeente</h3>
             </div>
-            <div className="flex-1 overflow-auto p-4">
-              <Card className="mb-4">
+            <div className="flex-1 overflow-auto p-4 space-y-4">
+              <Card>
                 <CardContent className="pt-6">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
-                      <label className="text-sm font-medium">Aanvrager</label>
+                      <label className="text-xs font-medium">Aanvrager</label>
                       <p className="text-sm">{selectedWorkOrder.contacts?.requester.name}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Contact</label>
+                      <label className="text-xs font-medium">Contact</label>
                       <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.requester.email}</p>
                       <p className="text-sm">{selectedWorkOrder.contacts?.requester.phone}</p>
                     </div>
@@ -213,24 +264,16 @@ export default function InternalRequests() {
                 </CardContent>
               </Card>
 
-              <Card className="mb-4">
-                <CardHeader>
-                  <CardTitle className="text-base">Uitvoering</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Contact</label>
-                    <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>
-                    <p className="text-sm">{selectedWorkOrder.contacts?.execution.phone}</p>
-                  </div>
-                </CardContent>
-              </Card>
-
               <Card>
                 <CardContent className="pt-6">
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
-                      <label className="text-sm font-medium">Overige opmerkingen</label>
+                      <label className="text-xs font-medium">Uitvoering</label>
+                      <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>
+                      <p className="text-sm">{selectedWorkOrder.contacts?.execution.phone}</p>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium">Overige opmerkingen</label>
                       <p className="text-sm">{selectedWorkOrder.contacts?.notes}</p>
                     </div>
                   </div>
