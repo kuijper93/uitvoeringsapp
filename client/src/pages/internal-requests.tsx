@@ -17,6 +17,32 @@ import L from "leaflet";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
+// Type definition for work order to fix implicit any
+interface WorkOrder {
+  id: number;
+  orderNumber: string;
+  furnitureType: string;
+  actionType: string;
+  municipality: string;
+  status: string;
+  desiredDate: string;
+  requestorName: string;
+  requestorPhone: string;
+  requestorEmail: string;
+  executionContactName: string;
+  executionContactPhone: string;
+  executionContactEmail: string;
+  installationXCoord?: string;
+  installationYCoord?: string;
+  installationAddress?: string;
+  electricalConnect?: boolean;
+  groundInstallationExcavation?: boolean;
+  groundInstallationRepaving?: boolean;
+  groundInstallationFilling?: boolean;
+  groundInstallationMaterials?: boolean;
+  objectNumber?: string;
+}
+
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -43,7 +69,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTuple => {
+const getCoordinates = (x: string | undefined | null, y: string | undefined | null): LatLngTuple => {
   if (!x || !y) return [52.3676, 4.9041];
   const lat = 52.3676 + (Number(y) - 487462) / 100000;
   const lng = 4.9041 + (Number(x) - 121766) / 100000;
@@ -56,20 +82,20 @@ export default function InternalRequests() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState<string>("alle");
   const [selectedStatus, setSelectedStatus] = useState<string>("alle");
-  const [selectedWorkOrder, setSelectedWorkOrder] = useState<SelectWorkOrder | null>(null);
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(null);
 
-  // Fetch work orders
+  // Fetch work orders with proper typing
   const { data: workOrders, isLoading } = useQuery({
     queryKey: ['/api/work-orders'],
     queryFn: async () => {
-      const response = await apiRequest<SelectWorkOrder[]>('GET', '/api/work-orders');
-      return response;
+      const response = await apiRequest('GET', '/api/work-orders');
+      return response as WorkOrder[];
     }
   });
 
   // Update work order mutation
   const updateWorkOrder = useMutation({
-    mutationFn: async (data: Partial<SelectWorkOrder>) => {
+    mutationFn: async (data: Partial<WorkOrder>) => {
       if (!selectedWorkOrder?.id) return;
       return await apiRequest('PATCH', `/api/work-orders/${selectedWorkOrder.id}`, data);
     },
@@ -95,12 +121,14 @@ export default function InternalRequests() {
     }
   }, [workOrders, selectedWorkOrder]);
 
-  const filteredWorkOrders = workOrders?.filter(order => {
+   // Filter work orders with proper typing
+  const filteredWorkOrders = workOrders?.filter((order: WorkOrder) => {
     const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCity = selectedCity === "alle" || order.municipality.toLowerCase() === selectedCity.toLowerCase();
     const matchesStatus = selectedStatus === "alle" || order.status.toLowerCase() === selectedStatus.toLowerCase();
     return matchesSearch && matchesCity && matchesStatus;
   }) || [];
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -109,7 +137,7 @@ export default function InternalRequests() {
   const handleServiceChange = async (service: string, checked: boolean) => {
     if (!selectedWorkOrder) return;
 
-    const updates: Partial<SelectWorkOrder> = {
+    const updates: Partial<WorkOrder> = {
       [`${service}`]: checked,
     };
 
@@ -244,11 +272,11 @@ export default function InternalRequests() {
                         {/* Map section - 4 columns (1/3 width) */}
                         <div className="col-span-4">
                           <div className="relative w-full">
-                            <div className="h-[400px] rounded-lg overflow-hidden border">
+                            <div className="h-[396px] rounded-lg overflow-hidden border">
                               <MapContainer
                                 center={getCoordinates(
-                                  selectedWorkOrder.installationXCoord,
-                                  selectedWorkOrder.installationYCoord
+                                  selectedWorkOrder?.installationXCoord ?? undefined,
+                                  selectedWorkOrder?.installationYCoord ?? undefined
                                 )}
                                 zoom={13}
                                 style={{ height: "100%", width: "100%" }}
@@ -257,14 +285,16 @@ export default function InternalRequests() {
                                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                 />
-                                <Marker position={getCoordinates(
-                                  selectedWorkOrder.installationXCoord,
-                                  selectedWorkOrder.installationYCoord
-                                )}>
-                                  <Popup>
-                                    {selectedWorkOrder.installationAddress || 'Location'}
-                                  </Popup>
-                                </Marker>
+                                {selectedWorkOrder && (
+                                  <Marker position={getCoordinates(
+                                    selectedWorkOrder.installationXCoord ?? undefined,
+                                    selectedWorkOrder.installationYCoord ?? undefined
+                                  )}>
+                                    <Popup>
+                                      {selectedWorkOrder.installationAddress || 'Location'}
+                                    </Popup>
+                                  </Marker>
+                                )}
                               </MapContainer>
                             </div>
                             <Button
@@ -273,8 +303,8 @@ export default function InternalRequests() {
                               className="absolute top-2 right-2 z-[1000] bg-white"
                               onClick={() => {
                                 const [lat, lng] = getCoordinates(
-                                  selectedWorkOrder.installationXCoord,
-                                  selectedWorkOrder.installationYCoord
+                                  selectedWorkOrder.installationXCoord ?? undefined,
+                                  selectedWorkOrder.installationYCoord ?? undefined
                                 );
                                 window.open(
                                   `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${lat},${lng}`,
@@ -292,7 +322,7 @@ export default function InternalRequests() {
                         <div className="col-span-8">
                           <div className="grid grid-cols-4 gap-4">
                             {/* Row 1: Opmerkingen */}
-                            <div className="bg-gray-50 p-2 rounded h-[400px]">
+                            <div className="bg-gray-50 p-2 rounded h-[396px]">
                               <label className="text-xs block mb-1">Opmerkingen</label>
                               <textarea 
                                 className="w-full h-[calc(100%-1.5rem)] text-xs p-2 rounded border border-input bg-white resize-none focus:outline-none focus:ring-1 focus:ring-ring" 
