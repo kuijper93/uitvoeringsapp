@@ -244,10 +244,7 @@ export default function InternalRequests() {
                       Ingepland voor {selectedWorkOrder.desiredDate}
                     </p>
                   </div>
-
-                  {/* Contact Information in header */}
                   <div className="flex gap-6">
-                    {/* Aanvrager Contact */}
                     <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
                       <div className="flex items-center space-x-2">
                         <h3 className="text-xs font-medium">Aanvrager:</h3>
@@ -261,7 +258,6 @@ export default function InternalRequests() {
                       </div>
                     </div>
 
-                    {/* Execution Contact */}
                     <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
                       <div className="flex items-center space-x-2">
                         <h3 className="text-xs font-medium">Uitvoering:</h3>
@@ -281,10 +277,7 @@ export default function InternalRequests() {
               <div className="flex-1 overflow-auto p-4">
                 <div className="space-y-4">
                   <Card>
-                    <CardHeader className="py-2">
-                      <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-2 pt-0">
+                    <CardContent className="grid gap-2">
                       <div className="grid grid-cols-12 gap-4">
                         {/* Map section - 4 columns (1/3 width) */}
                         <div className="col-span-4 relative">
@@ -332,7 +325,7 @@ export default function InternalRequests() {
                         </div>
 
                         {/* Details section - 8 columns (2/3 width) */}
-                        <div className="col-span-8 space-y-2">
+                        <div className="col-span-8">
                           <div className="bg-blue-100 p-2 rounded text-xs">
                             <div className="grid grid-cols-3 gap-2 items-start">
                               <div>
@@ -349,8 +342,8 @@ export default function InternalRequests() {
                               </div>
                             </div>
                           </div>
-                         
-                          <div className="grid grid-cols-3 gap-4">
+
+                          <div className="grid grid-cols-3 gap-4 mt-2">
                             {/* Aangevraagde services Column */}
                             <div className="space-y-2 bg-blue-50 p-2 rounded">
                               <p className="text-xs font-medium mb-1">Aangevraagde services</p>
