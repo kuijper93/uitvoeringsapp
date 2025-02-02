@@ -17,13 +17,13 @@ export default function AanvraagIntern() {
   const form = useForm();
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-4">
+    <div className="grid grid-cols-3 gap-4 p-4">
       {/* Left section - Objectgegevens */}
       <div>
-        <h2 className="text-lg font-semibold mb-4">Objectgegevens</h2>
-        <div className="space-y-4">
+        <h2 className="text-lg font-semibold mb-2">Objectgegevens</h2>
+        <div className="space-y-2">
           <div>
-            <Label>Object model:</Label>
+            <Label>Local Model:</Label>
             <Select>
               <SelectTrigger className="w-full bg-rose-50">
                 <SelectValue placeholder="Andreas" />
@@ -60,30 +60,30 @@ export default function AanvraagIntern() {
 
           <div>
             <Label>Materiaal:</Label>
-            <Input defaultValue="NL-123456" readOnly className="bg-green-50" />
+            <Input defaultValue="NL-123456" readOnly className="bg-green-50 h-8" />
           </div>
 
           <div>
             <Label>Object:</Label>
-            <Input defaultValue="NL-AB-199009" readOnly className="bg-green-50" />
+            <Input defaultValue="NL-AB-199009" readOnly className="bg-green-50 h-8" />
           </div>
 
           <div className="flex gap-2">
-            <Button className="flex-1 bg-blue-600">Kies configuratie</Button>
-            <Button className="flex-1 bg-blue-600">Bekijk TEMP</Button>
+            <Button size="sm" className="flex-1 bg-blue-600">Kies configuratie</Button>
+            <Button size="sm" className="flex-1 bg-blue-600">Bekijk TEMP</Button>
           </div>
 
-          <Button variant="outline" className="w-full flex items-center gap-2">
+          <Button variant="outline" size="sm" className="w-full flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Nieuw object aanmaken
           </Button>
         </div>
       </div>
 
-      {/* Right section - Locatiegegevens */}
+      {/* Middle section - Locatiegegevens */}
       <div>
-        <h2 className="text-lg font-semibold mb-4">Locatiegegevens</h2>
-        <div className="space-y-4">
+        <h2 className="text-lg font-semibold mb-2">Locatiegegevens</h2>
+        <div className="space-y-2">
           <div>
             <Label>Commercieel:</Label>
             <Select>
@@ -98,7 +98,7 @@ export default function AanvraagIntern() {
 
           <div>
             <Label>Aanverwante objecten:</Label>
-            <Input placeholder="" />
+            <Input placeholder="" className="h-8" />
           </div>
 
           <div>
@@ -112,38 +112,40 @@ export default function AanvraagIntern() {
               </SelectContent>
             </Select>
           </div>
+        </div>
+      </div>
 
-          {/* Elektrabox subsection */}
-          <Card className="p-4 mt-4">
-            <h3 className="font-semibold mb-4">Elektrabox</h3>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>X:</Label>
-                  <Input defaultValue="54.123123" readOnly className="bg-green-50" />
-                </div>
-                <div>
-                  <Label>Y:</Label>
-                  <Input defaultValue="54.123123" readOnly className="bg-green-50" />
-                </div>
-              </div>
-
+      {/* Right section - Elektrabox */}
+      <div>
+        <Card className="p-4">
+          <h3 className="font-semibold mb-2">Elektrabox</h3>
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
               <div>
-                <Label>Type:</Label>
-                <Input defaultValue="Ondergronds" readOnly className="bg-green-50" />
+                <Label>X:</Label>
+                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-8" />
               </div>
-
-              <Button className="w-full bg-blue-600">
-                Kies configuratie
-              </Button>
-
               <div>
-                <Label>Materiaal:</Label>
-                <Input defaultValue="NL-654321" readOnly className="bg-green-50" />
+                <Label>Y:</Label>
+                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-8" />
               </div>
             </div>
-          </Card>
-        </div>
+
+            <div>
+              <Label>Type:</Label>
+              <Input defaultValue="Ondergronds" readOnly className="bg-green-50 h-8" />
+            </div>
+
+            <Button size="sm" className="w-full bg-blue-600">
+              Kies configuratie
+            </Button>
+
+            <div>
+              <Label>Materiaal:</Label>
+              <Input defaultValue="NL-654321" readOnly className="bg-green-50 h-8" />
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );
