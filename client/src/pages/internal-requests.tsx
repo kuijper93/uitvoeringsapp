@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -7,7 +8,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { LatLngTuple } from "leaflet";
@@ -308,6 +308,55 @@ export default function InternalRequests() {
                       </div>
                     </CardContent>
                   </Card>
+
+                  {/* Object Details Section */}
+                  <Card>
+                    <CardHeader className="py-2">
+                      <CardTitle className="text-sm">Objectgegevens</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid gap-2 pt-0">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-orange-50 p-2 rounded">
+                          <label className="text-xs font-medium">Type straatmeubilair</label>
+                          <p className="text-xs">{selectedWorkOrder.furnitureType}</p>
+                        </div>
+                        <div className="bg-orange-50 p-2 rounded">
+                          <label className="text-xs font-medium">Abri formaat</label>
+                          <p className="text-xs">{selectedWorkOrder.abriFormat || '-'}</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="bg-orange-50 p-2 rounded">
+                          <label className="text-xs font-medium">Objectnummer</label>
+                          <p className="text-xs">{selectedWorkOrder.objectNumber || '-'}</p>
+                        </div>
+                        <div className="bg-orange-50 p-2 rounded">
+                          <label className="text-xs font-medium">Type actie</label>
+                          <p className="text-xs">{selectedWorkOrder.actionType}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="nieuw" className="h-3 w-3" />
+                        <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-4 gap-2">
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                      Exporteer object/locatie gegevens
+                    </Button>
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                      Gereed voor uitvoering
+                    </Button>
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                      Document uploaden
+                    </Button>
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                      Naar documenten
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
