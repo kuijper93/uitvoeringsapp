@@ -3,6 +3,25 @@ import { registerRoutes } from "./routes";
 import { setupVite, log } from "./vite";
 
 const app = express();
+
+// Add CORS headers for development
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+    return;
+  }
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -52,8 +71,8 @@ app.use((req, res, next) => {
   await setupVite(app, server);
 
   // ALWAYS serve on port 5000
-  const PORT = process.env.PORT || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
+  const PORT = Number(process.env.PORT) || 5000;
+  server.listen(PORT, () => {
     log(`Server running at http://0.0.0.0:${PORT}`);
   });
 })();

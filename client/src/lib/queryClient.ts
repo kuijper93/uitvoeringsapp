@@ -26,12 +26,11 @@ export async function apiRequest(
         "Accept": "application/json",
       },
       body: data ? JSON.stringify(data) : undefined,
-      credentials: "same-origin",
+      credentials: "include",
     });
 
     await throwIfResNotOk(res);
 
-    // For DELETE operations or endpoints that don't return data
     if (method === 'DELETE' || res.status === 204) {
       return null;
     }
@@ -51,7 +50,7 @@ export const getQueryFn: <T>(options: {
   async ({ queryKey }) => {
     try {
       const res = await fetch(queryKey[0] as string, {
-        credentials: "same-origin",
+        credentials: "include",
         headers: {
           "Accept": "application/json",
         },
