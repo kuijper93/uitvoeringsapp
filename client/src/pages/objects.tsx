@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import type { SelectWorkOrder } from "@db/schema";
@@ -18,6 +18,13 @@ L.Icon.Default.mergeOptions({
 });
 
 const objectTypes = ["abri", "mupi", "driehoeksbord", "reclamezuil"] as const;
+
+// City coordinates with zoom levels
+const cityCoordinates = {
+  amsterdam: { coords: [52.3676, 4.9041] as [number, number], zoom: 12 },
+  rotterdam: { coords: [51.9225, 4.4792] as [number, number], zoom: 12 },
+  utrecht: { coords: [52.0907, 5.1214] as [number, number], zoom: 12 },
+};
 
 function getFurnitureTypeLabel(type: string) {
   switch (type) {
@@ -34,9 +41,24 @@ function getFurnitureTypeLabel(type: string) {
   }
 }
 
+// Component to handle map position updates
+function MapController({ city }: { city: string | null }) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    if (city && cityCoordinates[city.toLowerCase() as keyof typeof cityCoordinates]) {
+      const cityData = cityCoordinates[city.toLowerCase() as keyof typeof cityCoordinates];
+      map.setView(cityData.coords, cityData.zoom);
+    }
+  }, [city, map]);
+
+  return null;
+}
+
 export default function Objects() {
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
+  const [hoveredCity, setHoveredCity] = useState<string | null>(null);
 
   const { data: objects, isLoading } = useQuery<SelectWorkOrder[]>({
     queryKey: ["/api/requests"],
@@ -49,13 +71,6 @@ export default function Objects() {
 
   // Netherlands center coordinates
   const center: [number, number] = [52.1326, 5.2913];
-
-  // Dummy coordinates for demo purposes - later these will come from the database
-  const dummyCoordinates = {
-    amsterdam: [52.3676, 4.9041],
-    rotterdam: [51.9225, 4.4792],
-    utrecht: [52.0907, 5.1214],
-  };
 
   return (
     <div className="space-y-4">
@@ -83,6 +98,9 @@ export default function Objects() {
                 <SelectItem
                   key={municipality.toLowerCase()}
                   value={municipality.toLowerCase()}
+                  onMouseEnter={() => setHoveredCity(municipality.toLowerCase())}
+                  onMouseLeave={() => setHoveredCity(null)}
+                  className="cursor-pointer hover:bg-primary/10"
                 >
                   {municipality}
                 </SelectItem>
@@ -123,19 +141,20 @@ export default function Objects() {
                 zoom={7}
                 style={{ height: "100%", width: "100%" }}
               >
+                <MapController city={selectedCity === "all" ? null : selectedCity} />
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {filteredObjects?.map((obj) => {
-                  // Get coordinates based on city (dummy data)
-                  const coords = dummyCoordinates[obj.municipality.toLowerCase() as keyof typeof dummyCoordinates];
-                  if (!coords) return null;
+                  const cityData = cityCoordinates[obj.municipality.toLowerCase() as keyof typeof cityCoordinates];
+                  if (!cityData) return null;
 
                   return (
                     <Marker
                       key={obj.id}
-                      position={coords as [number, number]}
+                      position={cityData.coords}
+                      opacity={hoveredCity ? (hoveredCity === obj.municipality.toLowerCase() ? 1 : 0.5) : 1}
                     >
                       <Popup>
                         <div className="p-2">
