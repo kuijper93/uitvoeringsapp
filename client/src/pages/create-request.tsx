@@ -437,7 +437,11 @@ export default function CreateRequest() {
                           </FormControl>
                           <SelectContent className="bg-white">
                             {furnitureTypes.map(({ value, label }) => (
-                              <SelectItem key={value} value={value}>
+                              <SelectItem
+                                key={value}
+                                value={value}
+                                className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
+                              >
                                 {label}
                               </SelectItem>
                             ))}
@@ -461,10 +465,30 @@ export default function CreateRequest() {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="bg-white">
-                            <SelectItem value="plaatsen">Plaatsen</SelectItem>
-                            <SelectItem value="verwijderen">Verwijderen</SelectItem>
-                            <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
-                            <SelectItem value="ophogen">Ophogen</SelectItem>
+                            <SelectItem 
+                              value="plaatsen"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
+                            >
+                              Plaatsen
+                            </SelectItem>
+                            <SelectItem 
+                              value="verwijderen"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
+                            >
+                              Verwijderen
+                            </SelectItem>
+                            <SelectItem 
+                              value="verplaatsen"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
+                            >
+                              Verplaatsen
+                            </SelectItem>
+                            <SelectItem 
+                              value="ophogen"
+                              className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
+                            >
+                              Ophogen
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -922,17 +946,16 @@ export default function CreateRequest() {
                     render={({ field }) => (
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
-                          <replit_final_file>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <FormLabel>Afkoppelen</FormLabel>
-                        </FormItem>
-                      )}
-                    />
-                  )}
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormLabel>Afkoppelen</FormLabel>
+                      </FormItem>
+                    )}
+                  />
+                )}
                 {showElectricalConnect && (
                   <FormField
                     control={form.control}
