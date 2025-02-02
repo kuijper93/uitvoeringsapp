@@ -242,9 +242,9 @@ export default function InternalRequests() {
                     <CardContent className="grid gap-2">
                       <div className="grid grid-cols-12 gap-4">
                         {/* Map section - 4 columns (1/3 width) */}
-                        <div className="col-span-4 flex items-center">
+                        <div className="col-span-4">
                           <div className="relative w-full">
-                            <div className="h-[300px] rounded-lg overflow-hidden border">
+                            <div className="h-[400px] rounded-lg overflow-hidden border">
                               <MapContainer
                                 center={getCoordinates(
                                   selectedWorkOrder.installationXCoord,
@@ -290,9 +290,9 @@ export default function InternalRequests() {
 
                         {/* Details section - 8 columns (2/3 width) */}
                         <div className="col-span-8">
-                          <div className="grid grid-cols-4 gap-4 pt-6">
+                          <div className="grid grid-cols-4 gap-4">
                             {/* Row 1: Opmerkingen */}
-                            <div className="bg-gray-50 p-2 rounded h-[200px]">
+                            <div className="bg-gray-50 p-2 rounded h-[400px]">
                               <label className="text-xs block mb-1">Opmerkingen</label>
                               <textarea 
                                 className="w-full h-[calc(100%-1.5rem)] text-xs p-2 rounded border border-input bg-white resize-none focus:outline-none focus:ring-1 focus:ring-ring" 
@@ -303,7 +303,7 @@ export default function InternalRequests() {
                             {/* Combined blue sections */}
                             <div className="col-span-3">
                               {/* Top blue section */}
-                              <div className="bg-blue-100 p-2 rounded text-xs mb-4">
+                              <div className="bg-blue-100 p-2 rounded text-xs mb-4 h-[120px]">
                                 <div className="grid grid-cols-3 gap-4">
                                   <div>
                                     <label className="text-xs font-medium block mb-1">Gewenste datum</label>
@@ -322,8 +322,8 @@ export default function InternalRequests() {
 
                               {/* Bottom sections grid */}
                               <div className="grid grid-cols-3 gap-4">
-                                {/* Services section (now blue-100) */}
-                                <div className="bg-blue-100 p-2 rounded h-[160px] flex flex-col justify-between">
+                                {/* Services section */}
+                                <div className="bg-blue-100 p-2 rounded h-[276px] flex flex-col justify-between">
                                   <div>
                                     <p className="text-xs font-medium mb-2">Aangevraagde services</p>
                                     <div className="space-y-2">
@@ -377,7 +377,7 @@ export default function InternalRequests() {
                                 </div>
 
                                 {/* Green sections */}
-                                <div className="col-span-2 bg-green-50 p-2 rounded h-[160px]">
+                                <div className="col-span-2 bg-green-50 p-2 rounded h-[276px]">
                                   <div className="grid grid-cols-2 gap-4 h-full">
                                     {/* Left side - Verkeersplan */}
                                     <div className="flex flex-col justify-between">
