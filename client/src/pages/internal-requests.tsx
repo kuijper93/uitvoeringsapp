@@ -93,31 +93,31 @@ export default function InternalRequests() {
                 <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input 
                   placeholder="Zoeken" 
-                  className="pl-8" 
+                  className="pl-8 text-xs" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <Select value={selectedCity} onValueChange={setSelectedCity}>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-xs">
                     <SelectValue placeholder="Stad" />
                   </SelectTrigger>
                   <SelectContent>
                     {cities.map((city) => (
-                      <SelectItem key={city} value={city}>
+                      <SelectItem key={city} value={city} className="text-xs">
                         {city}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
                 <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-                  <SelectTrigger>
+                  <SelectTrigger className="text-xs">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
                     {statuses.map((status) => (
-                      <SelectItem key={status} value={status}>
+                      <SelectItem key={status} value={status} className="text-xs">
                         {status}
                       </SelectItem>
                     ))}
@@ -131,18 +131,18 @@ export default function InternalRequests() {
                 <div
                   key={order.id}
                   className={cn(
-                    "mb-2 cursor-pointer rounded-lg border p-3 hover:bg-gray-50",
+                    "mb-2 cursor-pointer rounded-lg border p-2 hover:bg-gray-50",
                     selectedWorkOrder.id === order.id && "bg-gray-50 border-primary"
                   )}
                   onClick={() => setSelectedWorkOrder(order)}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{order.id}</span>
-                    <span className={cn("text-sm font-medium", getStatusColor(order.status))}>
+                    <span className="text-xs font-medium">{order.id}</span>
+                    <span className={cn("text-xs font-medium", getStatusColor(order.status))}>
                       {order.status}
                     </span>
                   </div>
-                  <div className="mt-1 text-sm text-gray-600">{order.address}</div>
+                  <div className="mt-1 text-xs text-gray-600">{order.address}</div>
                 </div>
               ))}
             </div>
@@ -151,21 +151,21 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={55}>
+        <ResizablePanel defaultSize={60}>
           <div className="flex h-full flex-col">
-            <div className="border-b p-4">
-              <h2 className="text-lg font-semibold">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
-              <p className="text-sm text-muted-foreground">
+            <div className="border-b p-3">
+              <h2 className="text-sm font-medium">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
+              <p className="text-xs text-muted-foreground">
                 {selectedWorkOrder.id} door Justin
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Ingepland voor {selectedWorkOrder.orderDetails?.plannedDate}
               </p>
             </div>
             <div className="flex-1 overflow-auto p-4 space-y-4">
               <Card>
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base">Opdrachtgegevens</CardTitle>
+                <CardHeader className="py-2">
+                  <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-3 pt-0">
                   <div className="grid grid-cols-2 gap-3">
@@ -173,11 +173,11 @@ export default function InternalRequests() {
                       <div className="grid grid-cols-2 gap-2">
                         <div>
                           <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
-                          <p className="text-sm">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                          <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
                         </div>
                         <div>
                           <label className="text-xs font-medium">X, Y coördinaten</label>
-                          <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                          <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
                         </div>
                       </div>
                     </div>
@@ -200,19 +200,19 @@ export default function InternalRequests() {
                     <label className="text-xs font-medium">Aangevraagde services:</label>
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="elektra" />
+                        <Checkbox id="elektra" className="h-3 w-3" />
                         <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="graaf" />
+                        <Checkbox id="graaf" className="h-3 w-3" />
                         <label htmlFor="graaf" className="text-xs">Graaf graven</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="vergunning" />
+                        <Checkbox id="vergunning" className="h-3 w-3" />
                         <label htmlFor="vergunning" className="text-xs">Vergunning</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="materiaal" />
+                        <Checkbox id="materiaal" className="h-3 w-3" />
                         <label htmlFor="materiaal" className="text-xs">Materiaal</label>
                       </div>
                     </div>
@@ -221,48 +221,48 @@ export default function InternalRequests() {
               </Card>
 
               <Card>
-                <CardHeader className="py-3">
-                  <CardTitle className="text-base">Objectgegevens</CardTitle>
+                <CardHeader className="py-2">
+                  <CardTitle className="text-sm">Objectgegevens</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-3 pt-0">
                   <div className="grid grid-cols-2 gap-3">
                      <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object model</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectModel}</p>
+                      <p className="text-xs">{selectedWorkOrder.orderDetails?.objectModel}</p>
                     </div>
                     <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object kleur</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectColor}</p>
+                      <p className="text-xs">{selectedWorkOrder.orderDetails?.objectColor}</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Materiaal</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.material}</p>
+                      <p className="text-xs">{selectedWorkOrder.orderDetails?.material}</p>
                     </div>
                      <div className="bg-orange-100 p-2 rounded">
                       <label className="text-xs font-medium">Object</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.objectNumber}</p>
+                      <p className="text-xs">{selectedWorkOrder.orderDetails?.objectNumber}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2 pt-2">
-                    <Checkbox id="nieuw" />
+                    <Checkbox id="nieuw" className="h-3 w-3" />
                     <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
                   </div>
                 </CardContent>
               </Card>
 
               <div className="grid grid-cols-4 gap-2">
-                <Button variant="outline" className="w-full text-xs">
+                <Button variant="outline" className="w-full text-xs p-2 h-auto">
                   Exporteer object/locatie gegevens
                 </Button>
-                <Button variant="outline" className="w-full text-xs">
+                <Button variant="outline" className="w-full text-xs p-2 h-auto">
                   Gereed voor uitvoering
                 </Button>
-                <Button variant="outline" className="w-full text-xs">
+                <Button variant="outline" className="w-full text-xs p-2 h-auto">
                   Document uploaden
                 </Button>
-                <Button variant="outline" className="w-full text-xs">
+                <Button variant="outline" className="w-full text-xs p-2 h-auto">
                   Naar documenten
                 </Button>
               </div>
@@ -275,7 +275,7 @@ export default function InternalRequests() {
         <ResizablePanel defaultSize={25}>
             <div className="flex h-full flex-col">
               <div className="border-b p-4">
-                <h3 className="text-sm font-medium">Contact gemeente</h3>
+                <h3 className="text-xs font-medium">Contact gemeente</h3>
               </div>
               <div className="flex-1 overflow-auto p-4 space-y-4">
                 <Card>
