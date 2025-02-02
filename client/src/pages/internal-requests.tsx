@@ -462,26 +462,59 @@ export default function InternalRequests() {
                     <CardHeader className="py-2">
                       <CardTitle className="text-sm">Objectgegevens</CardTitle>
                     </CardHeader>
-                    <CardContent className="grid gap-2 pt-0">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div className="bg-orange-50 p-2 rounded">
-                          <label className="text-xs font-medium">Type straatmeubilair</label>
-                          <p className="text-xs">{selectedWorkOrder.furnitureType}</p>
+                    <CardContent className="space-y-4">
+                      {/* Top section - Request info */}
+                      <div className="bg-white p-3 rounded border">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-xs text-gray-500">Aanvraagnummer</p>
+                            <p className="text-sm font-medium">{selectedWorkOrder.orderNumber}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">Gemeente</p>
+                            <p className="text-sm font-medium">{selectedWorkOrder.municipality}</p>
+                          </div>
                         </div>
-                        <div className="bg-orange-50 p-2 rounded">
-                          <label className="text-xs font-medium">Abri formaat</label>
-                          <p className="text-xs">{selectedWorkOrder.abriFormat || '-'}</p>
-                        </div>
-                        <div className="bg-orange-50 p-2 rounded">
-                          <label className="text-xs font-medium">Objectnummer</label>
-                          <p className="text-xs">{selectedWorkOrder.objectNumber || '-'}</p>
-                        </div>
-                        <div className="bg-orange-50 p-2 rounded">
-                          <label className="text-xs font-medium">Type actie</label>
-                          <p className="text-xs">{selectedWorkOrder.actionType}</p>
+                        <div className="grid grid-cols-2 gap-4 mt-3">
+                          <div>
+                            <p className="text-xs text-gray-500">Type actie</p>
+                            <p className="text-sm font-medium">{selectedWorkOrder.actionType}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500">Local Model</p>
+                            <p className="text-sm font-medium">{selectedWorkOrder.furnitureType}</p>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-2">
+
+                      {/* Middle section - Material and Configuration */}
+                      <div className="bg-white p-3 rounded border">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-xs text-gray-500">Materiaal</p>
+                            <p className="text-sm font-medium">Standaard</p>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            Kies configuratie
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Bottom section - Object number and stock */}
+                      <div className="bg-white p-3 rounded border">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="text-xs text-gray-500">Objectnummer</p>
+                            <p className="text-sm font-medium">{selectedWorkOrder.objectNumber || '-'}</p>
+                          </div>
+                          <Button variant="outline" size="sm">
+                            TEMP voorraad bekijken
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* New object checkbox */}
+                      <div className="flex items-center space-x-2 px-3">
                         <Checkbox id="nieuw" className="h-3 w-3" />
                         <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
                       </div>
