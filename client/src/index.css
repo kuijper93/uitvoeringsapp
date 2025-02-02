@@ -11,3 +11,15 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Style for select dropdowns */
+  .select-content {
+    @apply bg-white border rounded-md shadow-md;
+  }
+
+  /* Style for select items on hover */
+  .select-item[data-highlighted] {
+    @apply bg-gray-100;
+  }
+}

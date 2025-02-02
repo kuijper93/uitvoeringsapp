@@ -216,7 +216,7 @@ export default function CreateRequest() {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-16">
       {/* Progress Indicator */}
-      <div className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
+      <div className="sticky top-0 bg-white border-b z-50">
         <div className="max-w-4xl mx-auto py-6">
           <div className="flex justify-between items-center">
             {formSections.map((section, index) => (
@@ -279,7 +279,7 @@ export default function CreateRequest() {
                             <SelectValue placeholder="Selecteer gemeente" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-white">
                           {municipalities.map((municipality) => (
                             <SelectItem
                               key={municipality.toLowerCase()}
@@ -418,7 +418,7 @@ export default function CreateRequest() {
                               <SelectValue placeholder="Selecteer het object" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent className="bg-white">
                             {furnitureTypes.map(({ value, label }) => (
                               <SelectItem key={value} value={value}>
                                 {label}
@@ -443,7 +443,7 @@ export default function CreateRequest() {
                               <SelectValue placeholder="Selecteer type actie" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent className="bg-white">
                             <SelectItem value="plaatsen">Plaatsen</SelectItem>
                             <SelectItem value="verwijderen">Verwijderen</SelectItem>
                             <SelectItem value="verplaatsen">Verplaatsen</SelectItem>
@@ -922,8 +922,7 @@ export default function CreateRequest() {
                     render={({ field }) => (
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
-                          <Checkbox
-                            checked={field.value}
+                          <Checkbox                            checked={field.value}
                             onCheckedChange={field.onChange}
                           />
                         </FormControl>
