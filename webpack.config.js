@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 export default {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: './client/src/main.tsx',
+  entry: ['./client/src/main.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].[contenthash].js',
@@ -49,10 +49,14 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: './client/index.html',
+      filename: 'index.html',
     }),
   ],
   devServer: {
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+      index: '/'
+    },
     hot: true,
     port: 3000,
     host: '0.0.0.0',
@@ -61,6 +65,7 @@ export default {
     },
     static: {
       directory: path.join(__dirname, 'dist/public'),
+      publicPath: '/',
     },
     client: {
       overlay: true,

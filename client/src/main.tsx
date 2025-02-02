@@ -6,7 +6,10 @@ import "./index.css";
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
-createRoot(rootElement).render(
+const root = createRoot(rootElement);
+
+// Ensure the app is wrapped in StrictMode for better development experience
+root.render(
   <StrictMode>
     <App />
   </StrictMode>

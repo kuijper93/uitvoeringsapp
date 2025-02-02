@@ -2,11 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
 import { fileURLToPath } from 'url';
-import webpack from "webpack";
-import webpackDevMiddleware from "webpack-dev-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
-// @ts-ignore - webpack config is a JavaScript file
-import webpackConfig from "../webpack.config.js";
+import { setupVite, serveStatic } from "./vite";
 
 // ESM module support
 const __filename = fileURLToPath(import.meta.url);
@@ -65,19 +61,6 @@ app.use((req, res, next) => {
 // Register API routes first
 const server = registerRoutes(app);
 
-// Set up webpack middleware in development
-if (process.env.NODE_ENV !== 'production') {
-  const compiler = webpack(webpackConfig);
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath || '/',
-      writeToDisk: true,
-      stats: 'minimal',
-    })
-  );
-  app.use(webpackHotMiddleware(compiler));
-}
-
 // Error handling middleware
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   const status = err.status || err.statusCode || 500;
@@ -86,25 +69,11 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(status).json({ message });
 });
 
-// Serve static files in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../dist/public')));
+  serveStatic(app);
+} else {
+  await setupVite(app, server);
 }
-
-// Handle all routes - This should be the last middleware
-app.get('*', (req, res) => {
-  // Skip API routes
-  if (req.originalUrl.startsWith('/api')) {
-    return;
-  }
-
-  // Send the appropriate index.html file
-  const indexPath = process.env.NODE_ENV === 'production'
-    ? path.join(__dirname, '../dist/public/index.html')
-    : path.join(__dirname, '../client/index.html');
-
-  res.sendFile(indexPath);
-});
 
 const PORT = Number(process.env.PORT) || 5000;
 server.listen(PORT, "0.0.0.0", () => {

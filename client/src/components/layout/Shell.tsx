@@ -8,11 +8,28 @@ import {
   FileText,
   Plus,
   Map,
+  LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-const navigation = [
+interface NavigationItem {
+  name: string;
+  href: string;
+  icon: LucideIcon;
+  type?: never;
+}
+
+interface SeparatorItem {
+  type: "separator";
+  name?: never;
+  href?: never;
+  icon?: never;
+}
+
+type NavItem = NavigationItem | SeparatorItem;
+
+const navigation: NavItem[] = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Aanvragen", href: "/requests", icon: ClipboardList },
   { name: "Objecten", href: "/objects", icon: Map },
@@ -20,7 +37,7 @@ const navigation = [
   { name: "Aanvragen intern", href: "/internal-requests", icon: FileText },
 ];
 
-const actions = [
+const actions: NavigationItem[] = [
   { name: "Nieuwe Aanvraag", href: "/create-request", icon: Plus },
 ];
 
@@ -56,15 +73,17 @@ export function Shell({ children }: { children: React.ReactNode }) {
                             "group flex gap-x-3 rounded-xl p-3 text-sm font-medium transition-all"
                           )}
                         >
-                          <item.icon
-                            className={cn(
-                              "h-5 w-5 shrink-0",
-                              item.href === location
-                                ? "text-primary"
-                                : "text-gray-400 group-hover:text-gray-600"
-                            )}
-                            aria-hidden="true"
-                          />
+                          {item.icon && (
+                            <item.icon
+                              className={cn(
+                                "h-5 w-5 shrink-0",
+                                item.href === location
+                                  ? "text-primary"
+                                  : "text-gray-400 group-hover:text-gray-600"
+                              )}
+                              aria-hidden="true"
+                            />
+                          )}
                           {item.name}
                         </Link>
                       </li>
