@@ -68,11 +68,13 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath: webpackConfig.output.publicPath,
+      writeToDisk: true,
     })
   );
   app.use(webpackHotMiddleware(compiler));
 }
 
+// Register API routes first
 const server = registerRoutes(app);
 
 // Error handling middleware
