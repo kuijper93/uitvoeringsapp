@@ -6,6 +6,21 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// CORS middleware for Replit domains
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && origin.endsWith('.replit.dev')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -51,9 +66,9 @@ app.use((req, res, next) => {
   // Set up Vite for development
   await setupVite(app, server);
 
-  // ALWAYS serve on port 5000
-  const PORT = process.env.PORT || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
+  // Use port as number instead of string
+  const PORT = Number(process.env.PORT) || 5000;
+  server.listen(PORT, () => {
     log(`Server running at http://0.0.0.0:${PORT}`);
   });
 })();
