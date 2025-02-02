@@ -69,31 +69,62 @@ const server = registerRoutes(app);
 if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
   const compiler = webpack(webpackConfig);
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath || '/',
-      writeToDisk: true,
-    })
-  );
+
+  // Configure webpack dev middleware with proper MIME types and history fallback
+  const devMiddleware = webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath || '/',
+    writeToDisk: true,
+    serverSideRender: true,
+    index: true,
+    mimeTypes: {
+      'application/javascript': ['js', 'jsx', 'ts', 'tsx'],
+      'text/css': ['css'],
+    },
+  });
+
+  app.use(devMiddleware);
   app.use(webpackHotMiddleware(compiler));
-}
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
+  // Handle all routes in development
+  app.use('*', (req, res, next) => {
+    if (req.originalUrl.startsWith('/api')) {
+      return next();
+    }
+
+    const filename = path.join(compiler.outputPath, 'index.html');
+
+    compiler.outputFileSystem.readFile(filename, (err: any, result: any) => {
+      if (err) {
+        return next(err);
+      }
+
+      res.set('Content-Type', 'text/html');
+      res.send(result);
+      res.end();
+    });
+  });
+} else {
+  // Production static file serving
+  express.static.mime.define({
+    'application/javascript': ['js', 'jsx', 'ts', 'tsx'],
+    'text/css': ['css'],
+  });
+
   app.use(express.static(path.join(__dirname, '../dist/public')));
+
+  // Handle all routes in production
+  app.get('*', (req, res) => {
+    if (req.url.startsWith('/api')) {
+      return res.status(404).json({ message: 'API endpoint not found' });
+    }
+    res.sendFile(path.join(__dirname, '../dist/public/index.html'));
+  });
 }
 
-// Always handle client-side routing by serving index.html for non-API routes
-app.get('*', (req, res, next) => {
-  if (req.url.startsWith('/api')) {
-    return next();
-  }
-
-  const indexPath = process.env.NODE_ENV === 'production'
-    ? path.join(__dirname, '../dist/public/index.html')
-    : path.join(__dirname, '../client/index.html');
-
-  res.sendFile(indexPath);
+// Error handling middleware
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  console.error('Server error:', err);
+  res.status(500).json({ message: 'Internal Server Error' });
 });
 
 const PORT = Number(process.env.PORT) || 5000;
