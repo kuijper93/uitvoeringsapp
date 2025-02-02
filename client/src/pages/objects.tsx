@@ -17,7 +17,18 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
-const objectTypes = ["abri", "mupi", "driehoeksbord", "reclamezuil"] as const;
+const objectTypes = [
+  "abri",
+  "mupi",
+  "vitrine",
+  "digitaal_object",
+  "billboard",
+  "zuil",
+  "toilet",
+  "hekwerk",
+  "haltepaal",
+  "prullenbak"
+] as const;
 
 // City coordinates with zoom levels
 const cityCoordinates = {
@@ -32,10 +43,22 @@ function getFurnitureTypeLabel(type: string) {
       return "Abri";
     case "mupi":
       return "Mupi";
-    case "driehoeksbord":
-      return "Driehoeksbord";
-    case "reclamezuil":
-      return "Reclamezuil";
+    case "vitrine":
+      return "Vitrine";
+    case "digitaal_object":
+      return "Digitaal object";
+    case "billboard":
+      return "Billboard";
+    case "zuil":
+      return "Zuil";
+    case "toilet":
+      return "Toilet";
+    case "hekwerk":
+      return "Hekwerk";
+    case "haltepaal":
+      return "Haltepaal";
+    case "prullenbak":
+      return "Prullenbak";
     default:
       return type;
   }

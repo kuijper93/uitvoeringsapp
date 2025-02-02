@@ -35,7 +35,18 @@ const requestFormSchema = z.object({
 
   // Work Details
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
-  furnitureType: z.enum(["abri", "mupi", "driehoeksbord", "reclamezuil"]),
+  furnitureType: z.enum([
+    "abri",
+    "mupi",
+    "vitrine",
+    "digitaal_object",
+    "billboard",
+    "zuil",
+    "toilet",
+    "hekwerk",
+    "haltepaal",
+    "prullenbak"
+  ]),
   abriFormat: z.string().optional(),
   objectNumber: z.string().optional(),
   desiredDate: z.string().min(1, "Datum is verplicht"),
@@ -101,8 +112,14 @@ const municipalities = [
 const furnitureTypes = [
   { value: "abri", label: "Abri" },
   { value: "mupi", label: "Mupi" },
-  { value: "driehoeksbord", label: "Driehoeksbord" },
-  { value: "reclamezuil", label: "Reclamezuil" },
+  { value: "vitrine", label: "Vitrine" },
+  { value: "digitaal_object", label: "Digitaal object" },
+  { value: "billboard", label: "Billboard" },
+  { value: "zuil", label: "Zuil" },
+  { value: "toilet", label: "Toilet" },
+  { value: "hekwerk", label: "Hekwerk" },
+  { value: "haltepaal", label: "Haltepaal" },
+  { value: "prullenbak", label: "Prullenbak" },
 ] as const;
 
 export default function CreateRequest() {
@@ -905,16 +922,17 @@ export default function CreateRequest() {
                     render={({ field }) => (
                       <FormItem className="flex items-center space-x-2">
                         <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormLabel>Afkoppelen</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                )}
+                          <replit_final_file>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <FormLabel>Afkoppelen</FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  )}
                 {showElectricalConnect && (
                   <FormField
                     control={form.control}
