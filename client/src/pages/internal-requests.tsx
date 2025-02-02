@@ -187,53 +187,55 @@ export default function InternalRequests() {
                     <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-2 pt-0">
-                    
                     <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-blue-100 p-2 rounded text-xs">
-                        <div className="grid grid-cols-2 gap-2">
-                          <div>
-                            <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
-                            <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                      <div className="space-y-2">
+                        <div className="bg-blue-100 p-2 rounded text-xs">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium">X, Y coördinaten</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                            </div>
                           </div>
-                          <div>
-                            <label className="text-xs font-medium">X, Y coördinaten</label>
-                            <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                        </div>
+
+                        <div className="bg-orange-50 p-2 rounded">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-xs font-medium">Commercieel type</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium">Reclamelocatie</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Add map */}
-                    <div className="h-[200px] rounded-lg overflow-hidden border">
-                      <MapContainer
-                        center={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}
-                        zoom={13}
-                        style={{ height: "100%", width: "100%" }}
-                      >
-                        <TileLayer
-                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        />
-                        <Marker position={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}>
-                          <Popup>
-                            {selectedWorkOrder.orderDetails?.street || 'Location'}
-                          </Popup>
-                        </Marker>
-                      </MapContainer>
-                    </div>
-
-                    <div className="bg-orange-50 p-2 rounded">
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <label className="text-xs font-medium">Commercieel type</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
-                        </div>
-                        <div>
-                          <label className="text-xs font-medium">Reclamelocatie</label>
-                          <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
-                        </div>
+                      {/* Map section */}
+                      <div className="h-[200px] rounded-lg overflow-hidden border">
+                        <MapContainer
+                          center={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}
+                          zoom={13}
+                          style={{ height: "100%", width: "100%" }}
+                        >
+                          <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          />
+                          <Marker position={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}>
+                            <Popup>
+                              {selectedWorkOrder.orderDetails?.street || 'Location'}
+                            </Popup>
+                          </Marker>
+                        </MapContainer>
                       </div>
                     </div>
+
                     <div>
                       <label className="text-xs font-medium">Aangevraagde services:</label>
                       <div className="grid grid-cols-4 gap-1 mt-1">
