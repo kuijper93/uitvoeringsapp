@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Plus, ArrowUpDown } from "lucide-react";
+import { Plus } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -21,14 +21,9 @@ export default function Requests() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold">Aanvragen</h1>
-          <p className="text-muted-foreground">
-            Bekijk en beheer alle ingediende aanvragen
-          </p>
-        </div>
+        <h1 className="text-xl font-bold">Losse aanvragen</h1>
         <Link href="/create-request">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
@@ -37,67 +32,38 @@ export default function Requests() {
         </Link>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[150px]">Aanvraagnummer</TableHead>
-              <TableHead>Type</TableHead>
+              <TableHead>Aanvraagnummer</TableHead>
               <TableHead>Opdrachtgever</TableHead>
               <TableHead>Gemeente</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Datum</TableHead>
-              <TableHead>Uitvoering</TableHead>
+              <TableHead>Aangemaakt</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {isLoading ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-4">
-                  Laden...
+            {requests?.map((request) => (
+              <TableRow key={request.id}>
+                <TableCell className="font-medium">
+                  {request.orderNumber}
+                </TableCell>
+                <TableCell>{request.requestorName}</TableCell>
+                <TableCell>{request.municipality}</TableCell>
+                <TableCell>
+                  <Badge className={getStatusColor(request.status)}>
+                    {getStatusLabel(request.status)}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {formatDistance(new Date(request.createdAt), new Date(), {
+                    addSuffix: true,
+                    locale: nl,
+                  })}
                 </TableCell>
               </TableRow>
-            ) : !requests || requests.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
-                  <p className="text-muted-foreground">
-                    Geen aanvragen gevonden
-                  </p>
-                  <Link href="/create-request">
-                    <Button variant="link" className="mt-2">
-                      Nieuwe aanvraag indienen
-                    </Button>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ) : (
-              requests.map((request) => (
-                <TableRow key={request.id}>
-                  <TableCell className="font-medium">
-                    {request.orderNumber}
-                  </TableCell>
-                  <TableCell className="capitalize">
-                    {request.furnitureType}
-                  </TableCell>
-                  <TableCell>{request.requestorName}</TableCell>
-                  <TableCell className="capitalize">
-                    {request.municipality}
-                  </TableCell>
-                  <TableCell>
-                    <Badge className={getStatusColor(request.status)}>
-                      {getStatusLabel(request.status)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {request.createdAt && formatDistance(new Date(request.createdAt), new Date(), {
-                      addSuffix: true,
-                      locale: nl,
-                    })}
-                  </TableCell>
-                  <TableCell>{request.executionContactName}</TableCell>
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
@@ -108,15 +74,15 @@ export default function Requests() {
 function getStatusColor(status: string) {
   switch (status) {
     case "PENDING":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      return "bg-yellow-100 text-yellow-800";
     case "IN_PROGRESS":
-      return "bg-blue-100 text-blue-800 border-blue-200";
+      return "bg-blue-100 text-blue-800";
     case "COMPLETED":
-      return "bg-green-100 text-green-800 border-green-200";
+      return "bg-green-100 text-green-800";
     case "CANCELLED":
-      return "bg-red-100 text-red-800 border-red-200";
+      return "bg-red-100 text-red-800";
     default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
+      return "bg-gray-100 text-gray-800";
   }
 }
 
