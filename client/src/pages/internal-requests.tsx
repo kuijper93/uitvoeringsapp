@@ -416,13 +416,12 @@ export default function InternalRequests() {
                             </div>
 
                             {/* Aannemer Column */}
-                            <div className="space-y-2 bg-gray-50 p-2 rounded">
-                              <p className="text-xs font-medium mb-1">Aannemer</p>
+                            <div className="space-y-2 bg-green-50 p-2 rounded">
                               <div className="space-y-2">
                                 <div className="space-y-1">
-                                  <label className="text-xs">Selecteer aannemer</label>
+                                  <label className="text-xs">Aannemer</label>
                                   <Select defaultValue="geen">
-                                    <SelectTrigger className="h-7 text-xs">
+                                    <SelectTrigger className="h-6 text-xs py-0">
                                       <SelectValue placeholder="Selecteer aannemer" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white">
@@ -435,7 +434,7 @@ export default function InternalRequests() {
                                 <div className="space-y-1">
                                   <label className="text-xs">Prio</label>
                                   <Select defaultValue="geen">
-                                    <SelectTrigger className="h-7 text-xs">
+                                    <SelectTrigger className="h-6 text-xs py-0">
                                       <SelectValue placeholder="Selecteer prio" />
                                     </SelectTrigger>
                                     <SelectContent className="bg-white">
@@ -448,7 +447,7 @@ export default function InternalRequests() {
                                 </div>
                                 <div className="space-y-1">
                                   <label className="text-xs">Combi</label>
-                                  <Input className="h-7 text-xs" placeholder="Voer combi in" />
+                                  <Input className="h-6 text-xs" placeholder="Voer combi in" />
                                 </div>
                               </div>
                             </div>
