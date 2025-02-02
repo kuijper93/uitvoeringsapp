@@ -23,7 +23,7 @@ export default function AanvraagIntern() {
       <Card className="bg-amber-50/50 p-4 rounded-sm">
         <div className="space-y-4">
           <div>
-            <Label className="text-xs">Type straatmeubilair</Label>
+            <Label className="text-xs">Local Model</Label>
             <Input defaultValue="abri" readOnly className="h-6 text-xs bg-amber-50" />
           </div>
           <div>
