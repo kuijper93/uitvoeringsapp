@@ -191,44 +191,50 @@ export default function InternalRequests() {
           {selectedWorkOrder && (
             <div className="flex h-full flex-col">
               <div className="border-b p-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h2 className="text-sm font-medium">
-                      {selectedWorkOrder.orderNumber} - {selectedWorkOrder.municipality}
-                    </h2>
-                    <p className="text-xs text-muted-foreground">
-                      Ingepland voor {selectedWorkOrder.desiredDate}
-                    </p>
-                  </div>
-                  <div className="flex gap-6">
-                    <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
-                      <div className="flex items-center space-x-2">
-                        <h3 className="text-xs font-medium">Aanvrager:</h3>
-                        <span className="text-xs">{selectedWorkOrder.requestorName}</span>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span>{selectedWorkOrder.orderNumber}</span>
+                        <span>•</span>
+                        <span>{selectedWorkOrder.actionType}</span>
+                        <span>•</span>
+                        <span>{selectedWorkOrder.furnitureType}</span>
+                        <span>•</span>
+                        <span>{selectedWorkOrder.municipality}</span>
                       </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {selectedWorkOrder.requestorPhone} / 
-                        <a href={`mailto:${selectedWorkOrder.requestorEmail}`} className="text-blue-600 hover:underline ml-1">
-                          {selectedWorkOrder.requestorEmail}
-                        </a>
-                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Ingepland voor {selectedWorkOrder.desiredDate}
+                      </p>
                     </div>
-
-                    <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
-                      <div className="flex items-center space-x-2">
-                        <h3 className="text-xs font-medium">Uitvoering:</h3>
-                        <span className="text-xs">{selectedWorkOrder.executionContactName}</span>
+                    <div className="flex gap-6">
+                      <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
+                        <div className="flex items-center space-x-2">
+                          <h3 className="text-xs font-medium">Aanvrager:</h3>
+                          <span className="text-xs">{selectedWorkOrder.requestorName}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {selectedWorkOrder.requestorPhone} / 
+                          <a href={`mailto:${selectedWorkOrder.requestorEmail}`} className="text-blue-600 hover:underline ml-1">
+                            {selectedWorkOrder.requestorEmail}
+                          </a>
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        {selectedWorkOrder.executionContactPhone} / 
-                        <a href={`mailto:${selectedWorkOrder.executionContactEmail}`} className="text-blue-600 hover:underline ml-1">
-                          {selectedWorkOrder.executionContactEmail}
-                        </a>
+
+                      <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
+                        <div className="flex items-center space-x-2">
+                          <h3 className="text-xs font-medium">Uitvoering:</h3>
+                          <span className="text-xs">{selectedWorkOrder.executionContactName}</span>
+                        </div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {selectedWorkOrder.executionContactPhone} / 
+                          <a href={`mailto:${selectedWorkOrder.executionContactEmail}`} className="text-blue-600 hover:underline ml-1">
+                            {selectedWorkOrder.executionContactEmail}
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
               <div className="flex-1 overflow-auto p-4">
                 <div className="space-y-4">
