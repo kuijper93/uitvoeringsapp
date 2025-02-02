@@ -524,7 +524,11 @@ export default function InternalRequests() {
                             <p className="text-xs text-gray-500">Materiaal</p>
                             <p className="text-sm font-medium">Standaard</p>
                           </div>
-                          <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-8"
+                          >
                             Kies configuratie
                           </Button>
                         </div>
@@ -537,7 +541,11 @@ export default function InternalRequests() {
                             <p className="text-xs text-gray-500">Objectnummer</p>
                             <p className="text-sm font-medium">{selectedWorkOrder.objectNumber || '-'}</p>
                           </div>
-                          <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-8"
+                          >
                             TEMP voorraad bekijken
                           </Button>
                         </div>
@@ -553,16 +561,28 @@ export default function InternalRequests() {
 
                   {/* Action Buttons */}
                   <div className="grid grid-cols-4 gap-2">
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                    >
                       Exporteer object/locatie gegevens
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                    >
                       Gereed voor uitvoering
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                    >
                       Document uploaden
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
+                    <Button 
+                      variant="outline" 
+                      className="w-full text-xs h-8 bg-blue-600 text-white hover:bg-blue-700"
+                    >
                       Naar documenten
                     </Button>
                   </div>
