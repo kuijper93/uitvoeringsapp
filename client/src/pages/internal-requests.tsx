@@ -25,7 +25,9 @@ const mockWorkOrders = [
       objectModel: "Abdriss",
       objectColor: "RAL7016",
       material: "NL-123456",
-      objectNumber: "NL-AB-199009"
+      objectNumber: "NL-AB-199009",
+      commercialType: "A en B pijl commercieel",
+      locationType: "Met reclame"
     },
     contacts: {
       requester: {
@@ -177,6 +179,19 @@ export default function InternalRequests() {
                           <label className="text-xs font-medium">X, Y coördinaten</label>
                           <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-orange-50 p-2 rounded">
+                    <div className="space-y-2">
+                      <div>
+                        <label className="text-xs font-medium">Commercieel type</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium">Reclamelocatie</label>
+                        <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
                       </div>
                     </div>
                   </div>
