@@ -224,42 +224,7 @@ export default function InternalRequests() {
                     <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-2 pt-0">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="space-y-2">
-                        <div className="bg-blue-100 p-2 rounded text-xs">
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
-                            </div>
-                            <div>
-                              <label className="text-xs font-medium">X, Y coördinaten</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="bg-orange-50 p-2 rounded">
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
-                              <label className="text-xs font-medium">Commercieel type</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
-                            </div>
-                            <div>
-                              <label className="text-xs font-medium">Reclamelocatie</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.locationType}</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Gemeente notities moved here */}
-                        <div className="bg-gray-50 p-2 rounded">
-                          <label className="text-xs font-medium block mb-1">Gemeente notities</label>
-                          <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
-                        </div>
-                      </div>
-
-                      {/* Map section */}
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="h-[200px] rounded-lg overflow-hidden border">
                         <MapContainer
                           center={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}
@@ -277,42 +242,61 @@ export default function InternalRequests() {
                           </Marker>
                         </MapContainer>
                       </div>
-                    </div>
 
-                    <div>
-                      <label className="text-xs font-medium">Aangevraagde services:</label>
-                      <div className="grid grid-cols-4 gap-1 mt-1">
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
-                          <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+                      <div className="space-y-2">
+                        <div className="bg-blue-100 p-2 rounded text-xs">
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium">X, Y coördinaten</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
+
+                        <div className="bg-green-50 p-2 rounded">
+                          <label className="text-xs font-medium block mb-1">Aangevraagde services:</label>
+                          <div className="grid grid-cols-2 gap-1">
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
+                              <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="herstrate" className="text-xs">Herstraten</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="vergunning" className="h-3 w-3" />
+                              <label htmlFor="vergunning" className="text-xs">Vergunning</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Checkbox id="klic" className="h-3 w-3" defaultChecked />
+                              <label htmlFor="klic" className="text-xs">Klic</label>
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="herstrate" className="text-xs">Herstraten</label>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="vergunning" className="h-3 w-3" />
-                          <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Checkbox id="klic" className="h-3 w-3" defaultChecked />
-                          <label htmlFor="klic" className="text-xs">Klic</label>
+                        <div className="bg-gray-50 p-2 rounded">
+                          <label className="text-xs font-medium block mb-1">Gemeente notities</label>
+                          <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
                         </div>
                       </div>
                     </div>
