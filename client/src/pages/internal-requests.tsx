@@ -327,9 +327,9 @@ export default function InternalRequests() {
                         {/* Details section - 8 columns (2/3 width) */}
                         <div className="col-span-8">
                           <div className="grid grid-cols-4 gap-4">
-                            {/* Row 1: Gemeente notities */}
+                            {/* Row 1: Opmerkingen */}
                             <div className="bg-gray-50 p-2 rounded h-[200px]">
-                              <label className="text-xs block mb-1">Gemeente notities</label>
+                              <label className="text-xs block mb-1">Opmerkingen</label>
                               <textarea 
                                 className="w-full h-[calc(100%-1.5rem)] text-xs p-2 rounded border border-input bg-white resize-none focus:outline-none focus:ring-1 focus:ring-ring" 
                                 placeholder="Plaats hier notities"
@@ -337,9 +337,9 @@ export default function InternalRequests() {
                             </div>
 
                             {/* Combined blue sections */}
-                            <div className="col-span-3 space-y-0">
+                            <div className="col-span-3 space-y-2">
                               {/* Top blue section */}
-                              <div className="bg-blue-100 p-2 rounded-t text-xs">
+                              <div className="bg-blue-100 p-2 rounded text-xs">
                                 <div className="grid grid-cols-3 gap-4">
                                   <div>
                                     <label className="text-xs font-medium block mb-1">Gewenste datum</label>
@@ -357,11 +357,11 @@ export default function InternalRequests() {
                               </div>
 
                               {/* Bottom sections grid */}
-                              <div className="grid grid-cols-3 gap-4">
+                              <div className="grid grid-cols-3 gap-4 mt-2">
                                 {/* Services section (now blue-100) */}
-                                <div className="bg-blue-100 p-2 rounded-b h-[160px] flex flex-col justify-between">
+                                <div className="bg-blue-100 p-2 rounded h-[160px] flex flex-col justify-between">
                                   <div>
-                                    <p className="text-xs font-medium mb-1">Aangevraagde services</p>
+                                    <p className="text-xs font-medium mb-2">Aangevraagde services</p>
                                     <div className="space-y-2">
                                       <div className="flex items-center space-x-1">
                                         <Checkbox id="elektra" className="h-3 w-3" />
@@ -381,7 +381,7 @@ export default function InternalRequests() {
                                       </div>
                                     </div>
                                   </div>
-                                  <div className="flex items-center space-x-1">
+                                  <div className="flex items-center space-x-1 mt-2">
                                     <Checkbox id="leveren-materiaal" className="h-3 w-3" />
                                     <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
                                   </div>
@@ -393,8 +393,8 @@ export default function InternalRequests() {
                                     {/* Left side - Verkeersplan */}
                                     <div className="flex flex-col justify-between">
                                       <div>
-                                        <p className="text-xs mb-1">Verkeersplan</p>
-                                        <div className="space-y-1">
+                                        <p className="text-xs mb-2">Verkeersplan</p>
+                                        <div className="space-y-2">
                                           <Select defaultValue="geen">
                                             <SelectTrigger className="h-6 text-xs py-0">
                                               <SelectValue placeholder="Selecteer optie" />
@@ -408,7 +408,7 @@ export default function InternalRequests() {
                                           </Select>
                                         </div>
                                       </div>
-                                      <div className="space-y-0.5">
+                                      <div className="space-y-2">
                                         <div className="flex items-center space-x-1">
                                           <Checkbox id="vergunning" className="h-3 w-3" />
                                           <label htmlFor="vergunning" className="text-xs">Vergunning</label>
@@ -430,9 +430,9 @@ export default function InternalRequests() {
 
                                     {/* Right side - Aannemer */}
                                     <div className="flex flex-col justify-between">
-                                      <div className="space-y-1">
+                                      <div className="space-y-2">
                                         <div>
-                                          <label className="text-xs block mb-0.5">Aannemer</label>
+                                          <label className="text-xs block mb-1">Aannemer</label>
                                           <Select defaultValue="geen">
                                             <SelectTrigger className="h-6 text-xs py-0">
                                               <SelectValue placeholder="Selecteer aannemer" />
@@ -445,7 +445,7 @@ export default function InternalRequests() {
                                           </Select>
                                         </div>
                                         <div>
-                                          <label className="text-xs block mb-0.5">Prio</label>
+                                          <label className="text-xs block mb-1">Prio</label>
                                           <Select defaultValue="geen">
                                             <SelectTrigger className="h-6 text-xs py-0">
                                               <SelectValue placeholder="Selecteer prio" />
@@ -460,7 +460,7 @@ export default function InternalRequests() {
                                         </div>
                                       </div>
                                       <div>
-                                        <label className="text-xs block mb-0.5">Combi</label>
+                                        <label className="text-xs block mb-1">Combi</label>
                                         <Input className="h-6 text-xs" placeholder="Voer combi in" />
                                       </div>
                                     </div>
