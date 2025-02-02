@@ -14,7 +14,7 @@
     "incremental": true,
     "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
     "baseUrl": ".",
-    "types": ["node", "vite/client"],
+    "types": ["node", "webpack-env", "vite/client"],
     "paths": {
       "@db": ["./db/index.ts"],
       "@db/*": ["./db/*"],

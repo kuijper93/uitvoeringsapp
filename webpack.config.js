@@ -6,13 +6,14 @@ import webpack from 'webpack';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default {
+const config = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  entry: [
-    // Add webpack-hot-middleware entry points
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-    './client/src/main.tsx'
-  ],
+  entry: {
+    app: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true',
+      './client/src/main.tsx',
+    ],
+  },
   output: {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].[contenthash].js',
@@ -28,9 +29,9 @@ export default {
           options: {
             transpileOnly: true,
             compilerOptions: {
-              noEmit: false
-            }
-          }
+              noEmit: false,
+            },
+          },
         },
         exclude: /node_modules/,
       },
@@ -38,7 +39,12 @@ export default {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+            },
+          },
           {
             loader: 'postcss-loader',
             options: {
@@ -59,33 +65,43 @@ export default {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
       '@': path.resolve(__dirname, 'client/src'),
       '@db': path.resolve(__dirname, 'db'),
     },
+    fallback: {
+      "path": false,
+      "fs": false,
+    }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './client/index.html',
       filename: 'index.html',
+      inject: true,
     }),
-    // Add environment variables that should be available in the client
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
-  // Source maps for better debugging
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
-  // Optimization settings
   optimization: {
     splitChunks: {
       chunks: 'all',
+      name: false,
     },
+    runtimeChunk: 'single',
   },
-  // Performance hints
+  stats: {
+    colors: true,
+    errorDetails: true,
+  },
   performance: {
     hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
   },
 };
+
+export default config;
