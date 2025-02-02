@@ -14,7 +14,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
-// Progress indicator sections
 const formSections = [
   { id: 'contact', title: 'Contact' },
   { id: 'details', title: 'Details' },
@@ -24,7 +23,6 @@ const formSections = [
 ] as const;
 
 const requestFormSchema = z.object({
-  // Contact Information
   requestorName: z.string().min(1, "Naam is verplicht"),
   requestorPhone: z.string().min(1, "Telefoonnummer is verplicht"),
   requestorEmail: z.string().email("Ongeldig e-mailadres"),
@@ -32,54 +30,39 @@ const requestFormSchema = z.object({
   executionContactName: z.string().min(1, "Naam uitvoerder is verplicht"),
   executionContactPhone: z.string().min(1, "Telefoonnummer uitvoerder is verplicht"),
   executionContactEmail: z.string().email("Ongeldig e-mailadres uitvoerder"),
-
-  // Work Details
   actionType: z.enum(["verwijderen", "verplaatsen", "ophogen", "plaatsen"]),
   furnitureType: z.enum(["abri", "mupi", "driehoeksbord", "reclamezuil"]),
   abriFormat: z.string().optional(),
   objectNumber: z.string().optional(),
   desiredDate: z.string().min(1, "Datum is verplicht"),
   locationSketch: z.string().optional(),
-
-  // Removal Location
   removalCity: z.string().optional(),
   removalStreet: z.string().optional(),
   removalPostcode: z.string().optional(),
-
-  // Installation Location
   installationCity: z.string().optional(),
   installationXCoord: z.string().optional(),
   installationYCoord: z.string().optional(),
   installationAddress: z.string().optional(),
   installationPostcode: z.string().optional(),
   installationStopName: z.string().optional(),
-
-  // Ground Work Removal
   groundRemovalPaving: z.boolean().optional(),
   groundRemovalExcavation: z.boolean().optional(),
   groundRemovalFilling: z.boolean().optional(),
   groundRemovalRepaving: z.boolean().optional(),
   groundRemovalMaterials: z.boolean().optional(),
-
-  // Ground Work Installation
   groundInstallationExcavation: z.boolean().optional(),
   groundInstallationFilling: z.boolean().optional(),
   groundInstallationRepaving: z.boolean().optional(),
   groundInstallationMaterials: z.boolean().optional(),
   groundInstallationExcessSoilAddress: z.string().optional(),
-
-  // Electrical Work
   electricalDisconnect: z.boolean().optional(),
   electricalConnect: z.boolean().optional(),
-
-  // Billing Information
   billingCity: z.string().min(1, "Plaats is verplicht"),
   billingAddress: z.string().min(1, "Adres is verplicht"),
   billingPostcode: z.string().min(1, "Postcode is verplicht"),
   billingDepartment: z.string().optional(),
   billingAttention: z.string().optional(),
   billingReference: z.string().optional(),
-
   additionalNotes: z.string().optional(),
 });
 
@@ -120,6 +103,8 @@ export default function CreateRequest() {
       executionContactName: "",
       executionContactPhone: "",
       executionContactEmail: "",
+      actionType: "plaatsen" as const,
+      furnitureType: "abri" as const,
       desiredDate: "",
       groundRemovalPaving: false,
       groundRemovalExcavation: false,
@@ -137,9 +122,10 @@ export default function CreateRequest() {
 
   const actionType = form.watch("actionType");
   const municipality = form.watch("municipality");
+  const furnitureType = form.watch("furnitureType");
 
   const showAbriFormat = municipality?.toLowerCase() === "amsterdam" && 
-                        form.watch("furnitureType") === "abri" &&
+                        furnitureType === "abri" &&
                         actionType === "plaatsen";
 
   const showLocationSketch = ["plaatsen", "verplaatsen"].includes(actionType || "");
@@ -253,7 +239,6 @@ export default function CreateRequest() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Contact Information */}
           <section data-section="contact">
             <Card>
               <CardHeader className="p-4">
@@ -386,7 +371,6 @@ export default function CreateRequest() {
             </Card>
           </section>
 
-          {/* Work Details */}
           <section data-section="details">
             <Card>
               <CardHeader className="p-4">
@@ -400,7 +384,11 @@ export default function CreateRequest() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Type straatmeubilair</FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select 
+                          onValueChange={field.onChange} 
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Selecteer het object" />
@@ -425,7 +413,11 @@ export default function CreateRequest() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Type actie</FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select 
+                          onValueChange={field.onChange}
+                          value={field.value}
+                          defaultValue={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Selecteer type actie" />
@@ -542,7 +534,6 @@ export default function CreateRequest() {
             </Card>
           </section>
 
-          {/* Location Information */}
           <section data-section="location">
             {showRemovalLocation && (
               <Card>
@@ -689,7 +680,6 @@ export default function CreateRequest() {
             )}
           </section>
 
-          {/* Groundwork Information */}
           <section data-section="groundwork">
             {showGroundRemoval && (
               <Card>
@@ -869,8 +859,6 @@ export default function CreateRequest() {
               )}
           </section>
 
-
-          {/* Electrical Work */}
             <section data-section="electrical">
               {(showElectricalDisconnect || showElectricalConnect) && (
                 <Card>
@@ -919,7 +907,6 @@ export default function CreateRequest() {
               )}
             </section>
 
-          {/* Billing Information */}
           <section data-section="billing">
             <Card>
               <CardHeader className="p-4">
@@ -961,9 +948,8 @@ export default function CreateRequest() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Adres</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>                      <FormMessage />
+                      <FormControl>                      <Input {...field} />
+                    </FormControl>                      <FormMessage />
                     </FormItem>
                   )}
                 />

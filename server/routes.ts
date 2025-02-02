@@ -7,6 +7,32 @@ import { nanoid } from "nanoid";
 import type { InsertWorkOrder } from "@db/schema";
 
 export function registerRoutes(app: Express): Server {
+  // Configure CORS for all routes first
+  app.use((req, res, next) => {
+    const allowedHosts = [
+      'localhost',
+      '0.0.0.0',
+      '.replit.dev',
+      '.repl.co',
+      'kirk.replit.dev'
+    ];
+
+    const origin = req.headers.origin;
+    if (origin && allowedHosts.some(host => origin.includes(host))) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
+
   app.get("/api/requests", async (_req, res) => {
     try {
       const requests = await db.query.workOrders.findMany({
