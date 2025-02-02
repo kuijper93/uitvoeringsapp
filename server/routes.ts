@@ -106,6 +106,20 @@ export function registerRoutes(app: Express): Server {
     res.json(requests);
   });
 
+  // Add endpoint for getting individual request
+  app.get("/api/requests/:id", async (req, res) => {
+    const { id } = req.params;
+    const request = await db.query.workOrders.findFirst({
+      where: eq(workOrders.id, parseInt(id)),
+    });
+
+    if (!request) {
+      return res.status(404).json({ error: "Request not found" });
+    }
+
+    res.json(request);
+  });
+
   // Alias /api/work-orders to /api/requests for backward compatibility
   app.get("/api/work-orders", async (_req, res) => {
     const requests = await db.query.workOrders.findMany({
