@@ -334,7 +334,7 @@ export default function InternalRequests() {
                         {/* Details section - 8 columns (2/3 width) */}
                         <div className="col-span-8 space-y-2">
                           <div className="bg-blue-100 p-2 rounded text-xs">
-                            <div className="grid grid-cols-3 gap-2">
+                            <div className="grid grid-cols-3 gap-2 items-start">
                               <div>
                                 <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
                                 <p className="text-xs">{selectedWorkOrder.desiredDate}</p>
@@ -382,8 +382,9 @@ export default function InternalRequests() {
                             <div className="col-span-2 space-y-2 bg-green-50 p-2 rounded">
                               <p className="text-xs font-medium mb-1">Uitvoering</p>
                               <div className="grid grid-cols-2 gap-4">
-                                {/* Left side - Previous Verkeersplan items */}
+                                {/* Left side - Verkeersplan items */}
                                 <div className="space-y-2">
+                                  <p className="text-xs font-medium">Verkeersplan</p>
                                   <div className="space-y-1">
                                     <Select defaultValue="geen">
                                       <SelectTrigger className="h-6 text-xs py-0">
@@ -415,8 +416,8 @@ export default function InternalRequests() {
                                   </div>
                                 </div>
 
-                                {/* Right side - Previous Aannemer items */}
-                                <div className="space-y-2">
+                                {/* Right side - Aannemer items */}
+                                <div className="flex flex-col space-y-2">
                                   <div className="space-y-1">
                                     <label className="text-xs">Aannemer</label>
                                     <Select defaultValue="geen">
@@ -453,7 +454,7 @@ export default function InternalRequests() {
                             </div>
                           </div>
                           
-                          <div className="bg-gray-50 p-2 rounded">
+                          <div className="bg-gray-50 p-2 rounded mt-2">
                             <label className="text-xs font-medium block mb-1">Gemeente notities</label>
                             <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
                           </div>
