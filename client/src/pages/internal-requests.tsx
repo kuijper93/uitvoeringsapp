@@ -352,54 +352,84 @@ export default function InternalRequests() {
 
                           <div className="bg-green-50 p-2 rounded">
                             <label className="text-xs font-medium block mb-1">Aangevraagde services:</label>
-                            <div className="grid grid-cols-2 gap-1">
-                              <div className="flex items-center space-x-1">
-                                <Checkbox id="elektra" className="h-3 w-3" checked={selectedWorkOrder.electricalConnect} />
-                                <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
+                            <div className="grid grid-cols-3 gap-4">
+                              {/* Verkeerstuin Column */}
+                              <div className="space-y-1">
+                                <p className="text-xs font-medium mb-1">Verkeerstuin</p>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="elektra" className="h-3 w-3" checked={selectedWorkOrder.electricalConnect} />
+                                  <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox 
+                                    id="grond-graven" 
+                                    className="h-3 w-3" 
+                                    checked={selectedWorkOrder.groundInstallationExcavation} 
+                                  />
+                                  <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox 
+                                    id="aanvullen" 
+                                    className="h-3 w-3" 
+                                    checked={selectedWorkOrder.groundInstallationFilling}
+                                  />
+                                  <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox 
+                                    id="herstrate" 
+                                    className="h-3 w-3" 
+                                    checked={selectedWorkOrder.groundInstallationRepaving}
+                                  />
+                                  <label htmlFor="herstrate" className="text-xs">Herstraten</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox 
+                                    id="leveren-materiaal" 
+                                    className="h-3 w-3" 
+                                    checked={selectedWorkOrder.groundInstallationMaterials}
+                                  />
+                                  <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="vergunning" className="h-3 w-3" />
+                                  <label htmlFor="vergunning" className="text-xs">Vergunning</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="klic" className="h-3 w-3" />
+                                  <label htmlFor="klic" className="text-xs">Klic</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="aarding" className="h-3 w-3" />
+                                  <label htmlFor="aarding" className="text-xs">Aarding</label>
+                                </div>
                               </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
-                                <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+
+                              {/* Zelf uitvoeren Column */}
+                              <div className="space-y-1">
+                                <p className="text-xs font-medium mb-1">Zelf uitvoeren</p>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
+                                  <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+                                </div>
                               </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox 
-                                  id="grond-graven" 
-                                  className="h-3 w-3" 
-                                  checked={selectedWorkOrder.groundInstallationExcavation} 
-                                />
-                                <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox 
-                                  id="aanvullen" 
-                                  className="h-3 w-3" 
-                                  checked={selectedWorkOrder.groundInstallationFilling}
-                                />
-                                <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox 
-                                  id="herstrate" 
-                                  className="h-3 w-3" 
-                                  checked={selectedWorkOrder.groundInstallationRepaving}
-                                />
-                                <label htmlFor="herstrate" className="text-xs">Herstraten</label>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox id="vergunning" className="h-3 w-3" />
-                                <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox 
-                                  id="leveren-materiaal" 
-                                  className="h-3 w-3" 
-                                  checked={selectedWorkOrder.groundInstallationMaterials}
-                                />
-                                <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Checkbox id="klic" className="h-3 w-3" />
-                                <label htmlFor="klic" className="text-xs">Klic</label>
+
+                              {/* Aannemer Column */}
+                              <div className="space-y-1">
+                                <p className="text-xs font-medium mb-1">Aannemer</p>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="geen-aannemer" className="h-3 w-3" />
+                                  <label htmlFor="geen-aannemer" className="text-xs">Geen aannemer</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="geen-grip" className="h-3 w-3" />
+                                  <label htmlFor="geen-grip" className="text-xs">Geen grip</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="geen-map" className="h-3 w-3" />
+                                  <label htmlFor="geen-map" className="text-xs">Geen map</label>
+                                </div>
                               </div>
                             </div>
                           </div>
