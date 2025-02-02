@@ -56,7 +56,7 @@ export default function Requests() {
             <SelectValue placeholder="Filter op gemeente" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Alle gemeenten</SelectItem>
+            <SelectItem value="all">Alle gemeenten</SelectItem>
             {municipalities.map((municipality) => (
               <SelectItem
                 key={municipality.toLowerCase()}
