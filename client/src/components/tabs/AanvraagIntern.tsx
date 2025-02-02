@@ -80,7 +80,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
   };
 
   return (
-    <div className="grid grid-cols-[1fr,2fr,1fr] gap-2">
+    <div className="grid grid-cols-[0.8fr,2.4fr,0.8fr] gap-2">
       {/* Left section - Objectgegevens */}
       <Card className="bg-amber-50/50 p-2 rounded-sm h-[300px] overflow-y-auto">
         <div className="space-y-1">
@@ -220,7 +220,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </div>
         </div>
 
-        <div className="mb-1">
+        <div>
           <Label className="text-xs">Verkeersplan</Label>
           <Select
             value={form.watch("verkeersplan")}
@@ -238,7 +238,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div className="mb-1">
+        <div>
           <Label className="text-xs">Aannemer</Label>
           <Select
             value={form.watch("aannemer")}
@@ -255,7 +255,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </Select>
         </div>
 
-        <div className="mb-1">
+        <div>
           <Label className="text-xs">Prio</Label>
           <Select
             value={form.watch("prio")}
