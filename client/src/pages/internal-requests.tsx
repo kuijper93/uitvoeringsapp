@@ -200,20 +200,36 @@ export default function InternalRequests() {
                     <label className="text-xs font-medium">Aangevraagde services:</label>
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="elektra" className="h-3 w-3" />
+                        <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
+                        <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
                         <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="graaf" className="h-3 w-3" />
-                        <label htmlFor="graaf" className="text-xs">Graaf graven</label>
+                        <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
+                        <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
+                        <label htmlFor="herstrate" className="text-xs">Herstraten</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
+                        <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="vergunning" className="h-3 w-3" />
                         <label htmlFor="vergunning" className="text-xs">Vergunning</label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <Checkbox id="materiaal" className="h-3 w-3" />
-                        <label htmlFor="materiaal" className="text-xs">Materiaal</label>
+                        <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
+                        <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox id="klic" className="h-3 w-3" defaultChecked />
+                        <label htmlFor="klic" className="text-xs">Klic</label>
                       </div>
                     </div>
                   </div>
@@ -273,130 +289,69 @@ export default function InternalRequests() {
         <ResizableHandle withHandle />
 
         <ResizablePanel defaultSize={25}>
-            <div className="flex h-full flex-col">
-              <div className="border-b py-2 px-3">
-                <h3 className="text-xs font-medium">Contact gemeente</h3>
+          <div className="flex h-full flex-col">
+            <div className="border-b py-1 px-2">
+              <h3 className="text-xs font-medium">Contact gemeente</h3>
+            </div>
+            <div className="flex-1 overflow-auto p-2 space-y-1">
+              {/* Contact Information - More compact */}
+              <div className="text-xs space-y-0.5">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-medium">Aanvrager:</span>
+                  <span>Ronald de Wit</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Email:</span>
+                  <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tel:</span>
+                  <span>06-85285859</span>
+                </div>
               </div>
-              <div className="flex-1 overflow-auto p-2 space-y-2">
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-2">
-                    <div className="flex justify-between items-start text-xs">
-                      <div>
-                        <p className="font-medium">Aanvrager</p>
-                        <p>Ronald de Wit</p>
-                      </div>
-                      <div className="text-right">
-                        <a href="mailto:dewit@test.nl" className="text-blue-600 block">dewit@test.nl</a>
-                        <p>06-85285859</p>
-                      </div>
-                    </div>
 
-                    <Separator className="my-1" />
+              <Separator className="my-1" />
 
-                    <div className="flex justify-between items-start text-xs">
-                      <div>
-                        <p className="font-medium">Uitvoering</p>
-                        <p>Pietje Put</p>
-                      </div>
-                      <div className="text-right">
-                        <a href="mailto:pietput@test.nl" className="text-blue-600 block">pietput@test.nl</a>
-                        <p>06-12234578</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              <div className="text-xs space-y-0.5">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-medium">Uitvoering:</span>
+                  <span>Pietje Put</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Email:</span>
+                  <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tel:</span>
+                  <span>06-12234578</span>
+                </div>
+              </div>
 
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-1">
-                    <label className="text-xs font-medium block">Aangevraagde services</label>
-                    <div className="grid grid-cols-1 gap-1">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
-                        <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
-                        <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
-                        <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
-                        <label htmlFor="herstrate" className="text-xs">Herstraten</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
-                        <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="vergunning" className="h-3 w-3" />
-                        <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
-                        <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+              <Separator className="my-1" />
 
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-1">
-                    <label className="text-xs font-medium block">Locatiegegevens</label>
-                    <div className="grid grid-cols-1 gap-1">
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Aanwezige objecten:</span><br />
-                        4 objecten in de buurt
-                      </p>
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Reclamelocatie:</span><br />
-                        Met reclame
-                      </p>
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Commercieel:</span><br />
-                        A en B zijde commercieel
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Location Information */}
+              <div className="text-xs space-y-1">
+                <p className="font-medium">Locatiegegevens</p>
+                <div className="space-y-0.5">
+                  <p><span className="text-muted-foreground">Aanwezige objecten:</span> 4 objecten in de buurt</p>
+                  <p><span className="text-muted-foreground">Reclamelocatie:</span> Met reclame</p>
+                  <p><span className="text-muted-foreground">Commercieel:</span> A en B zijde commercieel</p>
+                </div>
+              </div>
 
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-1">
-                    <label className="text-xs font-medium block">Elektrabox</label>
-                    <div className="grid grid-cols-1 gap-1 bg-green-50 p-2 rounded">
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">X:</span> 54.123123
-                      </p>
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Y:</span> 54.123123
-                      </p>
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Type:</span> Ondergronds
-                      </p>
-                      <p className="text-xs">
-                        <span className="text-muted-foreground">Materiaal:</span> NL-454521
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+              {/* Notes Section */}
+              <div className="text-xs space-y-1 pt-1">
+                <p className="font-medium">Overige opmerkingen</p>
+                <p>Steen huis Straatwerk / 06-85285859</p>
+              </div>
 
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-1">
-                    <label className="text-xs font-medium block">Overige opmerkingen</label>
-                    <p className="text-xs">Steen huis Straatwerk / 06-85285859</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="shadow-none border-0">
-                  <CardContent className="p-2 space-y-1">
-                    <label className="text-xs font-medium block">Gemeente notities</label>
-                    <Input className="text-xs h-8" placeholder="Plaats hier notities" />
-                  </CardContent>
-                </Card>
+              {/* Municipality Notes */}
+              <div className="text-xs space-y-1 pt-1">
+                <p className="font-medium">Gemeente notities</p>
+                <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
               </div>
             </div>
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
