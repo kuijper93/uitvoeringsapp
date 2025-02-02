@@ -384,7 +384,7 @@ export default function InternalRequests() {
                               <div className="grid grid-cols-2 gap-4">
                                 {/* Left side - Verkeersplan items */}
                                 <div className="space-y-2">
-                                  <p className="text-xs font-medium">Verkeersplan</p>
+                                  <p className="text-xs">Verkeersplan</p>
                                   <div className="space-y-1">
                                     <Select defaultValue="geen">
                                       <SelectTrigger className="h-6 text-xs py-0">
