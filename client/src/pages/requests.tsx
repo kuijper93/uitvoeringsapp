@@ -30,14 +30,14 @@ export default function Requests() {
           </p>
         </div>
         <Link href="/create-request">
-          <Button className="rounded-lg">
+          <Button className="rounded-xl">
             <Plus className="mr-2 h-4 w-4" />
             Nieuwe Aanvraag
           </Button>
         </Link>
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-xl overflow-hidden border bg-card">
         <Table>
           <TableHeader>
             <TableRow>
@@ -58,7 +58,7 @@ export default function Requests() {
                   {request.orderNumber}
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline" className="rounded-md">
+                  <Badge variant="outline" className="rounded-xl">
                     {getFurnitureTypeLabel(request.furnitureType)}
                   </Badge>
                 </TableCell>
@@ -77,7 +77,7 @@ export default function Requests() {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Badge className={`${getStatusColor(request.status)} rounded-md`}>
+                  <Badge className={`${getStatusColor(request.status)} rounded-xl`}>
                     {getStatusLabel(request.status)}
                   </Badge>
                 </TableCell>
@@ -96,7 +96,7 @@ export default function Requests() {
                 </TableCell>
                 <TableCell>
                   <Link href={`/requests/${request.id}`}>
-                    <Button variant="ghost" size="icon" className="rounded-lg">
+                    <Button variant="ghost" size="icon" className="rounded-xl">
                       <FileText className="h-4 w-4" />
                     </Button>
                   </Link>

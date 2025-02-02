@@ -10,7 +10,7 @@ export default function Dashboard() {
   });
 
   if (isLoading) {
-    return <Skeleton className="w-full h-[400px] rounded-lg" />;
+    return <Skeleton className="w-full h-[400px] rounded-xl" />;
   }
 
   const workloadData = [
@@ -25,7 +25,7 @@ export default function Dashboard() {
       <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
 
       <div className="grid gap-3 md:grid-cols-3">
-        <Card className="bg-card rounded-lg">
+        <Card className="rounded-xl overflow-hidden">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">Totaal Mutaties</CardTitle>
           </CardHeader>
@@ -36,7 +36,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card rounded-lg">
+        <Card className="rounded-xl overflow-hidden">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">In Behandeling</CardTitle>
           </CardHeader>
@@ -47,7 +47,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-card rounded-lg">
+        <Card className="rounded-xl overflow-hidden">
           <CardHeader className="p-4">
             <CardTitle className="text-card-foreground text-base">Deze Week Afgerond</CardTitle>
           </CardHeader>
@@ -59,7 +59,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <Card className="bg-card rounded-lg">
+      <Card className="rounded-xl overflow-hidden">
         <CardHeader className="p-4">
           <CardTitle className="text-card-foreground text-base">Werkbelasting Trend</CardTitle>
         </CardHeader>

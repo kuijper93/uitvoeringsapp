@@ -26,14 +26,14 @@ export default function WorkOrders() {
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Mutaties</h1>
         <Link href="/work-orders/new">
-          <Button className="rounded-lg">
+          <Button className="rounded-xl">
             <Plus className="mr-2 h-4 w-4" />
             Nieuwe Mutatie
           </Button>
         </Link>
       </div>
 
-      <div className="rounded-lg border bg-card">
+      <div className="rounded-xl overflow-hidden border bg-card">
         <Table>
           <TableHeader>
             <TableRow>
@@ -57,7 +57,7 @@ export default function WorkOrders() {
                 <TableCell>
                   <Badge
                     variant="secondary"
-                    className={`${getStatusColor(order.status)} rounded-md`}
+                    className={`${getStatusColor(order.status)} rounded-xl`}
                   >
                     {getStatusLabel(order.status)}
                   </Badge>
