@@ -151,7 +151,7 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={85}>
+        <ResizablePanel defaultSize={70}>
           <div className="flex h-full flex-col">
             <div className="border-b p-3">
               <h2 className="text-sm font-medium">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
@@ -169,47 +169,7 @@ export default function InternalRequests() {
                     <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-2 pt-0">
-                    <div className="rounded-lg bg-background border p-2">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-xs space-y-0.5">
-                          <div className="flex justify-between items-baseline">
-                            <span className="font-medium">Aanvrager:</span>
-                            <span>Ronald de Wit</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Email:</span>
-                            <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Tel:</span>
-                            <span>06-85285859</span>
-                          </div>
-                        </div>
-
-                        <div className="text-xs space-y-0.5">
-                          <div className="flex justify-between items-baseline">
-                            <span className="font-medium">Uitvoering:</span>
-                            <span>Pietje Put</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Email:</span>
-                            <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Tel:</span>
-                            <span>06-12234578</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Separator className="my-1" />
-
-                      <div className="text-xs">
-                        <p className="font-medium mb-1">Gemeente notities</p>
-                        <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
-                      </div>
-                    </div>
-
+                    
                     <div className="grid grid-cols-2 gap-2">
                       <div className="bg-blue-100 p-2 rounded text-xs">
                         <div className="grid grid-cols-2 gap-2">
@@ -224,7 +184,6 @@ export default function InternalRequests() {
                         </div>
                       </div>
                     </div>
-
                     <div className="bg-orange-50 p-2 rounded">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
@@ -237,7 +196,6 @@ export default function InternalRequests() {
                         </div>
                       </div>
                     </div>
-
                     <div>
                       <label className="text-xs font-medium">Aangevraagde services:</label>
                       <div className="grid grid-cols-4 gap-1 mt-1">
@@ -324,6 +282,56 @@ export default function InternalRequests() {
                     Naar documenten
                   </Button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle withHandle />
+
+        <ResizablePanel defaultSize={15}>
+          <div className="flex h-full flex-col">
+            <div className="border-b py-1 px-2">
+              <h3 className="text-xs font-medium">Contact gemeente</h3>
+            </div>
+            <div className="p-2 space-y-1">
+              <div className="text-xs space-y-0.5">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-medium">Aanvrager:</span>
+                  <span>Ronald de Wit</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Email:</span>
+                  <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tel:</span>
+                  <span>06-85285859</span>
+                </div>
+              </div>
+
+              <Separator className="my-1" />
+
+              <div className="text-xs space-y-0.5">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-medium">Uitvoering:</span>
+                  <span>Pietje Put</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Email:</span>
+                  <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tel:</span>
+                  <span>06-12234578</span>
+                </div>
+              </div>
+
+              <Separator className="my-1" />
+
+              <div className="text-xs space-y-1">
+                <p className="font-medium">Gemeente notities</p>
+                <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
               </div>
             </div>
           </div>
