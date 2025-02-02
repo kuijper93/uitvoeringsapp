@@ -86,7 +86,7 @@ export default function InternalRequests() {
         direction="horizontal"
         className="h-full rounded-lg border"
       >
-        <ResizablePanel defaultSize={20} minSize={15}>
+        <ResizablePanel defaultSize={15} minSize={15}>
           <div className="flex h-full flex-col">
             <div className="space-y-2 px-3 py-4">
               <div className="relative">
@@ -151,7 +151,7 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={45}>
+        <ResizablePanel defaultSize={55}>
           <div className="flex h-full flex-col">
             <div className="border-b p-4">
               <h2 className="text-lg font-semibold">Plaatsen {selectedWorkOrder.orderDetails?.objectNumber} {selectedWorkOrder.orderDetails?.street}</h2>
@@ -272,54 +272,52 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={35}>
+        <ResizablePanel defaultSize={30}>
             <div className="flex h-full flex-col">
               <div className="border-b p-4">
-                <h3 className="font-semibold">Contact gemeente</h3>
+                <h3 className="text-sm font-medium">Contact gemeente</h3>
               </div>
               <div className="flex-1 overflow-auto p-4 space-y-4">
-               <Card>
+                <Card>
                   <CardContent className="flex flex-col gap-2">
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <label className="text-xs font-medium">Aanvrager</label>
-                        <p className="text-sm">{selectedWorkOrder.contacts?.requester.name}</p>
+                    <div className="flex flex-col items-end">
+                      <div className="w-full mb-2">
+                        <p className="text-sm font-medium">Ronald de Wit</p>
                       </div>
-                      <div className="text-right space-y-1">
-                        <label className="text-xs font-medium">Contact</label>
-                          <p className="text-xs text-blue-600">{selectedWorkOrder.contacts?.requester.email}</p>
-                         <p className="text-xs">{selectedWorkOrder.contacts?.requester.phone}</p>
+                      <div className="text-right space-y-0.5">
+                        <a href="mailto:dewit@test.nl" className="text-xs text-blue-600 block">dewit@test.nl</a>
+                        <p className="text-xs">06-85285859</p>
                       </div>
                     </div>
-                    <Separator />
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <label className="text-xs font-medium">Uitvoering</label>
-                          <p className="text-xs text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>
-                          <p className="text-xs">{selectedWorkOrder.contacts?.execution.phone}</p>
+                    <Separator className="my-2" />
+                    <div className="flex flex-col items-end">
+                      <label className="text-xs font-medium self-start mb-1">Uitvoering</label>
+                      <div className="text-right space-y-0.5">
+                        <a href="mailto:pietput@test.nl" className="text-xs text-blue-600 block">pietput@test.nl</a>
+                        <p className="text-xs">06-12234578</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
                 <Card>
-                    <CardContent className="pt-3">
-                        <div className="space-y-1">
-                            <label className="text-xs font-medium">Notities</label>
-                            <p className="text-sm">{selectedWorkOrder.contacts?.notes}</p>
-                         </div>
-                   </CardContent>
-                </Card>
-              <Card>
-                 <CardContent className="pt-3">
+                  <CardContent className="pt-3">
                     <div className="space-y-1">
-                       <label className="text-xs font-medium">Gemeente notities</label>
-                      <Input className="text-sm" placeholder="Plaats hier notities" />
+                      <label className="text-xs font-medium">Overige opmerkingen</label>
+                      <p className="text-xs">Steen huis Straatwerk / 06-85285859</p>
                     </div>
-                </CardContent>
-             </Card>
-           </div>
-         </div>
-       </ResizablePanel>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-3">
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium">Gemeente notities</label>
+                      <Input className="text-xs" placeholder="Plaats hier notities" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+        </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );
