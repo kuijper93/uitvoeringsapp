@@ -273,45 +273,53 @@ export default function InternalRequests() {
         <ResizableHandle withHandle />
 
         <ResizablePanel defaultSize={35}>
-          <div className="flex h-full flex-col">
-            <div className="border-b p-4">
-              <h3 className="font-semibold">Contact gemeente</h3>
-            </div>
-            <div className="flex-1 overflow-auto p-4 space-y-4">
+            <div className="flex h-full flex-col">
+              <div className="border-b p-4">
+                <h3 className="font-semibold">Contact gemeente</h3>
+              </div>
+              <div className="flex-1 overflow-auto p-4 space-y-4">
+               <Card>
+                  <CardContent className="flex flex-col gap-2">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium">Aanvrager</label>
+                        <p className="text-sm">{selectedWorkOrder.contacts?.requester.name}</p>
+                      </div>
+                      <div className="text-right space-y-1">
+                        <label className="text-xs font-medium">Contact</label>
+                          <p className="text-xs text-blue-600">{selectedWorkOrder.contacts?.requester.email}</p>
+                         <p className="text-xs">{selectedWorkOrder.contacts?.requester.phone}</p>
+                      </div>
+                    </div>
+                    <Separator />
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <label className="text-xs font-medium">Uitvoering</label>
+                          <p className="text-xs text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>
+                          <p className="text-xs">{selectedWorkOrder.contacts?.execution.phone}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <Card>
+                    <CardContent className="pt-3">
+                        <div className="space-y-1">
+                            <label className="text-xs font-medium">Notities</label>
+                            <p className="text-sm">{selectedWorkOrder.contacts?.notes}</p>
+                         </div>
+                   </CardContent>
+                </Card>
               <Card>
-                <CardContent className="pt-3">
-                  <div className="space-y-1">
-                    <div>
-                      <label className="text-xs font-medium">Aanvrager</label>
-                      <p className="text-sm">{selectedWorkOrder.contacts?.requester.name}</p>
+                 <CardContent className="pt-3">
+                    <div className="space-y-1">
+                       <label className="text-xs font-medium">Gemeente notities</label>
+                      <Input className="text-sm" placeholder="Plaats hier notities" />
                     </div>
-                    <div>
-                      <label className="text-xs font-medium">Contact</label>
-                      <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.requester.email}</p>
-                      <p className="text-sm">{selectedWorkOrder.contacts?.requester.phone}</p>
-                    </div>
-                  </div>
                 </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent className="pt-3">
-                  <div className="space-y-1">
-                    <div>
-                      <label className="text-xs font-medium">Uitvoering</label>
-                      <p className="text-sm text-blue-600">{selectedWorkOrder.contacts?.execution.email}</p>
-                      <p className="text-sm">{selectedWorkOrder.contacts?.execution.phone}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium">Overige opmerkingen</label>
-                      <p className="text-sm">{selectedWorkOrder.contacts?.notes}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </ResizablePanel>
+             </Card>
+           </div>
+         </div>
+       </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   );
