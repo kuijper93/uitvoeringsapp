@@ -326,7 +326,7 @@ export default function InternalRequests() {
 
                         {/* Details section - 8 columns (2/3 width) */}
                         <div className="col-span-8">
-                          <div className="grid grid-cols-4 gap-4">
+                          <div className="grid grid-cols-4 gap-6">
                             {/* Row 1: Opmerkingen */}
                             <div className="bg-gray-50 p-2 rounded h-[200px]">
                               <label className="text-xs block mb-1">Opmerkingen</label>
@@ -339,7 +339,7 @@ export default function InternalRequests() {
                             {/* Combined blue sections */}
                             <div className="col-span-3 space-y-2">
                               {/* Top blue section */}
-                              <div className="bg-blue-100 p-2 rounded text-xs">
+                              <div className="bg-blue-100 p-3 rounded text-xs">
                                 <div className="grid grid-cols-3 gap-4">
                                   <div>
                                     <label className="text-xs font-medium block mb-1">Gewenste datum</label>
@@ -357,9 +357,9 @@ export default function InternalRequests() {
                               </div>
 
                               {/* Bottom sections grid */}
-                              <div className="grid grid-cols-3 gap-4 mt-2">
+                              <div className="grid grid-cols-3 gap-4 mt-4">
                                 {/* Services section (now blue-100) */}
-                                <div className="bg-blue-100 p-2 rounded h-[160px] flex flex-col justify-between">
+                                <div className="bg-blue-100 p-3 rounded h-[160px] flex flex-col justify-between">
                                   <div>
                                     <p className="text-xs font-medium mb-2">Aangevraagde services</p>
                                     <div className="space-y-2">
@@ -388,12 +388,12 @@ export default function InternalRequests() {
                                 </div>
 
                                 {/* Green sections */}
-                                <div className="col-span-2 bg-green-50 p-2 rounded h-[160px]">
+                                <div className="col-span-2 bg-green-50 p-3 rounded h-[160px]">
                                   <div className="grid grid-cols-2 gap-4 h-full">
                                     {/* Left side - Verkeersplan */}
                                     <div className="flex flex-col justify-between">
                                       <div>
-                                        <p className="text-xs mb-2">Verkeersplan</p>
+                                        <p className="text-xs font-medium mb-2">Verkeersplan</p>
                                         <div className="space-y-2">
                                           <Select defaultValue="geen">
                                             <SelectTrigger className="h-6 text-xs py-0">
