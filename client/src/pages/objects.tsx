@@ -92,14 +92,14 @@ export default function Objects() {
               <SelectValue placeholder="Filter op gemeente" />
             </SelectTrigger>
             <SelectContent className="bg-white z-[1000]">
-              <SelectItem value="all" className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary">
+              <SelectItem value="all" className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900">
                 Alle gemeenten
               </SelectItem>
               {municipalities.map((municipality) => (
                 <SelectItem
                   key={municipality.toLowerCase()}
                   value={municipality.toLowerCase()}
-                  className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary"
+                  className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
                 >
                   {municipality}
                 </SelectItem>
@@ -117,14 +117,14 @@ export default function Objects() {
               <SelectValue placeholder="Filter op type" />
             </SelectTrigger>
             <SelectContent className="bg-white z-[1000]">
-              <SelectItem value="all" className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary">
+              <SelectItem value="all" className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900">
                 Alle types
               </SelectItem>
               {objectTypes.map((type) => (
                 <SelectItem
                   key={type}
                   value={type}
-                  className="py-3 px-4 cursor-pointer hover:bg-primary/10 hover:text-primary"
+                  className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
                 >
                   {getFurnitureTypeLabel(type)}
                 </SelectItem>
