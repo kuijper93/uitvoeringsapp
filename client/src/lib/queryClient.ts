@@ -19,7 +19,11 @@ export async function apiRequest(
   data?: unknown | undefined,
 ): Promise<any> {
   try {
-    const res = await fetch(url, {
+    const apiUrl = process.env.NODE_ENV === 'development' 
+      ? `${window.location.origin}${url}`
+      : url;
+
+    const res = await fetch(apiUrl, {
       method,
       headers: {
         ...(data ? { "Content-Type": "application/json" } : {}),
@@ -27,6 +31,7 @@ export async function apiRequest(
       },
       body: data ? JSON.stringify(data) : undefined,
       credentials: "include",
+      mode: 'cors',
     });
 
     await throwIfResNotOk(res);
@@ -49,8 +54,13 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     try {
-      const res = await fetch(queryKey[0] as string, {
+      const apiUrl = process.env.NODE_ENV === 'development'
+        ? `${window.location.origin}${queryKey[0]}`
+        : queryKey[0] as string;
+
+      const res = await fetch(apiUrl, {
         credentials: "include",
+        mode: 'cors',
         headers: {
           "Accept": "application/json",
         },
