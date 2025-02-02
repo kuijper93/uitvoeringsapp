@@ -194,13 +194,13 @@ export default function InternalRequests() {
                   <div className="flex justify-between items-start">
                     <div>
                       <div className="flex items-center gap-2 text-sm">
-                        <span>{selectedWorkOrder.orderNumber}</span>
-                        <span>•</span>
-                        <span>{selectedWorkOrder.actionType}</span>
-                        <span>•</span>
                         <span>{selectedWorkOrder.furnitureType}</span>
                         <span>•</span>
+                        <span>{selectedWorkOrder.actionType}</span>
+                        <span>in</span>
                         <span>{selectedWorkOrder.municipality}</span>
+                        <span>•</span>
+                        <span>{selectedWorkOrder.orderNumber}</span>
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         Ingepland voor {selectedWorkOrder.desiredDate}
