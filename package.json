@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@hookform/resolvers": "^3.9.1",
@@ -82,7 +83,9 @@
     "vite": "^6.0.11",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
+    "webpack-dev-middleware": "^7.4.2",
     "webpack-dev-server": "^5.2.0",
+    "webpack-hot-middleware": "^2.26.1",
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.23.8",

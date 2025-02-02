@@ -1,6 +1,11 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, log } from "./vite";
+import path from "path";
+import webpack from "webpack";
+import webpackDevMiddleware from "webpack-dev-middleware";
+import webpackHotMiddleware from "webpack-hot-middleware";
+// @ts-ignore - webpack config is a JavaScript file
+import webpackConfig from "../webpack.config.js";
 
 const app = express();
 app.use(express.json());
@@ -45,29 +50,43 @@ app.use((req, res, next) => {
         logLine = logLine.slice(0, 79) + "…";
       }
 
-      log(logLine);
+      console.log(`${new Date().toLocaleTimeString()} [express] ${logLine}`);
     }
   });
 
   next();
 });
 
-(async () => {
-  const server = registerRoutes(app);
+// Set up webpack middleware in development
+if (process.env.NODE_ENV !== 'production') {
+  const compiler = webpack(webpackConfig);
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath,
+    })
+  );
+  app.use(webpackHotMiddleware(compiler));
+}
 
-  // Error handling middleware
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-    console.error("Server error:", err);
-    res.status(status).json({ message });
+const server = registerRoutes(app);
+
+// Error handling middleware
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  console.error("Server error:", err);
+  res.status(status).json({ message });
+});
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../dist/public')));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/public/index.html'));
   });
+}
 
-  // Set up Vite for development
-  await setupVite(app, server);
-
-  const PORT = Number(process.env.PORT) || 5000;
-  server.listen(PORT, "0.0.0.0", () => {
-    log(`Server running at http://0.0.0.0:${PORT}`);
-  });
-})();
+const PORT = Number(process.env.PORT) || 5000;
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${PORT}`);
+});

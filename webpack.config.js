@@ -1,12 +1,18 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: './client/src/main.tsx',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist/public'),
+    filename: '[name].[contenthash].js',
     publicPath: '/',
+    clean: true,
   },
   module: {
     rules: [
@@ -35,10 +41,18 @@ module.exports = {
   ],
   devServer: {
     historyApiFallback: true,
+    hot: true,
     port: 3000,
     host: '0.0.0.0',
     proxy: {
       '/api': 'http://localhost:5000',
     },
+    static: {
+      directory: path.join(__dirname, 'dist/public'),
+    },
+    client: {
+      overlay: true,
+    },
   },
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
 };
