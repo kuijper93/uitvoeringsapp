@@ -67,8 +67,9 @@ if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(webpackConfig);
   app.use(
     webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath,
+      publicPath: webpackConfig.output.publicPath || '/',
       writeToDisk: true,
+      index: 'index.html',
     })
   );
   app.use(webpackHotMiddleware(compiler));
@@ -94,13 +95,18 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-// Serve static files and handle client-side routing
+// Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist/public')));
 }
 
 // Handle client-side routing - This should be after API routes but before error handling
-app.get('*', (_req, res) => {
+app.get('*', (req, res) => {
+  // Skip API routes
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/public/index.html'));
   } else {
