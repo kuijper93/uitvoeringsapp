@@ -12,141 +12,142 @@ const dummyData: Partial<InsertWorkOrder>[] = [
     requestorPhone: "020-5555123",
     requestorEmail: "j.devries@amsterdam.nl",
     municipality: "amsterdam",
-    executionContactName: "Peter Bakker",
-    executionContactPhone: "020-5555124",
-    executionContactEmail: "p.bakker@amsterdam.nl",
-    actionType: "plaatsen",
-    furnitureType: "abri",
+    execution_contact: "Peter Bakker",
+    execution_phone: "020-5555124",
+    execution_email: "p.bakker@amsterdam.nl",
+    execution_contact_name: "Peter Bakker",
+    execution_contact_phone: "020-5555124",
+    execution_contact_email: "p.bakker@amsterdam.nl",
+    action_type: "plaatsen",
+    furniture_type: "abri",
+    street_furniture_type: "abri",
     city: "Amsterdam",
-    desiredDate: new Date("2025-03-01").toISOString().split('T')[0],
+    desired_date: new Date("2025-03-01").toISOString().split('T')[0],
     status: "PENDING",
-    termsAccepted: true,
-    abriFormat: "2.5m breed",
-    installationCity: "Amsterdam",
-    installationXCoord: "52.3676",
-    installationYCoord: "4.9041",
-    installationAddress: "Damrak 1",
-    installationPostcode: "1012LG",
-    installationStopName: "Centraal Station",
-    groundInstallationExcavation: true,
-    groundInstallationFilling: true,
-    groundInstallationRepaving: true,
-    groundInstallationMaterials: true,
-    electricalConnect: true,
-    billingCity: "Amsterdam",
-    billingAddress: "Damrak 1",
-    billingPostcode: "1012LG",
-    billingDepartment: "Stadsbeheer",
-    billingAttention: "Dhr. J. Janssen",
-    billingReference: "AMS-2025-001",
-    additionalNotes: "Nieuwe abri voor drukke OV-locatie"
+    terms_accepted: true,
+    abri_format: "2.5m breed",
+    installation_city: "Amsterdam",
+    installation_x_coord: "52.3676",
+    installation_y_coord: "4.9041",
+    installation_address: "Damrak 1",
+    installation_postcode: "1012LG",
+    installation_stop_name: "Centraal Station",
+    ground_installation_excavation: true,
+    ground_installation_filling: true,
+    ground_installation_repaving: true,
+    ground_installation_materials: true,
+    electrical_connect: true,
+    billing_city: "Amsterdam",
+    billing_address: "Damrak 1",
+    billing_postcode: "1012LG",
+    billing_department: "Stadsbeheer",
+    billing_attention: "Dhr. J. Janssen",
+    billing_reference: "AMS-2025-001",
+    additional_notes: "Nieuwe abri voor drukke OV-locatie"
   },
   {
     requestorName: "Marie Jansen",
     requestorPhone: "010-5555123",
     requestorEmail: "m.jansen@rotterdam.nl",
     municipality: "rotterdam",
-    executionContactName: "Kees Visser",
-    executionContactPhone: "010-5555124",
-    executionContactEmail: "k.visser@rotterdam.nl",
-    actionType: "verplaatsen",
-    furnitureType: "mupi",
+    execution_contact: "Kees Visser",
+    execution_phone: "010-5555124",
+    execution_email: "k.visser@rotterdam.nl",
+    execution_contact_name: "Kees Visser",
+    execution_contact_phone: "010-5555124",
+    execution_contact_email: "k.visser@rotterdam.nl",
+    action_type: "verplaatsen",
+    furniture_type: "mupi",
+    street_furniture_type: "mupi",
     city: "Rotterdam",
-    desiredDate: new Date("2025-03-15").toISOString().split('T')[0],
+    desired_date: new Date("2025-03-15").toISOString().split('T')[0],
     status: "PENDING",
-    termsAccepted: true,
-    objectNumber: "ROT-789",
-    removalCity: "Rotterdam",
-    removalStreet: "Coolsingel 40",
-    removalPostcode: "3011AD",
-    installationCity: "Rotterdam",
-    installationXCoord: "51.9225",
-    installationYCoord: "4.4792",
-    installationAddress: "Blaak 31",
-    installationPostcode: "3011GA",
-    groundRemovalPaving: true,
-    groundRemovalExcavation: true,
-    groundRemovalFilling: true,
-    groundRemovalRepaving: true,
-    groundRemovalMaterials: true,
-    groundInstallationExcavation: true,
-    groundInstallationFilling: true,
-    groundInstallationRepaving: true,
-    groundInstallationMaterials: true,
-    electricalDisconnect: true,
-    electricalConnect: true,
-    billingCity: "Rotterdam",
-    billingAddress: "Coolsingel 40",
-    billingPostcode: "3011AD",
-    billingDepartment: "Stadsontwikkeling",
-    billingAttention: "Mevr. K. de Groot",
-    billingReference: "ROT-2025-002",
-    additionalNotes: "Verplaatsing i.v.m. herinrichting plein"
+    terms_accepted: true,
+    object_number: "ROT-789",
+    removal_city: "Rotterdam",
+    removal_street: "Coolsingel 40",
+    removal_postcode: "3011AD",
+    installation_city: "Rotterdam",
+    installation_x_coord: "51.9225",
+    installation_y_coord: "4.4792",
+    installation_address: "Blaak 31",
+    installation_postcode: "3011GA",
+    ground_removal_paving: true,
+    ground_removal_excavation: true,
+    ground_removal_filling: true,
+    ground_removal_repaving: true,
+    ground_removal_materials: true,
+    ground_installation_excavation: true,
+    ground_installation_filling: true,
+    ground_installation_repaving: true,
+    ground_installation_materials: true,
+    electrical_disconnect: true,
+    electrical_connect: true,
+    billing_city: "Rotterdam",
+    billing_address: "Coolsingel 40",
+    billing_postcode: "3011AD",
+    billing_department: "Stadsontwikkeling",
+    billing_attention: "Mevr. K. de Groot",
+    billing_reference: "ROT-2025-002",
+    additional_notes: "Verplaatsing i.v.m. herinrichting plein"
   },
   {
     requestorName: "Sophie van Dijk",
     requestorPhone: "030-5555123",
     requestorEmail: "s.vandijk@utrecht.nl",
     municipality: "utrecht",
-    executionContactName: "Thomas Berg",
-    executionContactPhone: "030-5555124",
-    executionContactEmail: "t.berg@utrecht.nl",
-    actionType: "verwijderen",
-    furnitureType: "driehoeksbord",
+    execution_contact: "Thomas Berg",
+    execution_phone: "030-5555124",
+    execution_email: "t.berg@utrecht.nl",
+    execution_contact_name: "Thomas Berg",
+    execution_contact_phone: "030-5555124",
+    execution_contact_email: "t.berg@utrecht.nl",
+    action_type: "verwijderen",
+    furniture_type: "driehoeksbord",
+    street_furniture_type: "driehoeksbord",
     city: "Utrecht",
-    desiredDate: new Date("2025-03-10").toISOString().split('T')[0],
+    desired_date: new Date("2025-03-10").toISOString().split('T')[0],
     status: "PENDING",
-    termsAccepted: true,
-    objectNumber: "UTR-123",
-    removalCity: "Utrecht",
-    removalStreet: "Oudegracht 50",
-    removalPostcode: "3511AR",
-    groundRemovalPaving: true,
-    groundRemovalExcavation: true,
-    groundRemovalFilling: true,
-    groundRemovalRepaving: true,
-    groundRemovalMaterials: true,
-    electricalDisconnect: true,
-    billingCity: "Utrecht",
-    billingAddress: "Oudegracht 50",
-    billingPostcode: "3511AR",
-    billingDepartment: "Stadsbeheer",
-    billingAttention: "Dhr. P. van der Meer",
-    billingReference: "UTR-2025-003",
-    additionalNotes: "Verwijdering i.v.m. einde contract"
+    terms_accepted: true,
+    object_number: "UTR-123",
+    removal_city: "Utrecht",
+    removal_street: "Oudegracht 50",
+    removal_postcode: "3511AR",
+    ground_removal_paving: true,
+    ground_removal_excavation: true,
+    ground_removal_filling: true,
+    ground_removal_repaving: true,
+    ground_removal_materials: true,
+    electrical_disconnect: true,
+    billing_city: "Utrecht",
+    billing_address: "Oudegracht 50",
+    billing_postcode: "3511AR",
+    billing_department: "Stadsbeheer",
+    billing_attention: "Dhr. P. van der Meer",
+    billing_reference: "UTR-2025-003",
+    additional_notes: "Verwijdering i.v.m. einde contract"
   }
 ];
 
 export function registerRoutes(app: Express): Server {
   app.get("/api/requests", async (_req, res) => {
-    try {
-      const requests = await db.query.workOrders.findMany({
-        orderBy: [desc(workOrders.createdAt)],
-      });
-      res.json(requests);
-    } catch (error) {
-      console.error("Error fetching requests:", error);
-      res.status(500).json({ message: "Failed to fetch requests" });
-    }
+    const requests = await db.query.workOrders.findMany({
+      orderBy: [desc(workOrders.createdAt)],
+    });
+    res.json(requests);
   });
 
   app.post("/api/requests", async (req, res) => {
-    try {
-      const orderNumber = nanoid(8).toUpperCase();
-      const data = {
-        ...req.body,
-        orderNumber,
-        status: "PENDING",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+    const orderNumber = nanoid(8).toUpperCase();
+    const data = req.body;
 
-      const request = await db.insert(workOrders).values(data).returning();
-      res.json(request[0]);
-    } catch (error) {
-      console.error("Error creating request:", error);
-      res.status(500).json({ message: "Failed to create request" });
-    }
+    const request = await db.insert(workOrders).values({
+      ...data,
+      orderNumber,
+      status: "PENDING",
+    }).returning();
+
+    res.json(request[0]);
   });
 
   app.post("/api/populate-dummy-data", async (_req, res) => {
@@ -157,15 +158,13 @@ export function registerRoutes(app: Express): Server {
         const request = await db.insert(workOrders).values({
           ...data,
           orderNumber,
-          createdAt: new Date(),
-          updatedAt: new Date(),
         }).returning();
         insertedData.push(request[0]);
       }
       res.json({ message: "Dummy data inserted successfully", data: insertedData });
     } catch (error) {
       console.error("Error inserting dummy data:", error);
-      res.status(500).json({ message: "Failed to insert dummy data" });
+      res.status(500).json({ error: "Failed to insert dummy data" });
     }
   });
 

@@ -1,9 +1,5 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-const API_URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:5000'
-  : '';
-
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     let errorMessage;
@@ -23,21 +19,19 @@ export async function apiRequest(
   data?: unknown | undefined,
 ): Promise<any> {
   try {
-    const apiUrl = `${API_URL}${url}`;
-
-    const res = await fetch(apiUrl, {
+    const res = await fetch(url, {
       method,
       headers: {
         ...(data ? { "Content-Type": "application/json" } : {}),
         "Accept": "application/json",
       },
       body: data ? JSON.stringify(data) : undefined,
-      credentials: "include",
-      mode: 'cors',
+      credentials: "same-origin",
     });
 
     await throwIfResNotOk(res);
 
+    // For DELETE operations or endpoints that don't return data
     if (method === 'DELETE' || res.status === 204) {
       return null;
     }
@@ -56,11 +50,8 @@ export const getQueryFn: <T>(options: {
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
     try {
-      const apiUrl = `${API_URL}${queryKey[0]}`;
-
-      const res = await fetch(apiUrl, {
-        credentials: "include",
-        mode: 'cors',
+      const res = await fetch(queryKey[0] as string, {
+        credentials: "same-origin",
         headers: {
           "Accept": "application/json",
         },
