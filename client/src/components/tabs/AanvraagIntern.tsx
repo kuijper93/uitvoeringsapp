@@ -18,8 +18,39 @@ export default function AanvraagIntern() {
   const form = useForm();
 
   return (
-    <div className="grid grid-cols-[2fr,1fr] gap-4 p-2">
-      {/* Map section */}
+    <div className="grid grid-cols-[1fr,2fr,1fr] gap-4 p-2">
+      {/* Left section - Objectgegevens */}
+      <Card className="bg-amber-50/50 p-4 rounded-sm">
+        <div className="space-y-4">
+          <div>
+            <Label className="text-xs">Local Model</Label>
+            <Input defaultValue="abri" readOnly className="h-6 text-xs bg-amber-50" />
+          </div>
+          <div>
+            <Label className="text-xs">Abri formaat</Label>
+            <Input defaultValue="4x2" readOnly className="h-6 text-xs bg-amber-50" />
+          </div>
+          <div>
+            <Label className="text-xs">Objectnummer</Label>
+            <Input defaultValue="NL-AB-199009" readOnly className="h-6 text-xs bg-amber-50" />
+          </div>
+          <div>
+            <Label className="text-xs">Type actie</Label>
+            <Input defaultValue="plaatsen" readOnly className="h-6 text-xs bg-amber-50" />
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex items-center">
+            <Checkbox id="new-object" className="h-4 w-4" />
+            <label htmlFor="new-object" className="text-xs ml-2">
+              Nieuw object aanmaken
+            </label>
+          </div>
+        </div>
+      </Card>
+
+      {/* Middle section - Map */}
       <div className="h-[400px] relative">
         <MapContainer
           center={[52.3676, 4.9041]}
@@ -41,7 +72,7 @@ export default function AanvraagIntern() {
         </Button>
       </div>
 
-      {/* Services section */}
+      {/* Right section - Services */}
       <div className="space-y-2">
         <div>
           <h3 className="text-xs font-medium mb-1">Aangevraagde services</h3>
