@@ -11,14 +11,15 @@ import {
 } from "@/components/ui/select";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
 
 export default function AanvraagIntern() {
   const form = useForm();
 
   return (
-    <div className="flex gap-4 p-4">
+    <div className="grid grid-cols-2 gap-4 p-4">
       {/* Left section - Objectgegevens */}
-      <Card className="flex-1 p-4">
+      <div>
         <h2 className="text-lg font-semibold mb-4">Objectgegevens</h2>
         <div className="space-y-4">
           <div>
@@ -59,30 +60,28 @@ export default function AanvraagIntern() {
 
           <div>
             <Label>Materiaal:</Label>
-            <Input value="NL-123456" readOnly className="bg-green-50" />
+            <Input defaultValue="NL-123456" readOnly className="bg-green-50" />
           </div>
 
           <div>
             <Label>Object:</Label>
-            <Input value="NL-AB-199009" readOnly className="bg-green-50" />
+            <Input defaultValue="NL-AB-199009" readOnly className="bg-green-50" />
           </div>
 
           <div className="flex gap-2">
-            <Button variant="default" className="bg-blue-600">Kies configuratie</Button>
-            <Button variant="default" className="bg-blue-600">Bekijk TEMP</Button>
+            <Button className="flex-1 bg-blue-600">Kies configuratie</Button>
+            <Button className="flex-1 bg-blue-600">Bekijk TEMP</Button>
           </div>
 
-          <div className="mt-4">
-            <Button variant="outline" className="w-full flex items-center gap-2">
-              <span className="text-xl">+</span>
-              Nieuw object aanmaken
-            </Button>
-          </div>
+          <Button variant="outline" className="w-full flex items-center gap-2">
+            <Plus className="h-4 w-4" />
+            Nieuw object aanmaken
+          </Button>
         </div>
-      </Card>
+      </div>
 
       {/* Right section - Locatiegegevens */}
-      <Card className="flex-1 p-4">
+      <div>
         <h2 className="text-lg font-semibold mb-4">Locatiegegevens</h2>
         <div className="space-y-4">
           <div>
@@ -99,7 +98,7 @@ export default function AanvraagIntern() {
 
           <div>
             <Label>Aanverwante objecten:</Label>
-            <Input placeholder="Aanverwante objecten" />
+            <Input placeholder="" />
           </div>
 
           <div>
@@ -121,31 +120,31 @@ export default function AanvraagIntern() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>X:</Label>
-                  <Input value="54.123123" readOnly className="bg-green-50" />
+                  <Input defaultValue="54.123123" readOnly className="bg-green-50" />
                 </div>
                 <div>
                   <Label>Y:</Label>
-                  <Input value="54.123123" readOnly className="bg-green-50" />
+                  <Input defaultValue="54.123123" readOnly className="bg-green-50" />
                 </div>
               </div>
 
               <div>
                 <Label>Type:</Label>
-                <Input value="Ondergronds" readOnly className="bg-green-50" />
+                <Input defaultValue="Ondergronds" readOnly className="bg-green-50" />
               </div>
 
-              <Button variant="default" className="w-full bg-blue-600">
+              <Button className="w-full bg-blue-600">
                 Kies configuratie
               </Button>
 
               <div>
                 <Label>Materiaal:</Label>
-                <Input value="NL-654321" readOnly className="bg-green-50" />
+                <Input defaultValue="NL-654321" readOnly className="bg-green-50" />
               </div>
             </div>
           </Card>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }
