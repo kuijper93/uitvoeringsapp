@@ -69,7 +69,7 @@ export default function Objects() {
       </div>
 
       <div className="flex gap-4">
-        <div className="w-[200px] relative z-50">
+        <div className="w-[200px] relative z-[1000]">
           <Select
             value={selectedCity}
             onValueChange={setSelectedCity}
@@ -77,7 +77,7 @@ export default function Objects() {
             <SelectTrigger className="h-10 rounded-xl">
               <SelectValue placeholder="Filter op gemeente" />
             </SelectTrigger>
-            <SelectContent className="bg-white">
+            <SelectContent className="bg-white z-[1000]">
               <SelectItem value="all">Alle gemeenten</SelectItem>
               {municipalities.map((municipality) => (
                 <SelectItem
@@ -91,7 +91,7 @@ export default function Objects() {
           </Select>
         </div>
 
-        <div className="w-[200px] relative z-50">
+        <div className="w-[200px] relative z-[1000]">
           <Select
             value={selectedType}
             onValueChange={setSelectedType}
@@ -99,7 +99,7 @@ export default function Objects() {
             <SelectTrigger className="h-10 rounded-xl">
               <SelectValue placeholder="Filter op type" />
             </SelectTrigger>
-            <SelectContent className="bg-white">
+            <SelectContent className="bg-white z-[1000]">
               <SelectItem value="all">Alle types</SelectItem>
               {objectTypes.map((type) => (
                 <SelectItem
@@ -117,7 +117,7 @@ export default function Objects() {
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Card className="rounded-xl overflow-hidden">
-            <div style={{ height: "600px" }}>
+            <div style={{ height: "600px" }} className="relative z-0">
               <MapContainer
                 center={center}
                 zoom={7}
