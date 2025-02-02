@@ -20,33 +20,35 @@ export default function AanvraagIntern() {
   return (
     <div className="grid grid-cols-[1fr,2fr,1fr] gap-4 p-2">
       {/* Left section - Objectgegevens */}
-      <div className="bg-amber-50/50 p-2 rounded-sm">
-        <div className="space-y-2">
+      <Card className="bg-amber-50/50 p-4 rounded-sm">
+        <div className="space-y-4">
           <div>
             <Label className="text-xs">Type straatmeubilair</Label>
-            <Input defaultValue="abri" readOnly className="bg-amber-50 h-6 text-xs" />
+            <Input defaultValue="abri" readOnly className="h-6 text-xs bg-amber-50" />
           </div>
           <div>
             <Label className="text-xs">Abri formaat</Label>
-            <Input defaultValue="4x2" readOnly className="bg-amber-50 h-6 text-xs" />
+            <Input defaultValue="4x2" readOnly className="h-6 text-xs bg-amber-50" />
           </div>
           <div>
             <Label className="text-xs">Objectnummer</Label>
-            <Input defaultValue="NL-AB-199009" readOnly className="bg-amber-50 h-6 text-xs" />
+            <Input defaultValue="NL-AB-199009" readOnly className="h-6 text-xs bg-amber-50" />
           </div>
           <div>
             <Label className="text-xs">Type actie</Label>
-            <Input defaultValue="plaatsen" readOnly className="bg-amber-50 h-6 text-xs" />
+            <Input defaultValue="plaatsen" readOnly className="h-6 text-xs bg-amber-50" />
           </div>
         </div>
 
-        <div className="mt-2">
-          <Checkbox id="new-object" className="h-4 w-4" />
-          <label htmlFor="new-object" className="text-xs ml-2">
-            Nieuw object aanmaken
-          </label>
+        <div className="mt-4">
+          <div className="flex items-center">
+            <Checkbox id="new-object" className="h-4 w-4" />
+            <label htmlFor="new-object" className="text-xs ml-2">
+              Nieuw object aanmaken
+            </label>
+          </div>
         </div>
-      </div>
+      </Card>
 
       {/* Middle section - Map */}
       <div className="h-[400px] relative">
