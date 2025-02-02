@@ -6,10 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { Search, ChevronDown, ChevronUp } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const mockWorkOrders = [
   { 
@@ -72,11 +71,10 @@ export default function InternalRequests() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("alle");
   const [selectedStatus, setSelectedStatus] = useState("alle");
-  const [isContactOpen, setIsContactOpen] = useState(true);
 
   const filteredWorkOrders = mockWorkOrders.filter(order => {
     const matchesSearch = order.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.id.toLowerCase().includes(searchQuery.toLowerCase());
+                       order.id.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCity = selectedCity === "alle" || order.orderDetails?.city === selectedCity;
     const matchesStatus = selectedStatus === "alle" || order.status === selectedStatus;
     return matchesSearch && matchesCity && matchesStatus;
@@ -88,7 +86,7 @@ export default function InternalRequests() {
         direction="horizontal"
         className="h-full rounded-lg border"
       >
-        <ResizablePanel defaultSize={15} minSize={15}>
+        <ResizablePanel defaultSize={15}>
           <div className="flex h-full flex-col">
             <div className="space-y-2 px-3 py-4">
               <div className="relative">
@@ -168,65 +166,51 @@ export default function InternalRequests() {
               <div className="space-y-4">
                 <Card>
                   <CardHeader className="py-2">
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
-                      <Collapsible
-                        open={isContactOpen}
-                        onOpenChange={setIsContactOpen}
-                        className="w-auto"
-                      >
-                        <CollapsibleTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-6 px-2 text-xs">
-                            Contact gemeente {isContactOpen ? <ChevronUp className="h-3 w-3 ml-1" /> : <ChevronDown className="h-3 w-3 ml-1" />}
-                          </Button>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="mt-2 space-y-2">
-                          <div className="rounded-lg border bg-background p-2">
-                            <div className="text-xs space-y-0.5">
-                              <div className="flex justify-between items-baseline">
-                                <span className="font-medium">Aanvrager:</span>
-                                <span>Ronald de Wit</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Email:</span>
-                                <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Tel:</span>
-                                <span>06-85285859</span>
-                              </div>
-                            </div>
-
-                            <Separator className="my-1" />
-
-                            <div className="text-xs space-y-0.5">
-                              <div className="flex justify-between items-baseline">
-                                <span className="font-medium">Uitvoering:</span>
-                                <span>Pietje Put</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Email:</span>
-                                <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-muted-foreground">Tel:</span>
-                                <span>06-12234578</span>
-                              </div>
-                            </div>
-
-                            <Separator className="my-1" />
-
-                            <div className="text-xs space-y-1">
-                              <p className="font-medium">Gemeente notities</p>
-                              <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
-                            </div>
-                          </div>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </div>
+                    <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-3 pt-0">
-                    <div className="grid grid-cols-2 gap-3">
+                  <CardContent className="grid gap-2 pt-0">
+                    <div className="rounded-lg bg-background border p-2">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-xs space-y-0.5">
+                          <div className="flex justify-between items-baseline">
+                            <span className="font-medium">Aanvrager:</span>
+                            <span>Ronald de Wit</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Email:</span>
+                            <a href="mailto:dewit@test.nl" className="text-blue-600">dewit@test.nl</a>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Tel:</span>
+                            <span>06-85285859</span>
+                          </div>
+                        </div>
+
+                        <div className="text-xs space-y-0.5">
+                          <div className="flex justify-between items-baseline">
+                            <span className="font-medium">Uitvoering:</span>
+                            <span>Pietje Put</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Email:</span>
+                            <a href="mailto:pietput@test.nl" className="text-blue-600">pietput@test.nl</a>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Tel:</span>
+                            <span>06-12234578</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <Separator className="my-1" />
+
+                      <div className="text-xs">
+                        <p className="font-medium mb-1">Gemeente notities</p>
+                        <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
                       <div className="bg-blue-100 p-2 rounded text-xs">
                         <div className="grid grid-cols-2 gap-2">
                           <div>
@@ -242,7 +226,7 @@ export default function InternalRequests() {
                     </div>
 
                     <div className="bg-orange-50 p-2 rounded">
-                      <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
                         <div>
                           <label className="text-xs font-medium">Commercieel type</label>
                           <p className="text-xs">{selectedWorkOrder.orderDetails?.commercialType}</p>
@@ -256,36 +240,36 @@ export default function InternalRequests() {
 
                     <div>
                       <label className="text-xs font-medium">Aangevraagde services:</label>
-                      <div className="grid grid-cols-2 gap-2 mt-1">
-                        <div className="flex items-center space-x-2">
+                      <div className="grid grid-cols-4 gap-1 mt-1">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="zelf-uitvoeren" className="h-3 w-3" />
                           <label htmlFor="zelf-uitvoeren" className="text-xs">Zelf uitvoeren</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="elektra" className="h-3 w-3" defaultChecked />
                           <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="grond-graven" className="h-3 w-3" defaultChecked />
                           <label htmlFor="grond-graven" className="text-xs">Grond graven</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="herstrate" className="h-3 w-3" defaultChecked />
                           <label htmlFor="herstrate" className="text-xs">Herstraten</label>
                         </div>
-                         <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="aanvullen" className="h-3 w-3" defaultChecked />
                           <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="vergunning" className="h-3 w-3" />
                           <label htmlFor="vergunning" className="text-xs">Vergunning</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="leveren-materiaal" className="h-3 w-3" defaultChecked />
                           <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-1">
                           <Checkbox id="klic" className="h-3 w-3" defaultChecked />
                           <label htmlFor="klic" className="text-xs">Klic</label>
                         </div>
@@ -298,8 +282,8 @@ export default function InternalRequests() {
                   <CardHeader className="py-2">
                     <CardTitle className="text-sm">Objectgegevens</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-3 pt-0">
-                    <div className="grid grid-cols-2 gap-3">
+                  <CardContent className="grid gap-2 pt-0">
+                    <div className="grid grid-cols-2 gap-2">
                       <div className="bg-orange-100 p-2 rounded">
                         <label className="text-xs font-medium">Object model</label>
                         <p className="text-xs">{selectedWorkOrder.orderDetails?.objectModel}</p>
@@ -309,8 +293,8 @@ export default function InternalRequests() {
                         <p className="text-xs">{selectedWorkOrder.orderDetails?.objectColor}</p>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                       <div className="bg-orange-100 p-2 rounded">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-orange-100 p-2 rounded">
                         <label className="text-xs font-medium">Materiaal</label>
                         <p className="text-xs">{selectedWorkOrder.orderDetails?.material}</p>
                       </div>
@@ -319,7 +303,7 @@ export default function InternalRequests() {
                         <p className="text-xs">{selectedWorkOrder.orderDetails?.objectNumber}</p>
                       </div>
                     </div>
-                     <div className="flex items-center space-x-2 pt-2">
+                    <div className="flex items-center space-x-2">
                       <Checkbox id="nieuw" className="h-3 w-3" />
                       <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
                     </div>
@@ -336,7 +320,7 @@ export default function InternalRequests() {
                   <Button variant="outline" className="w-full text-xs p-2 h-auto">
                     Document uploaden
                   </Button>
-                   <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                  <Button variant="outline" className="w-full text-xs p-2 h-auto">
                     Naar documenten
                   </Button>
                 </div>
