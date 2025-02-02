@@ -183,7 +183,7 @@ export default function InternalRequests() {
                   <SelectTrigger className="text-xs">
                     <SelectValue placeholder="Stad" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     {cities.map((city) => (
                       <SelectItem key={city} value={city} className="text-xs">
                         {city}
@@ -195,7 +195,7 @@ export default function InternalRequests() {
                   <SelectTrigger className="text-xs">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     {statuses.map((status) => (
                       <SelectItem key={status} value={status} className="text-xs">
                         {status}
@@ -388,7 +388,7 @@ export default function InternalRequests() {
                                     <SelectTrigger className="h-7 text-xs">
                                       <SelectValue placeholder="Selecteer optie" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-white">
                                       <SelectItem value="zelf" className="text-xs">Zelf uitvoeren</SelectItem>
                                       <SelectItem value="werk" className="text-xs">In het werk</SelectItem>
                                       <SelectItem value="buko" className="text-xs">BUKO</SelectItem>
@@ -425,7 +425,7 @@ export default function InternalRequests() {
                                     <SelectTrigger className="h-7 text-xs">
                                       <SelectValue placeholder="Selecteer aannemer" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-white">
                                       <SelectItem value="geen" className="text-xs">Geen aannemer</SelectItem>
                                       <SelectItem value="henk" className="text-xs">Aannemer Henk</SelectItem>
                                       <SelectItem value="piet" className="text-xs">Aannemer Piet</SelectItem>
@@ -438,7 +438,7 @@ export default function InternalRequests() {
                                     <SelectTrigger className="h-7 text-xs">
                                       <SelectValue placeholder="Selecteer prio" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-white">
                                       <SelectItem value="geen" className="text-xs">Geen prio</SelectItem>
                                       <SelectItem value="high" className="text-xs">High</SelectItem>
                                       <SelectItem value="medium" className="text-xs">Medium</SelectItem>
@@ -453,7 +453,7 @@ export default function InternalRequests() {
                               </div>
                             </div>
                           </div>
-
+                        
                           <div className="bg-gray-50 p-2 rounded">
                             <label className="text-xs font-medium block mb-1">Gemeente notities</label>
                             <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
