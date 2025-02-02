@@ -342,8 +342,8 @@ export default function InternalRequests() {
                               </div>
                             </div>
                           </div>
-
-                          <div className="grid grid-cols-3 gap-4 mt-2">
+                          
+                          <div className="grid grid-cols-4 gap-4 mt-2">
                             {/* Aangevraagde services Column */}
                             <div className="space-y-2 bg-blue-50 p-2 rounded">
                               <p className="text-xs font-medium mb-1">Aangevraagde services</p>
@@ -371,86 +371,84 @@ export default function InternalRequests() {
                               </div>
                             </div>
 
-                            {/* Combined green section */}
-                            <div className="col-span-2 bg-green-50 p-2 rounded">
-                              <div className="grid grid-cols-2 gap-4">
-                                {/* Left side - Verkeersplan items */}
-                                <div>
-                                  <p className="text-xs mb-1">Verkeersplan</p>
-                                  <div className="space-y-1">
-                                    <Select defaultValue="geen">
-                                      <SelectTrigger className="h-6 text-xs py-0">
-                                        <SelectValue placeholder="Selecteer optie" />
-                                      </SelectTrigger>
-                                      <SelectContent className="bg-white">
-                                        <SelectItem value="zelf" className="text-xs">Zelf uitvoeren</SelectItem>
-                                        <SelectItem value="werk" className="text-xs">In het werk</SelectItem>
-                                        <SelectItem value="buko" className="text-xs">BUKO</SelectItem>
-                                        <SelectItem value="geen" className="text-xs">Geen</SelectItem>
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  <div className="mt-2 space-y-0.5">
-                                    <div className="flex items-center space-x-1">
-                                      <Checkbox id="vergunning" className="h-3 w-3" />
-                                      <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                                    </div>
-                                    <div className="flex items-center space-x-1">
-                                      <Checkbox id="moor" className="h-3 w-3" />
-                                      <label htmlFor="moor" className="text-xs">Moor</label>
-                                    </div>
-                                    <div className="flex items-center space-x-1">
-                                      <Checkbox id="aarding" className="h-3 w-3" />
-                                      <label htmlFor="aarding" className="text-xs">Aarding</label>
-                                    </div>
-                                    <div className="flex items-center space-x-1">
-                                      <Checkbox id="klic" className="h-3 w-3" />
-                                      <label htmlFor="klic" className="text-xs">Klic</label>
-                                    </div>
-                                  </div>
+                            {/* Combined green section - Verkeersplan */}
+                            <div className="bg-green-50 p-2 rounded">
+                              <p className="text-xs mb-1">Verkeersplan</p>
+                              <div className="space-y-1">
+                                <Select defaultValue="geen">
+                                  <SelectTrigger className="h-6 text-xs py-0">
+                                    <SelectValue placeholder="Selecteer optie" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-white">
+                                    <SelectItem value="zelf" className="text-xs">Zelf uitvoeren</SelectItem>
+                                    <SelectItem value="werk" className="text-xs">In het werk</SelectItem>
+                                    <SelectItem value="buko" className="text-xs">BUKO</SelectItem>
+                                    <SelectItem value="geen" className="text-xs">Geen</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                              <div className="mt-2 space-y-0.5">
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="vergunning" className="h-3 w-3" />
+                                  <label htmlFor="vergunning" className="text-xs">Vergunning</label>
                                 </div>
-
-                                {/* Right side - Aannemer items */}
-                                <div className="grid gap-1">
-                                  <div>
-                                    <label className="text-xs block mb-0.5">Aannemer</label>
-                                    <Select defaultValue="geen">
-                                      <SelectTrigger className="h-6 text-xs py-0">
-                                        <SelectValue placeholder="Selecteer aannemer" />
-                                      </SelectTrigger>
-                                      <SelectContent className="bg-white">
-                                        <SelectItem value="geen" className="text-xs">Geen aannemer</SelectItem>
-                                        <SelectItem value="henk" className="text-xs">Aannemer Henk</SelectItem>
-                                        <SelectItem value="piet" className="text-xs">Aannemer Piet</SelectItem>
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  <div>
-                                    <label className="text-xs block mb-0.5">Prio</label>
-                                    <Select defaultValue="geen">
-                                      <SelectTrigger className="h-6 text-xs py-0">
-                                        <SelectValue placeholder="Selecteer prio" />
-                                      </SelectTrigger>
-                                      <SelectContent className="bg-white">
-                                        <SelectItem value="geen" className="text-xs">Geen prio</SelectItem>
-                                        <SelectItem value="high" className="text-xs">High</SelectItem>
-                                        <SelectItem value="medium" className="text-xs">Medium</SelectItem>
-                                        <SelectItem value="low" className="text-xs">Low</SelectItem>
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                  <div>
-                                    <label className="text-xs block mb-0.5">Combi</label>
-                                    <Input className="h-6 text-xs" placeholder="Voer combi in" />
-                                  </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="moor" className="h-3 w-3" />
+                                  <label htmlFor="moor" className="text-xs">Moor</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="aarding" className="h-3 w-3" />
+                                  <label htmlFor="aarding" className="text-xs">Aarding</label>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Checkbox id="klic" className="h-3 w-3" />
+                                  <label htmlFor="klic" className="text-xs">Klic</label>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          
-                          <div className="bg-gray-50 p-2 rounded mt-2">
-                            <label className="text-xs font-medium block mb-1">Gemeente notities</label>
-                            <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+
+                            {/* Combined green section - Aannemer */}
+                            <div className="bg-green-50 p-2 rounded">
+                              <div className="grid gap-1">
+                                <div>
+                                  <label className="text-xs block mb-0.5">Aannemer</label>
+                                  <Select defaultValue="geen">
+                                    <SelectTrigger className="h-6 text-xs py-0">
+                                      <SelectValue placeholder="Selecteer aannemer" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                      <SelectItem value="geen" className="text-xs">Geen aannemer</SelectItem>
+                                      <SelectItem value="henk" className="text-xs">Aannemer Henk</SelectItem>
+                                      <SelectItem value="piet" className="text-xs">Aannemer Piet</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <div>
+                                  <label className="text-xs block mb-0.5">Prio</label>
+                                  <Select defaultValue="geen">
+                                    <SelectTrigger className="h-6 text-xs py-0">
+                                      <SelectValue placeholder="Selecteer prio" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-white">
+                                      <SelectItem value="geen" className="text-xs">Geen prio</SelectItem>
+                                      <SelectItem value="high" className="text-xs">High</SelectItem>
+                                      <SelectItem value="medium" className="text-xs">Medium</SelectItem>
+                                      <SelectItem value="low" className="text-xs">Low</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                </div>
+                                <div>
+                                  <label className="text-xs block mb-0.5">Combi</label>
+                                  <Input className="h-6 text-xs" placeholder="Voer combi in" />
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Gemeente notities section */}
+                            <div className="bg-gray-50 p-2 rounded">
+                              <label className="text-xs block mb-1">Gemeente notities</label>
+                              <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
+                            </div>
                           </div>
                         </div>
                       </div>
