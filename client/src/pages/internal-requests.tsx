@@ -515,7 +515,7 @@ export default function InternalRequests() {
                               <SelectTrigger className="h-8 text-sm">
                                 <SelectValue placeholder="Selecteer model" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className="bg-white">
                                 {[
                                   "abri",
                                   "mupi",
@@ -551,7 +551,7 @@ export default function InternalRequests() {
                                 <SelectTrigger className="h-8 text-sm">
                                   <SelectValue placeholder="Selecteer formaat" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="bg-white">
                                   {[
                                     "2-vaks",
                                     "3-vaks",
