@@ -527,7 +527,7 @@ export default function InternalRequests() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-10"
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[180px] h-10"
                           >
                             Kies configuratie
                           </Button>
@@ -544,7 +544,7 @@ export default function InternalRequests() {
                           <Button 
                             variant="outline" 
                             size="sm" 
-                            className="bg-blue-600 text-white hover:bg-blue-700 w-[140px] h-10"
+                            className="bg-blue-600 text-white hover:bg-blue-700 w-[180px] h-10"
                           >
                             TEMP voorraad bekijken
                           </Button>
