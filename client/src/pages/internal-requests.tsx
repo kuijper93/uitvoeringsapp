@@ -41,6 +41,7 @@ interface WorkOrder {
   groundInstallationFilling?: boolean;
   groundInstallationMaterials?: boolean;
   objectNumber?: string;
+  abriFormat?: string;
 }
 
 // Fix Leaflet default marker icon issue
@@ -83,6 +84,7 @@ export default function InternalRequests() {
   const [selectedCity, setSelectedCity] = useState<string>("alle");
   const [selectedStatus, setSelectedStatus] = useState<string>("alle");
   const [selectedWorkOrder, setSelectedWorkOrder] = useState<WorkOrder | null>(null);
+  const showAbriFormat = selectedWorkOrder?.furnitureType === "abri";
 
   // Fetch work orders with proper typing
   const { data: workOrders, isLoading } = useQuery({
@@ -503,23 +505,15 @@ export default function InternalRequests() {
                       <div className="bg-white p-3 rounded border">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
-                            <p className="text-xs text-gray-500">Aanvraagnummer</p>
-                            <p className="text-sm font-medium">{selectedWorkOrder.orderNumber}</p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500">Gemeente</p>
-                            <p className="text-sm font-medium">{selectedWorkOrder.municipality}</p>
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4 mt-3">
-                          <div>
-                            <p className="text-xs text-gray-500">Type actie</p>
-                            <p className="text-sm font-medium">{selectedWorkOrder.actionType}</p>
-                          </div>
-                          <div>
                             <p className="text-xs text-gray-500">Local Model</p>
-                            <p className="text-sm font-medium">{selectedWorkOrder.furnitureType}</p>
+                            <p className="text-sm font-medium text-orange-500">{selectedWorkOrder.furnitureType}</p>
                           </div>
+                          {showAbriFormat && (
+                            <div>
+                              <p className="text-xs text-gray-500">Abri formaat</p>
+                              <p className="text-sm font-medium">{selectedWorkOrder.abriFormat || '-'}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -530,7 +524,7 @@ export default function InternalRequests() {
                             <p className="text-xs text-gray-500">Materiaal</p>
                             <p className="text-sm font-medium">Standaard</p>
                           </div>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
                             Kies configuratie
                           </Button>
                         </div>
@@ -543,7 +537,7 @@ export default function InternalRequests() {
                             <p className="text-xs text-gray-500">Objectnummer</p>
                             <p className="text-sm font-medium">{selectedWorkOrder.objectNumber || '-'}</p>
                           </div>
-                          <Button variant="outline" size="sm">
+                          <Button variant="outline" size="sm" className="bg-blue-600 text-white hover:bg-blue-700">
                             TEMP voorraad bekijken
                           </Button>
                         </div>
@@ -559,16 +553,16 @@ export default function InternalRequests() {
 
                   {/* Action Buttons */}
                   <div className="grid grid-cols-4 gap-2">
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
                       Exporteer object/locatie gegevens
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
                       Gereed voor uitvoering
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
                       Document uploaden
                     </Button>
-                    <Button variant="outline" className="w-full text-xs p-2 h-auto">
+                    <Button variant="outline" className="w-full text-xs p-2 h-auto bg-blue-600 text-white hover:bg-blue-700">
                       Naar documenten
                     </Button>
                   </div>
