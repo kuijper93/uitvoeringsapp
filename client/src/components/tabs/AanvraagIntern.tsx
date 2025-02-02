@@ -79,9 +79,9 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
   };
 
   return (
-    <div className="grid grid-cols-[1fr,2fr,1fr] gap-4 p-2">
+    <div className="grid grid-cols-[1fr,2fr,1fr] gap-2 p-2">
       {/* Left section - Objectgegevens */}
-      <Card className="bg-amber-50/50 p-4 rounded-sm">
+      <Card className="bg-amber-50/50 p-3 rounded-sm h-[420px] overflow-y-auto">
         <div className="space-y-4">
           <div>
             <Label className="text-xs">Local Model</Label>
@@ -131,9 +131,8 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           </div>
         </div>
       </Card>
-
       {/* Middle section - Map */}
-      <div className="h-[400px] relative">
+      <div className="h-[420px] relative">
         <MapContainer
           center={[52.3676, 4.9041]}
           zoom={13}
@@ -159,9 +158,8 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
           Street View
         </Button>
       </div>
-
       {/* Right section - Services */}
-      <div className="space-y-2">
+      <div className="space-y-1 h-[420px] overflow-y-auto">
         <div>
           <h3 className="text-xs font-medium mb-1">Aangevraagde services</h3>
           <div className="space-y-1">

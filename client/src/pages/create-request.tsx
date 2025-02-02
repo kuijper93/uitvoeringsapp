@@ -579,7 +579,7 @@ export default function CreateRequest() {
                       <FormControl>
                         <Textarea
                           placeholder="Voeg hier eventuele opmerkingen toe..."
-                          className="min-h-[100px] rounded-xl"
+                          className="min-h-[80px] max-h-[120px] rounded-xl"
                           {...field}
                         />
                       </FormControl>

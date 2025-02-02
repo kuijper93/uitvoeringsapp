@@ -160,7 +160,7 @@ export default function Objects() {
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Card className="rounded-xl overflow-hidden">
-            <div style={{ height: "600px" }} className="relative z-0">
+            <div style={{ height: "500px" }} className="relative z-0">
               <MapContainer
                 center={center}
                 zoom={7}
