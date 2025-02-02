@@ -39,7 +39,7 @@ const requestFormSchema = z.object({
   abriFormat: z.string().optional(),
   objectNumber: z.string().optional(),
   desiredDate: z.string().min(1, "Datum is verplicht"),
-  locationSketch: z.string().optional(),
+  locationSketch: z.string().optional().describe("URL to location sketch"),
 
   // Removal Location
   removalCity: z.string().optional(),
@@ -189,19 +189,21 @@ export default function CreateRequest() {
 
   const createMutation = useMutation({
     mutationFn: async (data: RequestFormData) => {
-      await apiRequest("POST", "/api/requests", data);
+      const response = await apiRequest("POST", "/api/requests", data);
+      return response;
     },
     onSuccess: () => {
       toast({
-        title: "Succes",
-        description: "Aanvraag succesvol ingediend",
+        title: "Aanvraag succesvol ingediend",
+        description: "Uw aanvraag is succesvol ontvangen en wordt verwerkt.",
+        variant: "default",
       });
       navigate("/requests");
     },
     onError: (error) => {
       toast({
-        title: "Fout",
-        description: error.message,
+        title: "Fout bij indienen",
+        description: "Er is een fout opgetreden bij het indienen van uw aanvraag. Probeer het opnieuw.",
         variant: "destructive",
       });
     },
@@ -488,31 +490,25 @@ export default function CreateRequest() {
 
                   {showLocationSketch && (
                     <FormField
-                        control={form.control}
-                        name="locationSketch"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Locatieschets</FormLabel>
-                            <FormControl>
-                              <div className="relative">
-                                <Input 
-                                  type="file" 
-                                  accept=".pdf,.dwg" 
-                                  {...field} 
-                                  className="opacity-0 absolute inset-0 w-[140px] h-8 cursor-pointer"
-                                />
-                                <div className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-                                  Bestand kiezen
-                                </div>
-                              </div>
-                            </FormControl>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              PDF en autocad (NLCS-DWG)
-                            </p>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      control={form.control}
+                      name="locationSketch"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Locatieschets URL</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="url" 
+                              placeholder="https://voorbeeld.nl/locatieschets.pdf"
+                              {...field} 
+                            />
+                          </FormControl>
+                           <p className="text-sm text-muted-foreground mt-1">
+                            Voer de URL in naar uw locatieschets document (PDF of DWG)
+                          </p>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
                 </div>
 
