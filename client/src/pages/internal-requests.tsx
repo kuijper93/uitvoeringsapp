@@ -378,13 +378,12 @@ export default function InternalRequests() {
                               </div>
                             </div>
 
-                            {/* Uitvoering Column - Combined green sections */}
-                            <div className="col-span-2 space-y-2 bg-green-50 p-2 rounded">
-                              <p className="text-xs font-medium mb-1">Uitvoering</p>
+                            {/* Combined green section */}
+                            <div className="col-span-2 bg-green-50 p-2 rounded">
                               <div className="grid grid-cols-2 gap-4">
                                 {/* Left side - Verkeersplan items */}
-                                <div className="space-y-2">
-                                  <p className="text-xs">Verkeersplan</p>
+                                <div>
+                                  <p className="text-xs mb-1">Verkeersplan</p>
                                   <div className="space-y-1">
                                     <Select defaultValue="geen">
                                       <SelectTrigger className="h-6 text-xs py-0">
@@ -398,26 +397,28 @@ export default function InternalRequests() {
                                       </SelectContent>
                                     </Select>
                                   </div>
-                                  <div className="flex items-center space-x-1">
-                                    <Checkbox id="vergunning" className="h-3 w-3" />
-                                    <label htmlFor="vergunning" className="text-xs">Vergunning</label>
-                                  </div>
-                                  <div className="flex items-center space-x-1">
-                                    <Checkbox id="moor" className="h-3 w-3" />
-                                    <label htmlFor="moor" className="text-xs">Moor</label>
-                                  </div>
-                                  <div className="flex items-center space-x-1">
-                                    <Checkbox id="aarding" className="h-3 w-3" />
-                                    <label htmlFor="aarding" className="text-xs">Aarding</label>
-                                  </div>
-                                  <div className="flex items-center space-x-1">
-                                    <Checkbox id="klic" className="h-3 w-3" />
-                                    <label htmlFor="klic" className="text-xs">Klic</label>
+                                  <div className="mt-2 space-y-0.5">
+                                    <div className="flex items-center space-x-1">
+                                      <Checkbox id="vergunning" className="h-3 w-3" />
+                                      <label htmlFor="vergunning" className="text-xs">Vergunning</label>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Checkbox id="moor" className="h-3 w-3" />
+                                      <label htmlFor="moor" className="text-xs">Moor</label>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Checkbox id="aarding" className="h-3 w-3" />
+                                      <label htmlFor="aarding" className="text-xs">Aarding</label>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Checkbox id="klic" className="h-3 w-3" />
+                                      <label htmlFor="klic" className="text-xs">Klic</label>
+                                    </div>
                                   </div>
                                 </div>
 
                                 {/* Right side - Aannemer items */}
-                                <div className="flex flex-col space-y-2">
+                                <div className="space-y-2">
                                   <div className="space-y-1">
                                     <label className="text-xs">Aannemer</label>
                                     <Select defaultValue="geen">
