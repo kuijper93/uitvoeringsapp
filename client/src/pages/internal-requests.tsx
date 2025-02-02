@@ -272,14 +272,14 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={30}>
+        <ResizablePanel defaultSize={25}>
             <div className="flex h-full flex-col">
               <div className="border-b p-4">
                 <h3 className="text-sm font-medium">Contact gemeente</h3>
               </div>
               <div className="flex-1 overflow-auto p-4 space-y-4">
                 <Card>
-                  <CardContent className="flex flex-col gap-2">
+                  <CardHeader>
                     <div className="flex flex-col items-end">
                       <div className="w-full mb-2">
                         <p className="text-sm font-medium">Ronald de Wit</p>
@@ -297,7 +297,7 @@ export default function InternalRequests() {
                         <p className="text-xs">06-12234578</p>
                       </div>
                     </div>
-                  </CardContent>
+                  </CardHeader>
                 </Card>
                 <Card>
                   <CardContent className="pt-3">
