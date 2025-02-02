@@ -62,19 +62,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Set up webpack middleware in development
-if (process.env.NODE_ENV !== 'production') {
-  const compiler = webpack(webpackConfig);
-  app.use(
-    webpackDevMiddleware(compiler, {
-      publicPath: webpackConfig.output.publicPath || '/',
-      writeToDisk: true,
-      index: 'index.html',
-    })
-  );
-  app.use(webpackHotMiddleware(compiler));
-}
-
 // Register API routes first
 const server = registerRoutes(app);
 
@@ -86,27 +73,31 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   res.status(status).json({ message });
 });
 
-// API routes should be registered before the catch-all route
-app.use('/api', (req, res, next) => {
-  if (!req.path.startsWith('/api')) {
-    next();
-    return;
-  }
-  next();
-});
+// Set up webpack middleware in development
+if (process.env.NODE_ENV !== 'production') {
+  const compiler = webpack(webpackConfig);
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: webpackConfig.output.publicPath || '/',
+      writeToDisk: true,
+    })
+  );
+  app.use(webpackHotMiddleware(compiler));
+}
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist/public')));
 }
 
-// Handle client-side routing - This should be after API routes but before error handling
-app.get('*', (req, res) => {
+// Handle all routes - This should be the last middleware
+app.use('*', (req, res, next) => {
   // Skip API routes
   if (req.path.startsWith('/api')) {
     return next();
   }
 
+  // Send the appropriate index.html file
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/public/index.html'));
   } else {
