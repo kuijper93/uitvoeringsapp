@@ -26,6 +26,7 @@ export default function Requests() {
   });
 
   const filteredRequests = requests?.filter(request => 
+    selectedMunicipality === "all" ? true : 
     selectedMunicipality ? request.municipality.toLowerCase() === selectedMunicipality.toLowerCase() : true
   );
 
@@ -55,7 +56,7 @@ export default function Requests() {
           <SelectTrigger className="h-10 rounded-xl">
             <SelectValue placeholder="Filter op gemeente" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-white">
             <SelectItem value="all">Alle gemeenten</SelectItem>
             {municipalities.map((municipality) => (
               <SelectItem
