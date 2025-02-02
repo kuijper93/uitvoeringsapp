@@ -14,11 +14,20 @@ import { Badge } from "@/components/ui/badge";
 import { formatDistance, format } from "date-fns";
 import { nl } from "date-fns/locale";
 import type { SelectWorkOrder } from "@db/schema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { municipalities } from "@/lib/forms";
 
 export default function Requests() {
+  const [selectedMunicipality, setSelectedMunicipality] = useState<string>("");
+
   const { data: requests, isLoading } = useQuery<SelectWorkOrder[]>({
     queryKey: ["/api/requests"],
   });
+
+  const filteredRequests = requests?.filter(request => 
+    selectedMunicipality ? request.municipality.toLowerCase() === selectedMunicipality.toLowerCase() : true
+  );
 
   return (
     <div className="space-y-6">
@@ -37,6 +46,29 @@ export default function Requests() {
         </Link>
       </div>
 
+      {/* Municipality Filter */}
+      <div className="w-[200px]">
+        <Select
+          value={selectedMunicipality}
+          onValueChange={setSelectedMunicipality}
+        >
+          <SelectTrigger className="h-10 rounded-xl">
+            <SelectValue placeholder="Filter op gemeente" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">Alle gemeenten</SelectItem>
+            {municipalities.map((municipality) => (
+              <SelectItem
+                key={municipality.toLowerCase()}
+                value={municipality.toLowerCase()}
+              >
+                {municipality}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="rounded-xl overflow-hidden border bg-card">
         <Table>
           <TableHeader>
@@ -52,7 +84,7 @@ export default function Requests() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {!isLoading && requests?.map((request) => (
+            {!isLoading && filteredRequests?.map((request) => (
               <TableRow key={request.id}>
                 <TableCell className="font-medium">
                   {request.orderNumber}
@@ -110,7 +142,7 @@ export default function Requests() {
                 </TableCell>
               </TableRow>
             )}
-            {!isLoading && (!requests || requests.length === 0) && (
+            {!isLoading && (!filteredRequests || filteredRequests.length === 0) && (
               <TableRow>
                 <TableCell colSpan={8} className="h-24 text-center">
                   Geen aanvragen gevonden
