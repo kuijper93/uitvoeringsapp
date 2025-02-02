@@ -214,26 +214,28 @@ export default function CreateRequest() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-8 pb-16">
       {/* Progress Indicator */}
       <div className="sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50 border-b">
-        <div className="max-w-3xl mx-auto py-4">
+        <div className="max-w-4xl mx-auto py-6">
           <div className="flex justify-between items-center">
             {formSections.map((section, index) => (
-              <div key={section.id} className="flex items-center">
+              <div key={section.id} className="flex items-center flex-1">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                     section.id === currentSection
-                      ? 'bg-primary text-primary-foreground'
+                      ? 'bg-primary text-primary-foreground shadow-lg scale-110'
+                      : index < formSections.findIndex(s => s.id === currentSection)
+                      ? 'bg-primary/20 text-primary'
                       : 'bg-muted text-muted-foreground'
                   }`}
                 >
                   {index + 1}
                 </div>
-                <span className="ml-2 text-sm font-medium hidden sm:inline">{section.title}</span>
+                <span className="ml-3 text-sm font-medium hidden sm:inline">{section.title}</span>
                 {index < formSections.length - 1 && (
                   <div
-                    className={`h-px w-12 mx-2 ${
+                    className={`h-px flex-1 mx-4 transition-colors ${
                       formSections.findIndex(s => s.id === currentSection) > index
                         ? 'bg-primary'
                         : 'bg-muted'
@@ -246,26 +248,34 @@ export default function CreateRequest() {
         </div>
       </div>
 
-      <h1 className="text-xl font-bold">Nieuwe Aanvraag</h1>
+      <div className="px-4">
+        <h1 className="text-2xl font-bold tracking-tight">Nieuwe Aanvraag</h1>
+        <p className="text-muted-foreground mt-2">
+          Vul het onderstaande formulier in om een nieuwe aanvraag in te dienen.
+        </p>
+      </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-4">
           {/* Contact Information */}
-          <section data-section="contact">
-            <Card>
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Contactgegevens</CardTitle>
+          <section data-section="contact" className="space-y-8">
+            <Card className="transition-all hover:shadow-md">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-lg">Contactgegevens</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Vul de contactgegevens in van de aanvrager en uitvoerder.
+                </p>
               </CardHeader>
-              <CardContent className="p-4 pt-0">
+              <CardContent className="pt-4">
                 <FormField
                   control={form.control}
                   name="municipality"
                   render={({ field }) => (
-                    <FormItem className="mb-4">
-                      <FormLabel>Gemeente</FormLabel>
+                    <FormItem className="mb-6">
+                      <FormLabel className="text-base">Gemeente</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-12">
                             <SelectValue placeholder="Selecteer gemeente" />
                           </SelectTrigger>
                         </FormControl>
@@ -274,6 +284,7 @@ export default function CreateRequest() {
                             <SelectItem
                               key={municipality.toLowerCase()}
                               value={municipality.toLowerCase()}
+                              className="cursor-pointer"
                             >
                               {municipality}
                             </SelectItem>
@@ -285,32 +296,32 @@ export default function CreateRequest() {
                   )}
                 />
 
-                <div className="grid grid-cols-2 divide-x">
-                  <div className="pr-4">
-                    <h3 className="text-sm font-medium text-muted-foreground mb-3">Aanvrager</h3>
-                    <div className="space-y-2">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <h3 className="text-base font-medium">Aanvrager</h3>
+                    <div className="space-y-4">
                       <FormField
                         control={form.control}
                         name="requestorName"
                         render={({ field }) => (
-                          <FormItem className="space-y-1">
+                          <FormItem>
                             <FormLabel>Naam</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} className="h-12" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="requestorPhone"
                           render={({ field }) => (
-                            <FormItem className="space-y-1">
+                            <FormItem>
                               <FormLabel>Telefoon</FormLabel>
                               <FormControl>
-                                <Input type="tel" {...field} />
+                                <Input type="tel" {...field} className="h-12" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -320,10 +331,10 @@ export default function CreateRequest() {
                           control={form.control}
                           name="requestorEmail"
                           render={({ field }) => (
-                            <FormItem className="space-y-1">
+                            <FormItem>
                               <FormLabel>E-mail</FormLabel>
                               <FormControl>
-                                <Input type="email" {...field} />
+                                <Input type="email" {...field} className="h-12" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -332,31 +343,32 @@ export default function CreateRequest() {
                       </div>
                     </div>
                   </div>
-                  <div className="pl-4 bg-muted/5">
-                    <h3 className="text-sm font-medium text-muted-foreground mb-3">Voor Uitvoering</h3>
-                    <div className="space-y-2">
+
+                  <div className="space-y-6">
+                    <h3 className="text-base font-medium">Voor Uitvoering</h3>
+                    <div className="space-y-4">
                       <FormField
                         control={form.control}
                         name="executionContactName"
                         render={({ field }) => (
-                          <FormItem className="space-y-1">
+                          <FormItem>
                             <FormLabel>Naam</FormLabel>
                             <FormControl>
-                              <Input {...field} />
+                              <Input {...field} className="h-12" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-4">
                         <FormField
                           control={form.control}
                           name="executionContactPhone"
                           render={({ field }) => (
-                            <FormItem className="space-y-1">
+                            <FormItem>
                               <FormLabel>Telefoon</FormLabel>
                               <FormControl>
-                                <Input type="tel" {...field} />
+                                <Input type="tel" {...field} className="h-12" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -366,10 +378,10 @@ export default function CreateRequest() {
                           control={form.control}
                           name="executionContactEmail"
                           render={({ field }) => (
-                            <FormItem className="space-y-1">
+                            <FormItem>
                               <FormLabel>E-mail</FormLabel>
                               <FormControl>
-                                <Input type="email" {...field} />
+                                <Input type="email" {...field} className="h-12" />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -384,13 +396,16 @@ export default function CreateRequest() {
           </section>
 
           {/* Work Details */}
-          <section data-section="details">
-            <Card>
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">Werkzaamheden</CardTitle>
+          <section data-section="details" className="space-y-8">
+            <Card className="transition-all hover:shadow-md">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-lg">Werkzaamheden</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Selecteer het type straatmeubilair en de gewenste actie.
+                </p>
               </CardHeader>
-              <CardContent className="p-4 pt-0 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              <CardContent className="pt-4 space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="furnitureType"
@@ -399,7 +414,7 @@ export default function CreateRequest() {
                         <FormLabel>Type straatmeubilair</FormLabel>
                         <Select onValueChange={field.onChange}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="h-12">
                               <SelectValue placeholder="Selecteer het object" />
                             </SelectTrigger>
                           </FormControl>
@@ -424,7 +439,7 @@ export default function CreateRequest() {
                         <FormLabel>Type actie</FormLabel>
                         <Select onValueChange={field.onChange}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="h-12">
                               <SelectValue placeholder="Selecteer type actie" />
                             </SelectTrigger>
                           </FormControl>
@@ -441,16 +456,16 @@ export default function CreateRequest() {
                   />
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid md:grid-cols-3 gap-6">
                   {showAbriFormat && (
                     <FormField
                       control={form.control}
                       name="abriFormat"
                       render={({ field }) => (
-                        <FormItem className="max-w-[200px]">
+                        <FormItem>
                           <FormLabel>Abri formaat</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -463,10 +478,10 @@ export default function CreateRequest() {
                       control={form.control}
                       name="objectNumber"
                       render={({ field }) => (
-                        <FormItem className="max-w-[200px]">
+                        <FormItem>
                           <FormLabel>Objectnummer</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -478,10 +493,10 @@ export default function CreateRequest() {
                     control={form.control}
                     name="desiredDate"
                     render={({ field }) => (
-                      <FormItem className="max-w-[200px]">
+                      <FormItem>
                         <FormLabel>Gewenste uitvoeringsdatum</FormLabel>
                         <FormControl>
-                          <Input type="date" {...field} />
+                          <Input type="date" {...field} className="h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -500,6 +515,7 @@ export default function CreateRequest() {
                               type="url" 
                               placeholder="https://voorbeeld.nl/locatieschets.pdf"
                               {...field} 
+                              className="h-12"
                             />
                           </FormControl>
                            <p className="text-sm text-muted-foreground mt-1">
@@ -534,14 +550,17 @@ export default function CreateRequest() {
           </section>
 
           {/* Location Information */}
-          <section data-section="location">
+          <section data-section="location" className="space-y-8">
             {showRemovalLocation && (
-              <Card>
-                <CardHeader className="p-4">
-                  <CardTitle className="text-base">Verwijderlocatie</CardTitle>
+              <Card className="transition-all hover:shadow-md">
+                <CardHeader className="space-y-1">
+                  <CardTitle className="text-lg">Verwijderlocatie</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                        Vul hier de locatie in waar het object verwijderd dient te worden
+                    </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-4">
-                  <div className="grid grid-cols-3 gap-4">
+                <CardContent className="pt-4 space-y-6">
+                  <div className="grid md:grid-cols-3 gap-6">
                     <FormField
                       control={form.control}
                       name="removalCity"
@@ -549,7 +568,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Stad</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -562,7 +581,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Straat</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -575,7 +594,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Postcode</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -586,12 +605,15 @@ export default function CreateRequest() {
               </Card>
             )}
             {showInstallationLocation && (
-              <Card>
-                <CardHeader className="p-4">
-                  <CardTitle className="text-base">Installatielocatie</CardTitle>
+               <Card className="transition-all hover:shadow-md">
+                <CardHeader className="space-y-1">
+                  <CardTitle className="text-lg">Installatielocatie</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                        Vul hier de locatie in waar het object geplaatst dient te worden
+                    </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <CardContent className="pt-4 space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="installationCity"
@@ -599,7 +621,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Stad</FormLabel>
                           <FormControl>
-                            <Input {...field} value={municipality || ''} />
+                            <Input {...field} value={municipality || ''} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -612,14 +634,14 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Haltenaam (optioneel)</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="installationXCoord"
@@ -627,7 +649,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>X coördinaat</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -640,14 +662,14 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Y coördinaat</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="installationAddress"
@@ -655,7 +677,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Straatnaam + huisnummer</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -668,7 +690,7 @@ export default function CreateRequest() {
                         <FormItem>
                           <FormLabel>Postcode</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input {...field} className="h-12"/>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -681,24 +703,24 @@ export default function CreateRequest() {
           </section>
 
           {/* Ground Work */}
-          <section data-section="groundwork">
+          <section data-section="groundwork" className="space-y-8">
             {showGroundRemoval && (
-              <Card>
-                <CardHeader className="p-4">
-                  <CardTitle className="text-base">
+              <Card className="transition-all hover:shadow-md">
+                <CardHeader className="space-y-1">
+                  <CardTitle className="text-lg">
                     Grond en straatwerk verwijderen
-                    <p className="text-sm font-normal text-muted-foreground mt-1">
-                      Aanvinken indien uitvoering door JCDecaux gewenst is
-                    </p>
                   </CardTitle>
+                  <p className="text-sm font-normal text-muted-foreground">
+                    Aanvinken indien uitvoering door JCDecaux gewenst is
+                  </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <CardContent className="pt-4 space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="groundRemovalPaving"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -713,7 +735,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundRemovalExcavation"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -728,7 +750,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundRemovalFilling"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -743,7 +765,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundRemovalRepaving"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -758,7 +780,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundRemovalMaterials"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -774,22 +796,22 @@ export default function CreateRequest() {
               </Card>
             )}
             {showGroundInstallation && (
-              <Card>
-                <CardHeader className="p-4">
-                  <CardTitle className="text-base">
+               <Card className="transition-all hover:shadow-md">
+                <CardHeader className="space-y-1">
+                  <CardTitle className="text-lg">
                     Grond en straatwerk plaatsen
-                    <p className="text-sm font-normal text-muted-foreground mt-1">
-                      Aanvinken indien uitvoering door JCDecaux gewenst is
-                    </p>
                   </CardTitle>
+                  <p className="text-sm font-normal text-muted-foreground">
+                    Aanvinken indien uitvoering door JCDecaux gewenst is
+                  </p>
                 </CardHeader>
-                <CardContent className="p-4 pt-0 space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                <CardContent className="pt-4 space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
                       name="groundInstallationExcavation"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -804,7 +826,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundInstallationFilling"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -819,7 +841,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundInstallationRepaving"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -834,7 +856,7 @@ export default function CreateRequest() {
                       control={form.control}
                       name="groundInstallationMaterials"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-center space-x-2">
+                        <FormItem className="flex items-center space-x-2">
                           <FormControl>
                             <Checkbox
                               checked={field.value}
@@ -853,7 +875,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Afleveradres overtollige grond</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} className="h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -865,23 +887,23 @@ export default function CreateRequest() {
           </section>
 
           {/* Electrical Work */}
-          <Card>
-            <CardHeader className="p-4">
-              <CardTitle className="text-base">
+          <Card className="transition-all hover:shadow-md">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-lg">
                 Elektra
-                <p className="text-sm font-normal text-muted-foreground mt-1">
+              </CardTitle>
+                <p className="text-sm font-normal text-muted-foreground">
                   Aanvinken indien JCDecaux dit dient aan te vragen
                 </p>
-              </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 pt-0 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <CardContent className="pt-4 space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 {showElectricalDisconnect && (
                   <FormField
                     control={form.control}
                     name="electricalDisconnect"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center space-x-2">
+                      <FormItem className="flex items-center space-x-2">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
@@ -898,7 +920,7 @@ export default function CreateRequest() {
                     control={form.control}
                     name="electricalConnect"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center space-x-2">
+                      <FormItem className="flex items-center space-x-2">
                         <FormControl>
                           <Checkbox
                             checked={field.value}
@@ -915,18 +937,18 @@ export default function CreateRequest() {
           </Card>
 
           {/* Billing Information */}
-          <section data-section="billing">
-            <Card>
-              <CardHeader className="p-4">
-                <CardTitle className="text-base">
+          <section data-section="billing" className="space-y-8">
+            <Card className="transition-all hover:shadow-md">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-lg">
                   Facturatie gegevens
-                  <p className="text-sm font-normal text-muted-foreground mt-1">
+                </CardTitle>
+                  <p className="text-sm font-normal text-muted-foreground">
                     In rekening brengen aan:
                   </p>
-                </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 pt-0 space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              <CardContent className="pt-4 space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="billingCity"
@@ -934,7 +956,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Plaats</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} className="h-12"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -947,7 +969,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Postcode</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} className="h-12"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -961,13 +983,13 @@ export default function CreateRequest() {
                     <FormItem>
                       <FormLabel>Adres</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className="h-12"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                                   />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="billingDepartment"
@@ -975,7 +997,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Afdeling</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} className="h-12"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -988,7 +1010,7 @@ export default function CreateRequest() {
                       <FormItem>
                         <FormLabel>Ter attentie van</FormLabel>
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} className="h-12"/>
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -1002,7 +1024,7 @@ export default function CreateRequest() {
                     <FormItem>
                       <FormLabel>Uw referentie</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input {...field} className="h-12"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1012,16 +1034,21 @@ export default function CreateRequest() {
             </Card>
           </section>
 
-          <div className="flex justify-end gap-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => navigate("/requests")}
+          <div className="flex justify-end">
+            <Button 
+              type="submit" 
+              size="lg"
+              className="min-w-[200px]"
+              disabled={createMutation.isPending}
             >
-              Annuleren
-            </Button>
-            <Button type="submit" disabled={createMutation.isPending}>
-              Aanvraag Indienen
+              {createMutation.isPending ? (
+                <span className="flex items-center gap-2">
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-background border-t-transparent"></span>
+                  Verwerken...
+                </span>
+              ) : (
+                "Aanvraag Indienen"
+              )}
             </Button>
           </div>
         </form>
