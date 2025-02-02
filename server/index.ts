@@ -62,6 +62,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Register API routes first
+const server = registerRoutes(app);
+
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(webpackConfig);
@@ -69,13 +72,11 @@ if (process.env.NODE_ENV !== 'production') {
     webpackDevMiddleware(compiler, {
       publicPath: webpackConfig.output.publicPath || '/',
       writeToDisk: true,
+      stats: 'minimal',
     })
   );
   app.use(webpackHotMiddleware(compiler));
 }
-
-// Register API routes
-const server = registerRoutes(app);
 
 // Error handling middleware
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
