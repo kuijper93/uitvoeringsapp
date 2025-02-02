@@ -436,13 +436,12 @@ export default function CreateRequest() {
                               <SelectValue placeholder="Selecteer het object" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-white" hideSelectedIcon={true}>
+                          <SelectContent className="bg-white">
                             {furnitureTypes.map(({ value, label }) => (
                               <SelectItem
                                 key={value}
                                 value={value}
                                 className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
-                                hideSelectedIcon={true}
                               >
                                 {label}
                               </SelectItem>
@@ -911,8 +910,7 @@ export default function CreateRequest() {
                             />
                           </FormControl>
                           <FormLabel>Leveren materiaal</FormLabel>
-                        </FormItem>
-                      )}
+                        </FormItem>                      )}
                     />
                   </div>
                   <FormField
