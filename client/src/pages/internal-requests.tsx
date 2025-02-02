@@ -45,7 +45,7 @@ const mockRequests = [
   {
     id: 1,
     orderNumber: "WO-001",
-    status: "ingepland",
+    status: "PENDING",
     municipality: "Amsterdam",
     description: "Plaatsen nieuwe abri",
     requestorName: "Ronald de Wit",
@@ -67,12 +67,13 @@ const mockRequests = [
     groundInstallationFilling: true,
     groundInstallationRepaving: true,
     groundInstallationMaterials: true,
-    electricalConnect: true
+    electricalConnect: true,
+    createdAt: new Date().toISOString()
   },
   {
     id: 2,
     orderNumber: "WO-002",
-    status: "open",
+    status: "IN_PROGRESS",
     municipality: "Rotterdam",
     description: "Verplaatsen mupi",
     requestorName: "Jan Jansen",
@@ -93,12 +94,13 @@ const mockRequests = [
     groundInstallationFilling: false,
     groundInstallationRepaving: true,
     groundInstallationMaterials: false,
-    electricalConnect: true
+    electricalConnect: true,
+    createdAt: new Date().toISOString()
   },
   {
     id: 3,
     orderNumber: "WO-003",
-    status: "ingepland",
+    status: "COMPLETED",
     municipality: "Utrecht",
     description: "Nieuwe driehoeksbord",
     requestorName: "Peter Post",
@@ -119,14 +121,16 @@ const mockRequests = [
     groundInstallationFilling: true,
     groundInstallationRepaving: false,
     groundInstallationMaterials: true,
-    electricalConnect: false
+    electricalConnect: false,
+    createdAt: new Date().toISOString()
   }
 ];
 
-
 const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTuple => {
   if (!x || !y) return [52.3676, 4.9041];
-  return [Number(x) / 100000, Number(y) / 100000];
+  const lat = 52.3676 + (Number(y) - 487462) / 100000;
+  const lng = 4.9041 + (Number(x) - 121766) / 100000;
+  return [lat, lng];
 };
 
 export default function InternalRequests() {
