@@ -7,14 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { Search, ExternalLink } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import type { LatLngTuple } from "leaflet";
 import type { SelectWorkOrder } from "@db/schema";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { ExternalLink } from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // Fix Leaflet default marker icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -28,7 +29,7 @@ const statuses = ["alle", "ingepland", "open", "uitgevoerd", "aanvraagfase"] as 
 const cities = ["alle", "Amsterdam", "Rotterdam", "Utrecht", "Arnhem", "Apeldoorn"] as const;
 
 const getStatusColor = (status: string) => {
-  switch (status) {
+  switch (status.toLowerCase()) {
     case "ingepland":
       return "text-yellow-600";
     case "open":
@@ -42,91 +43,6 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const mockRequests = [
-  {
-    id: 1,
-    orderNumber: "WO-001",
-    status: "PENDING",
-    municipality: "Amsterdam",
-    description: "Plaatsen nieuwe abri",
-    requestorName: "Ronald de Wit",
-    requestorEmail: "dewit@test.nl",
-    requestorPhone: "06-85285859",
-    executionContactName: "Pietje Put",
-    executionContactEmail: "pietput@test.nl",
-    executionContactPhone: "06-12234578",
-    furnitureType: "abri",
-    abriFormat: "4x2",
-    objectNumber: "NL-AB-199009",
-    actionType: "plaatsen",
-    desiredDate: "2024-12-23",
-    installationXCoord: "121766",
-    installationYCoord: "487462",
-    installationAddress: "Leidseplein 58",
-    installationPostcode: "1000AA",
-    groundInstallationExcavation: true,
-    groundInstallationFilling: true,
-    groundInstallationRepaving: true,
-    groundInstallationMaterials: true,
-    electricalConnect: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: 2,
-    orderNumber: "WO-002",
-    status: "IN_PROGRESS",
-    municipality: "Rotterdam",
-    description: "Verplaatsen mupi",
-    requestorName: "Jan Jansen",
-    requestorEmail: "jjansen@test.nl",
-    requestorPhone: "06-12345678",
-    executionContactName: "Klaas Vaak",
-    executionContactEmail: "kvaak@test.nl",
-    executionContactPhone: "06-87654321",
-    furnitureType: "mupi",
-    objectNumber: "NL-MP-123456",
-    actionType: "verplaatsen",
-    desiredDate: "2024-12-24",
-    installationXCoord: "92363",
-    installationYCoord: "437102",
-    installationAddress: "Coolsingel 42",
-    installationPostcode: "3011AD",
-    groundInstallationExcavation: true,
-    groundInstallationFilling: false,
-    groundInstallationRepaving: true,
-    groundInstallationMaterials: false,
-    electricalConnect: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: 3,
-    orderNumber: "WO-003",
-    status: "COMPLETED",
-    municipality: "Utrecht",
-    description: "Nieuwe driehoeksbord",
-    requestorName: "Peter Post",
-    requestorEmail: "ppost@test.nl",
-    requestorPhone: "06-11223344",
-    executionContactName: "Hans Helper",
-    executionContactEmail: "hhelper@test.nl",
-    executionContactPhone: "06-44332211",
-    furnitureType: "driehoeksbord",
-    objectNumber: "NL-DB-789012",
-    actionType: "plaatsen",
-    desiredDate: "2024-12-25",
-    installationXCoord: "136592",
-    installationYCoord: "456215",
-    installationAddress: "Vredenburg 40",
-    installationPostcode: "3511BD",
-    groundInstallationExcavation: true,
-    groundInstallationFilling: true,
-    groundInstallationRepaving: false,
-    groundInstallationMaterials: true,
-    electricalConnect: false,
-    createdAt: new Date().toISOString()
-  }
-];
-
 const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTuple => {
   if (!x || !y) return [52.3676, 4.9041];
   const lat = 52.3676 + (Number(y) - 487462) / 100000;
@@ -135,12 +51,43 @@ const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTup
 };
 
 export default function InternalRequests() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCity, setSelectedCity] = useState("alle");
-  const [selectedStatus, setSelectedStatus] = useState("alle");
+  const [selectedCity, setSelectedCity] = useState<string>("alle");
+  const [selectedStatus, setSelectedStatus] = useState<string>("alle");
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState<SelectWorkOrder | null>(null);
 
-  const [workOrders] = useState(mockRequests);
-  const [selectedWorkOrder, setSelectedWorkOrder] = useState<(typeof mockRequests)[0] | null>(null);
+  // Fetch work orders
+  const { data: workOrders, isLoading } = useQuery({
+    queryKey: ['/api/work-orders'],
+    queryFn: async () => {
+      const response = await apiRequest<SelectWorkOrder[]>('GET', '/api/work-orders');
+      return response;
+    }
+  });
+
+  // Update work order mutation
+  const updateWorkOrder = useMutation({
+    mutationFn: async (data: Partial<SelectWorkOrder>) => {
+      if (!selectedWorkOrder?.id) return;
+      return await apiRequest('PATCH', `/api/work-orders/${selectedWorkOrder.id}`, data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/work-orders'] });
+      toast({
+        title: "Werkorder bijgewerkt",
+        description: "De wijzigingen zijn succesvol opgeslagen.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Fout bij bijwerken",
+        description: "Er is een fout opgetreden bij het opslaan van de wijzigingen.",
+        variant: "destructive",
+      });
+    },
+  });
 
   useEffect(() => {
     if (workOrders && workOrders.length > 0 && !selectedWorkOrder) {
@@ -148,17 +95,26 @@ export default function InternalRequests() {
     }
   }, [workOrders, selectedWorkOrder]);
 
-  const filteredWorkOrders = workOrders.filter(order => {
+  const filteredWorkOrders = workOrders?.filter(order => {
     const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCity = selectedCity === "alle" || order.municipality.toLowerCase() === selectedCity.toLowerCase();
     const matchesStatus = selectedStatus === "alle" || order.status.toLowerCase() === selectedStatus.toLowerCase();
     return matchesSearch && matchesCity && matchesStatus;
-  });
+  }) || [];
 
-  if (!workOrders) {
-      return <div>Loading...</div>
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
+  const handleServiceChange = async (service: string, checked: boolean) => {
+    if (!selectedWorkOrder) return;
+
+    const updates: Partial<SelectWorkOrder> = {
+      [`${service}`]: checked,
+    };
+
+    updateWorkOrder.mutate(updates);
+  };
 
   return (
     <div className="h-[calc(100vh-6rem)]">
@@ -207,7 +163,7 @@ export default function InternalRequests() {
             </div>
             <Separator />
             <div className="flex-1 overflow-auto px-3 py-2">
-              {filteredWorkOrders?.map((order) => (
+              {filteredWorkOrders.map((order) => (
                 <div
                   key={order.id}
                   className={cn(
@@ -366,25 +322,50 @@ export default function InternalRequests() {
                                     <p className="text-xs font-medium mb-2">Aangevraagde services</p>
                                     <div className="space-y-2">
                                       <div className="flex items-center space-x-1">
-                                        <Checkbox id="elektra" className="h-3 w-3" />
+                                        <Checkbox 
+                                          id="elektra" 
+                                          className="h-3 w-3"
+                                          checked={selectedWorkOrder.electricalConnect}
+                                          onCheckedChange={(checked) => handleServiceChange('electricalConnect', !!checked)}
+                                        />
                                         <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                                       </div>
                                       <div className="flex items-center space-x-1">
-                                        <Checkbox id="cunet" className="h-3 w-3" />
+                                        <Checkbox 
+                                          id="cunet" 
+                                          className="h-3 w-3"
+                                          checked={selectedWorkOrder.groundInstallationExcavation}
+                                           onCheckedChange={(checked) => handleServiceChange('groundInstallationExcavation', !!checked)}
+                                        />
                                         <label htmlFor="cunet" className="text-xs">Cunet graven</label>
                                       </div>
                                       <div className="flex items-center space-x-1">
-                                        <Checkbox id="herstraten" className="h-3 w-3" />
+                                        <Checkbox 
+                                          id="herstraten" 
+                                          className="h-3 w-3"
+                                          checked={selectedWorkOrder.groundInstallationRepaving}
+                                          onCheckedChange={(checked) => handleServiceChange('groundInstallationRepaving', !!checked)}
+                                        />
                                         <label htmlFor="herstraten" className="text-xs">Herstraten</label>
                                       </div>
                                       <div className="flex items-center space-x-1">
-                                        <Checkbox id="aanvullen" className="h-3 w-3" />
+                                        <Checkbox 
+                                          id="aanvullen" 
+                                          className="h-3 w-3"
+                                           checked={selectedWorkOrder.groundInstallationFilling}
+                                           onCheckedChange={(checked) => handleServiceChange('groundInstallationFilling', !!checked)}
+                                        />
                                         <label htmlFor="aanvullen" className="text-xs">Aanvullen</label>
                                       </div>
                                     </div>
                                   </div>
                                   <div className="flex items-center space-x-1">
-                                    <Checkbox id="leveren-materiaal" className="h-3 w-3" />
+                                    <Checkbox 
+                                          id="leveren-materiaal" 
+                                          className="h-3 w-3"
+                                          checked={selectedWorkOrder.groundInstallationMaterials}
+                                           onCheckedChange={(checked) => handleServiceChange('groundInstallationMaterials', !!checked)}
+                                        />
                                     <label htmlFor="leveren-materiaal" className="text-xs">Leveren materiaal</label>
                                   </div>
                                 </div>

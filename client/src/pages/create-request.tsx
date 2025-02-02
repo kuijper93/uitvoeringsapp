@@ -465,32 +465,28 @@ export default function CreateRequest() {
                               <SelectValue placeholder="Selecteer type actie" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="bg-white" hideSelectedIcon={true}>
+                          <SelectContent className="bg-white">
                             <SelectItem 
                               value="plaatsen"
                               className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
-                              hideSelectedIcon={true}
                             >
                               Plaatsen
                             </SelectItem>
                             <SelectItem 
                               value="verwijderen"
                               className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
-                              hideSelectedIcon={true}
                             >
                               Verwijderen
                             </SelectItem>
                             <SelectItem 
                               value="verplaatsen"
                               className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
-                              hideSelectedIcon={true}
                             >
                               Verplaatsen
                             </SelectItem>
                             <SelectItem 
                               value="ophogen"
                               className="py-3 px-4 cursor-pointer data-[highlighted]:bg-gray-100 data-[highlighted]:text-gray-900"
-                              hideSelectedIcon={true}
                             >
                               Ophogen
                             </SelectItem>
