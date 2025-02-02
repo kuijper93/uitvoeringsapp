@@ -11,8 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
-import { Plus } from "lucide-react";
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default function AanvraagIntern() {
@@ -21,33 +20,31 @@ export default function AanvraagIntern() {
   return (
     <div className="grid grid-cols-[1fr,2fr,1fr] gap-4 p-2">
       {/* Left section - Objectgegevens */}
-      <div>
-        <div className="bg-amber-50/50 p-2 rounded-sm">
-          <div className="space-y-2">
-            <div>
-              <Label className="text-xs">Type straatmeubilair</Label>
-              <Input defaultValue="abri" readOnly className="bg-amber-50 h-6 text-xs" />
-            </div>
-            <div>
-              <Label className="text-xs">Abri formaat</Label>
-              <Input defaultValue="4x2" readOnly className="bg-amber-50 h-6 text-xs" />
-            </div>
-            <div>
-              <Label className="text-xs">Objectnummer</Label>
-              <Input defaultValue="NL-AB-199009" readOnly className="bg-amber-50 h-6 text-xs" />
-            </div>
-            <div>
-              <Label className="text-xs">Type actie</Label>
-              <Input defaultValue="plaatsen" readOnly className="bg-amber-50 h-6 text-xs" />
-            </div>
+      <div className="bg-amber-50/50 p-2 rounded-sm">
+        <div className="space-y-2">
+          <div>
+            <Label className="text-xs">Type straatmeubilair</Label>
+            <Input defaultValue="abri" readOnly className="bg-amber-50 h-6 text-xs" />
           </div>
+          <div>
+            <Label className="text-xs">Abri formaat</Label>
+            <Input defaultValue="4x2" readOnly className="bg-amber-50 h-6 text-xs" />
+          </div>
+          <div>
+            <Label className="text-xs">Objectnummer</Label>
+            <Input defaultValue="NL-AB-199009" readOnly className="bg-amber-50 h-6 text-xs" />
+          </div>
+          <div>
+            <Label className="text-xs">Type actie</Label>
+            <Input defaultValue="plaatsen" readOnly className="bg-amber-50 h-6 text-xs" />
+          </div>
+        </div>
 
-          <div className="mt-2">
-            <Checkbox id="new-object" className="h-4 w-4" />
-            <label htmlFor="new-object" className="text-xs ml-2">
-              Nieuw object aanmaken
-            </label>
-          </div>
+        <div className="mt-2">
+          <Checkbox id="new-object" className="h-4 w-4" />
+          <label htmlFor="new-object" className="text-xs ml-2">
+            Nieuw object aanmaken
+          </label>
         </div>
       </div>
 
