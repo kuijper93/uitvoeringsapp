@@ -41,9 +41,92 @@ const getStatusColor = (status: string) => {
   }
 };
 
+const mockRequests = [
+  {
+    id: 1,
+    orderNumber: "WO-001",
+    status: "ingepland",
+    municipality: "Amsterdam",
+    description: "Plaatsen nieuwe abri",
+    requestorName: "Ronald de Wit",
+    requestorEmail: "dewit@test.nl",
+    requestorPhone: "06-85285859",
+    executionContactName: "Pietje Put",
+    executionContactEmail: "pietput@test.nl",
+    executionContactPhone: "06-12234578",
+    furnitureType: "abri",
+    abriFormat: "4x2",
+    objectNumber: "NL-AB-199009",
+    actionType: "plaatsen",
+    desiredDate: "2024-12-23",
+    installationXCoord: "121766",
+    installationYCoord: "487462",
+    installationAddress: "Leidseplein 58",
+    installationPostcode: "1000AA",
+    groundInstallationExcavation: true,
+    groundInstallationFilling: true,
+    groundInstallationRepaving: true,
+    groundInstallationMaterials: true,
+    electricalConnect: true
+  },
+  {
+    id: 2,
+    orderNumber: "WO-002",
+    status: "open",
+    municipality: "Rotterdam",
+    description: "Verplaatsen mupi",
+    requestorName: "Jan Jansen",
+    requestorEmail: "jjansen@test.nl",
+    requestorPhone: "06-12345678",
+    executionContactName: "Klaas Vaak",
+    executionContactEmail: "kvaak@test.nl",
+    executionContactPhone: "06-87654321",
+    furnitureType: "mupi",
+    objectNumber: "NL-MP-123456",
+    actionType: "verplaatsen",
+    desiredDate: "2024-12-24",
+    installationXCoord: "92363",
+    installationYCoord: "437102",
+    installationAddress: "Coolsingel 42",
+    installationPostcode: "3011AD",
+    groundInstallationExcavation: true,
+    groundInstallationFilling: false,
+    groundInstallationRepaving: true,
+    groundInstallationMaterials: false,
+    electricalConnect: true
+  },
+  {
+    id: 3,
+    orderNumber: "WO-003",
+    status: "ingepland",
+    municipality: "Utrecht",
+    description: "Nieuwe driehoeksbord",
+    requestorName: "Peter Post",
+    requestorEmail: "ppost@test.nl",
+    requestorPhone: "06-11223344",
+    executionContactName: "Hans Helper",
+    executionContactEmail: "hhelper@test.nl",
+    executionContactPhone: "06-44332211",
+    furnitureType: "driehoeksbord",
+    objectNumber: "NL-DB-789012",
+    actionType: "plaatsen",
+    desiredDate: "2024-12-25",
+    installationXCoord: "136592",
+    installationYCoord: "456215",
+    installationAddress: "Vredenburg 40",
+    installationPostcode: "3511BD",
+    groundInstallationExcavation: true,
+    groundInstallationFilling: true,
+    groundInstallationRepaving: false,
+    groundInstallationMaterials: true,
+    electricalConnect: false
+  }
+];
+
+
 const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTuple => {
-  if (!x || !y) return [52.3676, 4.9041]; // Default to Amsterdam
-  return [Number(x) / 1000 || 52.3676, Number(y) / 1000 || 4.9041];
+  if (!x || !y) return [52.3676, 4.9041];
+  return [Number(x) / 100000, Number(y) / 100000];
 };
 
 export default function InternalRequests() {
@@ -51,30 +134,26 @@ export default function InternalRequests() {
   const [selectedCity, setSelectedCity] = useState("alle");
   const [selectedStatus, setSelectedStatus] = useState("alle");
 
-  // Fetch work orders from the API
-  const { data: workOrders, isLoading } = useQuery<SelectWorkOrder[]>({
-    queryKey: ["/api/requests"],
-  });
+  const [workOrders] = useState(mockRequests);
+  const [selectedWorkOrder, setSelectedWorkOrder] = useState<(typeof mockRequests)[0] | null>(null);
 
-  const [selectedWorkOrder, setSelectedWorkOrder] = useState<SelectWorkOrder | null>(null);
-
-  // Update selectedWorkOrder when data is loaded
   useEffect(() => {
     if (workOrders && workOrders.length > 0 && !selectedWorkOrder) {
       setSelectedWorkOrder(workOrders[0]);
     }
   }, [workOrders, selectedWorkOrder]);
 
-  const filteredWorkOrders = workOrders?.filter(order => {
+  const filteredWorkOrders = workOrders.filter(order => {
     const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCity = selectedCity === "alle" || order.municipality.toLowerCase() === selectedCity.toLowerCase();
     const matchesStatus = selectedStatus === "alle" || order.status.toLowerCase() === selectedStatus.toLowerCase();
     return matchesSearch && matchesCity && matchesStatus;
   });
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!workOrders) {
+      return <div>Loading...</div>
   }
+
 
   return (
     <div className="h-[calc(100vh-6rem)]">
