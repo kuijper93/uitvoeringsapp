@@ -7,8 +7,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import type { LatLngTuple } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix Leaflet default marker icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+});
 
 const mockWorkOrders = [
   { 
@@ -64,6 +76,12 @@ const getStatusColor = (status: string) => {
     default:
       return "text-gray-600";
   }
+};
+
+const getCoordinates = (coordString: string | undefined): LatLngTuple => {
+  if (!coordString) return [52.3676, 4.9041]; // Default to Amsterdam
+  const [lat, lng] = coordString.split(".").map(Number);
+  return [lat / 1000 || 52.3676, lng / 1000 || 4.9041];
 };
 
 export default function InternalRequests() {
@@ -184,6 +202,26 @@ export default function InternalRequests() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Add map */}
+                    <div className="h-[200px] rounded-lg overflow-hidden border">
+                      <MapContainer
+                        center={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}
+                        zoom={13}
+                        style={{ height: "100%", width: "100%" }}
+                      >
+                        <TileLayer
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        />
+                        <Marker position={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}>
+                          <Popup>
+                            {selectedWorkOrder.orderDetails?.street || 'Location'}
+                          </Popup>
+                        </Marker>
+                      </MapContainer>
+                    </div>
+
                     <div className="bg-orange-50 p-2 rounded">
                       <div className="grid grid-cols-2 gap-2">
                         <div>
