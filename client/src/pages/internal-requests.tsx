@@ -506,12 +506,68 @@ export default function InternalRequests() {
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <p className="text-xs text-gray-500">Local Model</p>
-                            <p className="text-sm font-medium text-orange-500">{selectedWorkOrder.furnitureType}</p>
+                            <Select
+                              value={selectedWorkOrder.furnitureType}
+                              onValueChange={(value) => {
+                                updateWorkOrder.mutate({ furnitureType: value });
+                              }}
+                            >
+                              <SelectTrigger className="h-8 text-sm">
+                                <SelectValue placeholder="Selecteer model" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {[
+                                  "abri",
+                                  "mupi",
+                                  "vitrine",
+                                  "digitaal_object",
+                                  "billboard",
+                                  "zuil",
+                                  "toilet",
+                                  "hekwerk",
+                                  "haltepaal",
+                                  "prullenbak"
+                                ].map((type) => (
+                                  <SelectItem
+                                    key={type}
+                                    value={type}
+                                    className="text-sm"
+                                  >
+                                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
                           </div>
                           {showAbriFormat && (
                             <div>
                               <p className="text-xs text-gray-500">Abri formaat</p>
-                              <p className="text-sm font-medium">{selectedWorkOrder.abriFormat || '-'}</p>
+                              <Select
+                                value={selectedWorkOrder.abriFormat || ''}
+                                onValueChange={(value) => {
+                                  updateWorkOrder.mutate({ abriFormat: value });
+                                }}
+                              >
+                                <SelectTrigger className="h-8 text-sm">
+                                  <SelectValue placeholder="Selecteer formaat" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {[
+                                    "2-vaks",
+                                    "3-vaks",
+                                    "4-vaks",
+                                    "5-vaks"
+                                  ].map((format) => (
+                                    <SelectItem
+                                      key={format}
+                                      value={format}
+                                      className="text-sm"
+                                    >
+                                      {format}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
                           )}
                         </div>
