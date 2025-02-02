@@ -30,7 +30,7 @@ export const workOrders = pgTable("work_orders", {
   removalPostcode: text("removal_postcode"),
 
   // Installation Location
-    installationCity: text("installation_city"),
+  installationCity: text("installation_city"),
   installationXCoord: text("installation_x_coord"),
   installationYCoord: text("installation_y_coord"),
   installationAddress: text("installation_address"),
@@ -56,9 +56,9 @@ export const workOrders = pgTable("work_orders", {
   electricalConnect: boolean("electrical_connect").default(false),
 
   // Billing Information
-  billingCity: text("billing_city"),
-  billingAddress: text("billing_address"),
-  billingPostcode: text("billing_postcode"),
+  billingCity: text("billing_city").notNull(),
+  billingAddress: text("billing_address").notNull(),
+  billingPostcode: text("billing_postcode").notNull(),
   billingDepartment: text("billing_department"),
   billingAttention: text("billing_attention"),
   billingReference: text("billing_reference"),

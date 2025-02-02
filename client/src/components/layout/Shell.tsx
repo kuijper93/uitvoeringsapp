@@ -5,12 +5,9 @@ import {
   ClipboardList,
   Settings,
   LogOut,
-  Calendar,
+  FileText,
+  Plus,
   Wrench,
-  Box,
-  Settings2,
-  Construction,
-  FileText
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -18,14 +15,11 @@ import { Separator } from "@/components/ui/separator";
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Aanvragen", href: "/requests", icon: ClipboardList },
-  { name: "Losse aanvragen", href: "/single-requests", icon: FileText },
-  { name: "Projecten", href: "/projects", icon: Construction },
   { name: "Werkorders", href: "/work-orders", icon: Wrench },
-  { name: "Planning", href: "/planning", icon: Calendar },
-  { name: "TEMP voorraad", href: "/temp-inventory", icon: Box },
-  { name: "Configurator", href: "/configurator", icon: Settings2 },
-  { name: "Elektra", href: "/elektra", icon: Settings },
-  { name: "Elektra box", href: "/elektra-box", icon: Box },
+];
+
+const actions = [
+  { name: "Nieuwe Aanvraag", href: "/create-request", icon: Plus },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
@@ -63,8 +57,31 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   ))}
                 </ul>
               </li>
+              <li>
+                <Separator className="my-4" />
+                <ul role="list" className="-mx-2 space-y-1">
+                  {actions.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          item.href === location
+                            ? "bg-primary text-primary-foreground"
+                            : "text-primary hover:bg-primary/90 hover:text-primary-foreground",
+                          "group flex gap-x-3 rounded-md p-2 text-sm leading-6"
+                        )}
+                      >
+                        <item.icon
+                          className="h-6 w-6 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
               <li className="mt-auto">
-                <Separator className="mb-4" />
                 <Button
                   variant="ghost"
                   className="w-full justify-start gap-x-3"
