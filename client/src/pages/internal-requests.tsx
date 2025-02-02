@@ -185,32 +185,32 @@ export default function InternalRequests() {
                 </div>
 
                 {/* Contact Information in header */}
-                <div className="flex gap-4">
+                <div className="flex gap-6">
                   {/* Aanvrager Contact */}
-                  <div className="bg-gray-50 p-2 rounded-lg">
-                    <h3 className="text-xs font-medium mb-1">Aanvrager</h3>
-                    <div className="space-y-0.5 text-xs">
-                      <p>{selectedWorkOrder.contacts?.requester.name}</p>
-                      <p className="text-muted-foreground">
-                        <a href={`mailto:${selectedWorkOrder.contacts?.requester.email}`} className="text-blue-600 hover:underline">
-                          {selectedWorkOrder.contacts?.requester.email}
-                        </a>
-                      </p>
-                      <p className="text-muted-foreground">{selectedWorkOrder.contacts?.requester.phone}</p>
+                  <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
+                    <div className="flex items-center space-x-2">
+                      <h3 className="text-xs font-medium">Aanvrager:</h3>
+                      <span className="text-xs">{selectedWorkOrder.contacts?.requester.name}</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {selectedWorkOrder.contacts?.requester.phone} / 
+                      <a href={`mailto:${selectedWorkOrder.contacts?.requester.email}`} className="text-blue-600 hover:underline ml-1">
+                        {selectedWorkOrder.contacts?.requester.email}
+                      </a>
                     </div>
                   </div>
 
                   {/* Execution Contact */}
-                  <div className="bg-gray-50 p-2 rounded-lg">
-                    <h3 className="text-xs font-medium mb-1">Uitvoering</h3>
-                    <div className="space-y-0.5 text-xs">
-                      <p>{selectedWorkOrder.contacts?.execution.name}</p>
-                      <p className="text-muted-foreground">
-                        <a href={`mailto:${selectedWorkOrder.contacts?.execution.email}`} className="text-blue-600 hover:underline">
-                          {selectedWorkOrder.contacts?.execution.email}
-                        </a>
-                      </p>
-                      <p className="text-muted-foreground">{selectedWorkOrder.contacts?.execution.phone}</p>
+                  <div className="bg-gray-50 p-2 rounded-lg min-w-[300px]">
+                    <div className="flex items-center space-x-2">
+                      <h3 className="text-xs font-medium">Uitvoering:</h3>
+                      <span className="text-xs">{selectedWorkOrder.contacts?.execution.name}</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {selectedWorkOrder.contacts?.execution.phone} / 
+                      <a href={`mailto:${selectedWorkOrder.contacts?.execution.email}`} className="text-blue-600 hover:underline ml-1">
+                        {selectedWorkOrder.contacts?.execution.email}
+                      </a>
                     </div>
                   </div>
                 </div>
