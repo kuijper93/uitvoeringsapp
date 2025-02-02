@@ -65,14 +65,6 @@ app.use((req, res, next) => {
 // Register API routes first
 const server = registerRoutes(app);
 
-// Error handling middleware
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  const status = err.status || err.statusCode || 500;
-  const message = err.message || "Internal Server Error";
-  console.error("Server error:", err);
-  res.status(status).json({ message });
-});
-
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
@@ -83,11 +75,7 @@ if (process.env.NODE_ENV !== 'production') {
       writeToDisk: true,
     })
   );
-  app.use(webpackHotMiddleware(compiler, {
-    log: console.log,
-    path: '/__webpack_hmr',
-    heartbeat: 10 * 1000
-  }));
+  app.use(webpackHotMiddleware(compiler));
 }
 
 // Serve static files in production
@@ -100,6 +88,7 @@ app.get('*', (req, res, next) => {
   if (req.url.startsWith('/api')) {
     return next();
   }
+
   const indexPath = process.env.NODE_ENV === 'production'
     ? path.join(__dirname, '../dist/public/index.html')
     : path.join(__dirname, '../client/index.html');
