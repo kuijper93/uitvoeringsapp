@@ -10,7 +10,6 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-// Status list data with work order information
 const mockWorkOrders = [
   { 
     id: "WO-001", 
@@ -71,7 +70,6 @@ export default function InternalRequests() {
   const [selectedCity, setSelectedCity] = useState("alle");
   const [selectedStatus, setSelectedStatus] = useState("alle");
 
-  // Filter work orders based on search query, city and status
   const filteredWorkOrders = mockWorkOrders.filter(order => {
     const matchesSearch = order.address.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          order.id.toLowerCase().includes(searchQuery.toLowerCase());
@@ -86,7 +84,6 @@ export default function InternalRequests() {
         direction="horizontal"
         className="h-full rounded-lg border"
       >
-        {/* Left Panel - Work Orders List */}
         <ResizablePanel defaultSize={20} minSize={15}>
           <div className="flex h-full flex-col">
             <div className="space-y-2 px-3 py-4">
@@ -152,7 +149,6 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        {/* Middle Panel - Work Order Details */}
         <ResizablePanel defaultSize={45}>
           <div className="flex h-full flex-col">
             <div className="border-b p-4">
@@ -171,33 +167,38 @@ export default function InternalRequests() {
                 </CardHeader>
                 <CardContent className="grid gap-3 pt-0">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-blue-100 p-2 rounded">
-                      <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.plannedDate}</p>
-                    </div>
-                    <div className="bg-blue-100 p-2 rounded">
-                      <label className="text-xs font-medium">X, Y coördinaten</label>
-                      <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                    <div className="bg-blue-100 p-2 rounded text-xs">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
+                          <p className="text-sm">{selectedWorkOrder.orderDetails?.plannedDate}</p>
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium">X, Y coördinaten</label>
+                          <p className="text-sm">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
                   <div>
-                    <label className="text-xs font-medium">Aangevraagde services</label>
+                    <label className="text-xs font-medium">Aangevraagde services:</label>
                     <div className="grid grid-cols-2 gap-2 mt-1">
                       <div className="flex items-center space-x-2">
                         <Checkbox id="elektra" />
-                        <label htmlFor="elektra" className="text-sm">Elektra door JCD</label>
+                        <label htmlFor="elektra" className="text-xs">Elektra door JCD</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="graaf" />
-                        <label htmlFor="graaf" className="text-sm">Graaf graven</label>
+                        <label htmlFor="graaf" className="text-xs">Graaf graven</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="vergunning" />
-                        <label htmlFor="vergunning" className="text-sm">Vergunning</label>
+                        <label htmlFor="vergunning" className="text-xs">Vergunning</label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Checkbox id="materiaal" />
-                        <label htmlFor="materiaal" className="text-sm">Materiaal</label>
+                        <label htmlFor="materiaal" className="text-xs">Materiaal</label>
                       </div>
                     </div>
                   </div>
@@ -231,7 +232,7 @@ export default function InternalRequests() {
                   </div>
                   <div className="flex items-center space-x-2 pt-2">
                     <Checkbox id="nieuw" />
-                    <label htmlFor="nieuw" className="text-sm">Nieuw object aanmaken</label>
+                    <label htmlFor="nieuw" className="text-xs">Nieuw object aanmaken</label>
                   </div>
                 </CardContent>
               </Card>
@@ -256,7 +257,6 @@ export default function InternalRequests() {
 
         <ResizableHandle withHandle />
 
-        {/* Right Panel - Contact Information */}
         <ResizablePanel defaultSize={35}>
           <div className="flex h-full flex-col">
             <div className="border-b p-4">
