@@ -17,15 +17,15 @@ export default function AanvraagIntern() {
   const form = useForm();
 
   return (
-    <div className="grid grid-cols-3 gap-2 p-2">
+    <div className="grid grid-cols-3 gap-1 p-1">
       {/* Left section - Objectgegevens */}
       <div>
-        <h2 className="text-sm font-semibold mb-1">Objectgegevens</h2>
-        <div className="space-y-1">
+        <h2 className="text-xs font-semibold mb-0.5">Objectgegevens</h2>
+        <div className="space-y-0.5">
           <div>
-            <Label className="text-xs">Local Model:</Label>
+            <Label className="text-xs">Model:</Label>
             <Select>
-              <SelectTrigger className="w-full bg-rose-50 h-7 text-sm">
+              <SelectTrigger className="w-full bg-rose-50 h-6 text-xs">
                 <SelectValue placeholder="Andreas" />
               </SelectTrigger>
               <SelectContent>
@@ -37,7 +37,7 @@ export default function AanvraagIntern() {
           <div>
             <Label className="text-xs">Object kleur:</Label>
             <Select>
-              <SelectTrigger className="w-full bg-rose-50 h-7 text-sm">
+              <SelectTrigger className="w-full bg-rose-50 h-6 text-xs">
                 <SelectValue placeholder="RAL7016" />
               </SelectTrigger>
               <SelectContent>
@@ -49,7 +49,7 @@ export default function AanvraagIntern() {
           <div>
             <Label className="text-xs">Reclame locatie:</Label>
             <Select>
-              <SelectTrigger className="w-full h-7 text-sm">
+              <SelectTrigger className="w-full h-6 text-xs">
                 <SelectValue placeholder="Enkelzijdig roterend" />
               </SelectTrigger>
               <SelectContent>
@@ -60,20 +60,20 @@ export default function AanvraagIntern() {
 
           <div>
             <Label className="text-xs">Materiaal:</Label>
-            <Input defaultValue="NL-123456" readOnly className="bg-green-50 h-7 text-sm" />
+            <Input defaultValue="NL-123456" readOnly className="bg-green-50 h-6 text-xs" />
           </div>
 
           <div>
             <Label className="text-xs">Object:</Label>
-            <Input defaultValue="NL-AB-199009" readOnly className="bg-green-50 h-7 text-sm" />
+            <Input defaultValue="NL-AB-199009" readOnly className="bg-green-50 h-6 text-xs" />
           </div>
 
-          <div className="flex gap-1 mt-1">
-            <Button size="sm" variant="secondary" className="flex-1 text-xs py-1">Kies configuratie</Button>
-            <Button size="sm" variant="secondary" className="flex-1 text-xs py-1">Bekijk TEMP</Button>
+          <div className="flex gap-0.5 mt-0.5">
+            <Button size="sm" variant="secondary" className="flex-1 text-xs py-0.5">Kies configuratie</Button>
+            <Button size="sm" variant="secondary" className="flex-1 text-xs py-0.5">Bekijk TEMP</Button>
           </div>
 
-          <Button variant="outline" size="sm" className="w-full flex items-center gap-1 text-xs py-1">
+          <Button variant="outline" size="sm" className="w-full flex items-center gap-0.5 text-xs py-0.5">
             <Plus className="h-3 w-3" />
             Nieuw object aanmaken
           </Button>
@@ -82,12 +82,12 @@ export default function AanvraagIntern() {
 
       {/* Middle section - Locatiegegevens */}
       <div>
-        <h2 className="text-sm font-semibold mb-1">Locatiegegevens</h2>
-        <div className="space-y-1">
+        <h2 className="text-xs font-semibold mb-0.5">Locatiegegevens</h2>
+        <div className="space-y-0.5">
           <div>
             <Label className="text-xs">Commercieel:</Label>
             <Select>
-              <SelectTrigger className="w-full bg-rose-50 h-7 text-sm">
+              <SelectTrigger className="w-full bg-rose-50 h-6 text-xs">
                 <SelectValue placeholder="A en B zijde commercieel" />
               </SelectTrigger>
               <SelectContent>
@@ -98,13 +98,13 @@ export default function AanvraagIntern() {
 
           <div>
             <Label className="text-xs">Aanverwante objecten:</Label>
-            <Input placeholder="" className="h-7 text-sm" />
+            <Input placeholder="" className="h-6 text-xs" />
           </div>
 
           <div>
             <Label className="text-xs">Reclameverlichting:</Label>
             <Select>
-              <SelectTrigger className="w-full bg-rose-50 h-7 text-sm">
+              <SelectTrigger className="w-full bg-rose-50 h-6 text-xs">
                 <SelectValue placeholder="Met reclame" />
               </SelectTrigger>
               <SelectContent>
@@ -117,32 +117,32 @@ export default function AanvraagIntern() {
 
       {/* Right section - Elektrabox */}
       <div>
-        <Card className="p-2">
-          <h3 className="text-sm font-semibold mb-1">Elektrabox</h3>
-          <div className="space-y-1">
-            <div className="grid grid-cols-2 gap-1">
+        <Card className="p-1">
+          <h3 className="text-xs font-semibold mb-0.5">Elektrabox</h3>
+          <div className="space-y-0.5">
+            <div className="grid grid-cols-2 gap-0.5">
               <div>
                 <Label className="text-xs">X:</Label>
-                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-7 text-sm" />
+                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-6 text-xs" />
               </div>
               <div>
                 <Label className="text-xs">Y:</Label>
-                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-7 text-sm" />
+                <Input defaultValue="54.123123" readOnly className="bg-green-50 h-6 text-xs" />
               </div>
             </div>
 
             <div>
               <Label className="text-xs">Type:</Label>
-              <Input defaultValue="Ondergronds" readOnly className="bg-green-50 h-7 text-sm" />
+              <Input defaultValue="Ondergronds" readOnly className="bg-green-50 h-6 text-xs" />
             </div>
 
-            <Button size="sm" variant="secondary" className="w-full text-xs py-1">
+            <Button size="sm" variant="secondary" className="w-full text-xs py-0.5">
               Kies configuratie
             </Button>
 
             <div>
               <Label className="text-xs">Materiaal:</Label>
-              <Input defaultValue="NL-654321" readOnly className="bg-green-50 h-7 text-sm" />
+              <Input defaultValue="NL-654321" readOnly className="bg-green-50 h-6 text-xs" />
             </div>
           </div>
         </Card>
