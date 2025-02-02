@@ -17,6 +17,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
+const objectTypes = ["abri", "mupi", "driehoeksbord", "reclamezuil"] as const;
+
 function getFurnitureTypeLabel(type: string) {
   switch (type) {
     case "abri":
@@ -34,18 +36,26 @@ function getFurnitureTypeLabel(type: string) {
 
 export default function Objects() {
   const [selectedCity, setSelectedCity] = useState<string>("");
-  
+  const [selectedType, setSelectedType] = useState<string>("");
+
   const { data: objects, isLoading } = useQuery<SelectWorkOrder[]>({
     queryKey: ["/api/requests"],
   });
 
   const filteredObjects = objects?.filter(obj => 
-    selectedCity === "all" ? true : 
-    selectedCity ? obj.municipality.toLowerCase() === selectedCity.toLowerCase() : true
+    (selectedCity === "all" || !selectedCity || obj.municipality.toLowerCase() === selectedCity.toLowerCase()) &&
+    (selectedType === "all" || !selectedType || obj.furnitureType.toLowerCase() === selectedType.toLowerCase())
   );
 
   // Netherlands center coordinates
   const center: [number, number] = [52.1326, 5.2913];
+
+  // Dummy coordinates for demo purposes - later these will come from the database
+  const dummyCoordinates = {
+    amsterdam: [52.3676, 4.9041],
+    rotterdam: [51.9225, 4.4792],
+    utrecht: [52.0907, 5.1214],
+  };
 
   return (
     <div className="space-y-4">
@@ -58,26 +68,50 @@ export default function Objects() {
         </div>
       </div>
 
-      <div className="w-[200px]">
-        <Select
-          value={selectedCity}
-          onValueChange={setSelectedCity}
-        >
-          <SelectTrigger className="h-10 rounded-xl">
-            <SelectValue placeholder="Filter op gemeente" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Alle gemeenten</SelectItem>
-            {municipalities.map((municipality) => (
-              <SelectItem
-                key={municipality.toLowerCase()}
-                value={municipality.toLowerCase()}
-              >
-                {municipality}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="flex gap-4">
+        <div className="w-[200px]">
+          <Select
+            value={selectedCity}
+            onValueChange={setSelectedCity}
+          >
+            <SelectTrigger className="h-10 rounded-xl">
+              <SelectValue placeholder="Filter op gemeente" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alle gemeenten</SelectItem>
+              {municipalities.map((municipality) => (
+                <SelectItem
+                  key={municipality.toLowerCase()}
+                  value={municipality.toLowerCase()}
+                >
+                  {municipality}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="w-[200px]">
+          <Select
+            value={selectedType}
+            onValueChange={setSelectedType}
+          >
+            <SelectTrigger className="h-10 rounded-xl">
+              <SelectValue placeholder="Filter op type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Alle types</SelectItem>
+              {objectTypes.map((type) => (
+                <SelectItem
+                  key={type}
+                  value={type}
+                >
+                  {getFurnitureTypeLabel(type)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-3">
@@ -93,25 +127,26 @@ export default function Objects() {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {filteredObjects?.map((obj) => (
-                  obj.installationXCoord && obj.installationYCoord ? (
+                {filteredObjects?.map((obj) => {
+                  // Get coordinates based on city (dummy data)
+                  const coords = dummyCoordinates[obj.municipality.toLowerCase() as keyof typeof dummyCoordinates];
+                  if (!coords) return null;
+
+                  return (
                     <Marker
                       key={obj.id}
-                      position={[
-                        parseFloat(obj.installationXCoord),
-                        parseFloat(obj.installationYCoord)
-                      ]}
+                      position={coords}
                     >
                       <Popup>
                         <div className="p-2">
                           <h3 className="font-bold">{getFurnitureTypeLabel(obj.furnitureType)}</h3>
-                          <p className="text-sm">{obj.installationAddress}</p>
-                          <p className="text-sm">{obj.installationCity}</p>
+                          <p className="text-sm">{obj.installationAddress || obj.removalStreet}</p>
+                          <p className="text-sm">{obj.municipality}</p>
                         </div>
                       </Popup>
                     </Marker>
-                  ) : null
-                ))}
+                  );
+                })}
               </MapContainer>
             </div>
           </Card>
