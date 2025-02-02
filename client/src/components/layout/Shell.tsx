@@ -16,6 +16,8 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Aanvragen", href: "/requests", icon: ClipboardList },
   { name: "Objecten", href: "/objects", icon: Map },
+  { type: "separator" },
+  { name: "Aanvragen intern", href: "/internal-requests", icon: FileText },
 ];
 
 const actions = [
@@ -40,29 +42,33 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <ul role="list" className="flex flex-1 flex-col gap-y-8">
               <li>
                 <ul role="list" className="-mx-2 space-y-1">
-                  {navigation.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          item.href === location
-                            ? "bg-primary/10 text-primary"
-                            : "text-gray-700 hover:bg-gray-50",
-                          "group flex gap-x-3 rounded-xl p-3 text-sm font-medium transition-all"
-                        )}
-                      >
-                        <item.icon
+                  {navigation.map((item, index) => (
+                    item.type === "separator" ? (
+                      <Separator key={index} className="my-4 bg-gray-900" />
+                    ) : (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
                           className={cn(
-                            "h-5 w-5 shrink-0",
                             item.href === location
-                              ? "text-primary"
-                              : "text-gray-400 group-hover:text-gray-600"
+                              ? "bg-primary/10 text-primary"
+                              : "text-gray-700 hover:bg-gray-50",
+                            "group flex gap-x-3 rounded-xl p-3 text-sm font-medium transition-all"
                           )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
-                    </li>
+                        >
+                          <item.icon
+                            className={cn(
+                              "h-5 w-5 shrink-0",
+                              item.href === location
+                                ? "text-primary"
+                                : "text-gray-400 group-hover:text-gray-600"
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    )
                   ))}
                 </ul>
               </li>
