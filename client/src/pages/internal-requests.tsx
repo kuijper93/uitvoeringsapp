@@ -30,7 +30,8 @@ const mockWorkOrders = [
     type: "plaatsing",
     orderDetails: {
       plannedDate: "23-12-2024",
-      coordinates: "852.258582",
+      xCoord: "852.258",
+      yCoord: "58582",
       street: "Leidseplein 58",
       postalCode: "1000AA",
       city: "Amsterdam",
@@ -79,10 +80,9 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const getCoordinates = (coordString: string | undefined): LatLngTuple => {
-  if (!coordString) return [52.3676, 4.9041]; // Default to Amsterdam
-  const [lat, lng] = coordString.split(".").map(Number);
-  return [lat / 1000 || 52.3676, lng / 1000 || 4.9041];
+const getCoordinates = (x: string | undefined, y: string | undefined): LatLngTuple => {
+  if (!x || !y) return [52.3676, 4.9041]; // Default to Amsterdam
+  return [Number(x) / 1000 || 52.3676, Number(y) / 1000 || 4.9041];
 };
 
 export default function InternalRequests() {
@@ -224,10 +224,14 @@ export default function InternalRequests() {
                     <CardTitle className="text-sm">Opdrachtgegevens</CardTitle>
                   </CardHeader>
                   <CardContent className="grid gap-2 pt-0">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="h-[200px] rounded-lg overflow-hidden border">
+                    <div className="grid grid-cols-12 gap-4">
+                      {/* Map section - 4 columns (1/3 width) */}
+                      <div className="col-span-4 h-[200px] rounded-lg overflow-hidden border">
                         <MapContainer
-                          center={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}
+                          center={getCoordinates(
+                            selectedWorkOrder.orderDetails?.xCoord,
+                            selectedWorkOrder.orderDetails?.yCoord
+                          )}
                           zoom={13}
                           style={{ height: "100%", width: "100%" }}
                         >
@@ -235,7 +239,10 @@ export default function InternalRequests() {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                           />
-                          <Marker position={getCoordinates(selectedWorkOrder.orderDetails?.coordinates)}>
+                          <Marker position={getCoordinates(
+                            selectedWorkOrder.orderDetails?.xCoord,
+                            selectedWorkOrder.orderDetails?.yCoord
+                          )}>
                             <Popup>
                               {selectedWorkOrder.orderDetails?.street || 'Location'}
                             </Popup>
@@ -243,16 +250,21 @@ export default function InternalRequests() {
                         </MapContainer>
                       </div>
 
-                      <div className="space-y-2">
+                      {/* Details section - 8 columns (2/3 width) */}
+                      <div className="col-span-8 space-y-2">
                         <div className="bg-blue-100 p-2 rounded text-xs">
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-3 gap-2">
                             <div>
                               <label className="text-xs font-medium">Gemeente uitvoeringsdatum</label>
                               <p className="text-xs">{selectedWorkOrder.orderDetails?.plannedDate}</p>
                             </div>
                             <div>
-                              <label className="text-xs font-medium">X, Y coördinaten</label>
-                              <p className="text-xs">{selectedWorkOrder.orderDetails?.coordinates}</p>
+                              <label className="text-xs font-medium">X coördinaat</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.xCoord}</p>
+                            </div>
+                            <div>
+                              <label className="text-xs font-medium">Y coördinaat</label>
+                              <p className="text-xs">{selectedWorkOrder.orderDetails?.yCoord}</p>
                             </div>
                           </div>
                         </div>
@@ -294,6 +306,7 @@ export default function InternalRequests() {
                             </div>
                           </div>
                         </div>
+
                         <div className="bg-gray-50 p-2 rounded">
                           <label className="text-xs font-medium block mb-1">Gemeente notities</label>
                           <Input className="h-6 text-xs" placeholder="Plaats hier notities" />
