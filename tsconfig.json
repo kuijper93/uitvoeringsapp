@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "noEmit": false,
+    "noEmit": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "incremental": true,
     "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",

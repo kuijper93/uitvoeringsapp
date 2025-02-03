@@ -17,6 +17,11 @@ import L from "leaflet";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
+// Fix the imports for Leaflet marker icons
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
 // Type definition for work order to fix implicit any
 interface WorkOrder {
   id: number;
@@ -44,13 +49,16 @@ interface WorkOrder {
   abriFormat?: string;
 }
 
-// Fix Leaflet default marker icon issue
+// Delete previous icon URL configuration
 delete (L.Icon.Default.prototype as any)._getIconUrl;
+
+// Configure default marker icons
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: require("leaflet/dist/images/marker-icon.png"),
-  shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
 });
+
 
 const statuses = ["alle", "ingepland", "open", "uitgevoerd", "aanvraagfase"] as const;
 const cities = ["Alle", "Amsterdam", "Rotterdam", "Utrecht", "Arnhem", "Apeldoorn"] as const;
