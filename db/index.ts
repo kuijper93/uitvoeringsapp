@@ -10,16 +10,11 @@ if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL must be set');
 }
 
-// Create a pool using Neon's serverless client
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-
-// Add error handling
-pool.on('error', (err) => {
-  console.error('Unexpected database pool error:', err);
+// Simple pool configuration
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL,
 });
 
-// Initialize Drizzle with the pool and schema
+// Export Drizzle instance
 export const db = drizzle(pool, { schema });
-
-// Export pool for potential direct usage
 export { pool };

@@ -23,10 +23,7 @@ const server = registerRoutes(app);
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
-  const compiler = webpack({
-    ...webpackConfig,
-    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  });
+  const compiler = webpack(webpackConfig);
 
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath || '/',
@@ -46,7 +43,13 @@ if (process.env.NODE_ENV !== 'production') {
     }
     const filename = path.join(compiler.outputPath || '', 'index.html');
     console.log(`Attempting to serve: ${filename}`);
-    compiler.outputFileSystem?.readFile(filename, (err, result) => {
+
+    // Type assertion to handle the readFile method
+    const outputFileSystem = compiler.outputFileSystem as {
+      readFile(path: string, callback: (err: NodeJS.ErrnoException | null, contents: Buffer) => void): void;
+    };
+
+    outputFileSystem.readFile(filename, (err, result) => {
       if (err) {
         console.error('Error reading index.html:', err);
         return next(err);

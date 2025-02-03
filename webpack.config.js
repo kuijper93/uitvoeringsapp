@@ -15,24 +15,12 @@ const config = {
     path: path.resolve(__dirname, 'dist/public'),
     filename: '[name].bundle.js',
     publicPath: '/',
-    clean: true,
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: {
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: true,
-            compilerOptions: {
-              module: 'esnext',
-              moduleResolution: 'bundler',
-              jsx: 'react-jsx',
-              noEmit: false,
-            },
-          },
-        },
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
@@ -40,14 +28,9 @@ const config = {
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
-        test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot)$/i,
-        type: 'asset',
-        parser: {
-          dataUrlCondition: {
-            maxSize: 8192,
-          },
-        },
-      },
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+      }
     ],
   },
   resolve: {
@@ -61,14 +44,8 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './client/index.html',
-      inject: true,
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.DEBUG': JSON.stringify(process.env.DEBUG || false),
     }),
   ],
-  devtool: 'source-map',
 };
 
 export default config;
