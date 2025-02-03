@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { getStatusColor, getStatusLabel } from "@/lib/status";
+import { getStatusColor, getStatusLabel, WorkOrderStatusType } from "@/lib/status";
 import type { SelectWorkOrder } from "@db/schema";
 import { formatDistance } from "date-fns";
 import { nl } from "date-fns/locale";
@@ -20,6 +20,14 @@ export default function WorkOrders() {
   const { data: workOrders, isLoading } = useQuery<SelectWorkOrder[]>({
     queryKey: ["/api/work-orders"],
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+        <p>Laden...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -48,7 +56,9 @@ export default function WorkOrders() {
             {workOrders?.map((order) => (
               <TableRow key={order.id}>
                 <TableCell className="font-medium">
-                  {order.orderNumber}
+                  <Link href={`/work-orders/${order.id}`} className="hover:underline">
+                    {order.orderNumber}
+                  </Link>
                 </TableCell>
                 <TableCell>{order.actionType}</TableCell>
                 <TableCell>
@@ -57,9 +67,9 @@ export default function WorkOrders() {
                 <TableCell>
                   <Badge
                     variant="secondary"
-                    className={`${getStatusColor(order.status)} rounded-xl`}
+                    className={`${getStatusColor(order.status as WorkOrderStatusType)} rounded-xl`}
                   >
-                    {getStatusLabel(order.status)}
+                    {getStatusLabel(order.status as WorkOrderStatusType)}
                   </Badge>
                 </TableCell>
                 <TableCell>
