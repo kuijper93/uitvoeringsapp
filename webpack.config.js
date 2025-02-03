@@ -41,15 +41,17 @@ const config = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff2?|ttf|eot)$/i,
-        type: 'asset/resource',
-        generator: {
-          filename: 'assets/[hash][ext]'
-        }
-      }
+        type: 'asset',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8192,
+          },
+        },
+      },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
       '@': path.resolve(__dirname, 'client/src'),
       '@db': path.resolve(__dirname, 'db'),

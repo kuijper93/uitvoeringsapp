@@ -25,13 +25,11 @@ if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
   const compiler = webpack({
     ...webpackConfig,
-    entry: {
-      app: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', webpackConfig.entry.app[1]],
-    },
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   });
 
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: '/',
+    publicPath: webpackConfig.output.publicPath || '/',
     stats: 'minimal',
   }));
 

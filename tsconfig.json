@@ -10,7 +10,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "allowJs": true,
-    "noEmit": true,
+    "noEmit": false,
     "lib": ["esnext", "dom", "dom.iterable"],
     "incremental": true,
     "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
@@ -20,6 +20,9 @@
       "@db": ["./db/index.ts"],
       "@db/*": ["./db/*"],
       "@/*": ["./client/src/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   }
 }
