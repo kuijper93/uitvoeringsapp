@@ -41,14 +41,9 @@ type AanvraagInternFormData = z.infer<typeof aanvraagInternSchema>;
 interface AanvraagInternProps {
   workOrder?: SelectWorkOrder;
   onUpdate?: (data: Partial<SelectWorkOrder>) => void;
-  mapHeight?: number;
 }
 
-export default function AanvraagIntern({ 
-  workOrder, 
-  onUpdate,
-  mapHeight = 210 // Default to 210px (70% of original 300px)
-}: AanvraagInternProps) {
+export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternProps) {
   const form = useForm<AanvraagInternFormData>({
     resolver: zodResolver(aanvraagInternSchema),
     defaultValues: {
@@ -85,9 +80,60 @@ export default function AanvraagIntern({
   };
 
   return (
-    <div className="grid grid-cols-[1.8fr,1.2fr] gap-4">
-      {/* Left section - Map */}
-      <div style={{ height: `${mapHeight}px` }} className="relative">
+    <div className="grid grid-cols-[0.8fr,2.4fr,0.8fr] gap-2">
+      {/* Left section - Objectgegevens */}
+      <Card className="bg-amber-50/50 p-2 rounded-sm h-[300px] overflow-y-auto">
+        <div className="space-y-1">
+          <div>
+            <Label className="text-xs">Local Model</Label>
+            <Input 
+              value={form.watch("localModel")}
+              onChange={(e) => onFormChange("localModel", e.target.value)}
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
+            />
+          </div>
+          <div className="mt-1">
+            <Label className="text-xs">Abri formaat</Label>
+            <Input 
+              value={form.watch("abriFormat")}
+              onChange={(e) => onFormChange("abriFormat", e.target.value)}
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
+            />
+          </div>
+          <div className="mt-1">
+            <Label className="text-xs">Objectnummer</Label>
+            <Input 
+              value={form.watch("objectNumber")}
+              onChange={(e) => onFormChange("objectNumber", e.target.value)}
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
+            />
+          </div>
+          <div className="mt-1">
+            <Label className="text-xs">Type actie</Label>
+            <Input 
+              value={form.watch("actionType")}
+              onChange={(e) => onFormChange("actionType", e.target.value)}
+              className="h-6 text-xs bg-amber-50 mt-0.5" 
+            />
+          </div>
+          <div className="mt-1">
+            <div className="flex items-center">
+              <Checkbox 
+                id="new-object" 
+                checked={form.watch("newObject")}
+                onCheckedChange={(checked) => onFormChange("newObject", checked)}
+                className="h-3 w-3" 
+              />
+              <label htmlFor="new-object" className="text-xs ml-2">
+                Nieuw object aanmaken
+              </label>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Middle section - Map */}
+      <div className="h-[300px] relative">
         <MapContainer
           center={[52.3676, 4.9041]}
           zoom={13}
@@ -114,61 +160,11 @@ export default function AanvraagIntern({
         </Button>
       </div>
 
-      {/* Right section - Details */}
-      <div className="space-y-4">
-        {/* Object Information */}
-        <Card className="bg-amber-50/50 p-4 rounded-sm">
-          <div className="space-y-3">
-            <div>
-              <Label className="text-xs">Local Model</Label>
-              <Input 
-                value={form.watch("localModel")}
-                onChange={(e) => onFormChange("localModel", e.target.value)}
-                className="h-6 text-xs bg-amber-50 mt-0.5" 
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Abri formaat</Label>
-              <Input 
-                value={form.watch("abriFormat")}
-                onChange={(e) => onFormChange("abriFormat", e.target.value)}
-                className="h-6 text-xs bg-amber-50 mt-0.5" 
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Objectnummer</Label>
-              <Input 
-                value={form.watch("objectNumber")}
-                onChange={(e) => onFormChange("objectNumber", e.target.value)}
-                className="h-6 text-xs bg-amber-50 mt-0.5" 
-              />
-            </div>
-            <div>
-              <Label className="text-xs">Type actie</Label>
-              <Input 
-                value={form.watch("actionType")}
-                onChange={(e) => onFormChange("actionType", e.target.value)}
-                className="h-6 text-xs bg-amber-50 mt-0.5" 
-              />
-            </div>
-            <div className="flex items-center">
-              <Checkbox 
-                id="new-object" 
-                checked={form.watch("newObject")}
-                onCheckedChange={(checked) => onFormChange("newObject", checked)}
-                className="h-3 w-3" 
-              />
-              <label htmlFor="new-object" className="text-xs ml-2">
-                Nieuw object aanmaken
-              </label>
-            </div>
-          </div>
-        </Card>
-
-        {/* Services Section */}
-        <div className="space-y-3">
+      {/* Right section - Services */}
+      <div className="space-y-0.5 h-[300px] overflow-y-auto">
+        <div className="mb-1">
           <h3 className="text-xs font-medium">Aangevraagde services</h3>
-          <div className="space-y-2">
+          <div className="space-y-0.5 mt-0.5">
             <div className="flex items-center">
               <Checkbox 
                 id="elektra" 
@@ -224,75 +220,72 @@ export default function AanvraagIntern({
           </div>
         </div>
 
-        {/* Additional Details */}
-        <div className="space-y-2">
-          <div>
-            <Label className="text-xs">Verkeersplan</Label>
-            <Select
-              value={form.watch("verkeersplan")}
-              onValueChange={(value) => onFormChange("verkeersplan", value)}
-            >
-              <SelectTrigger className="w-full h-6 text-xs">
-                <SelectValue placeholder="Geen" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="geen">Geen</SelectItem>
-                <SelectItem value="zelf">Zelf uitvoeren</SelectItem>
-                <SelectItem value="werk">In het werk</SelectItem>
-                <SelectItem value="buko">BUKO</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label className="text-xs">Verkeersplan</Label>
+          <Select
+            value={form.watch("verkeersplan")}
+            onValueChange={(value) => onFormChange("verkeersplan", value)}
+          >
+            <SelectTrigger className="w-full h-6 text-xs">
+              <SelectValue placeholder="Geen" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="geen">Geen</SelectItem>
+              <SelectItem value="zelf">Zelf uitvoeren</SelectItem>
+              <SelectItem value="werk">In het werk</SelectItem>
+              <SelectItem value="buko">BUKO</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <div>
-            <Label className="text-xs">Aannemer</Label>
-            <Select
-              value={form.watch("aannemer")}
-              onValueChange={(value) => onFormChange("aannemer", value)}
-            >
-              <SelectTrigger className="w-full h-6 text-xs">
-                <SelectValue placeholder="Geen" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="geen">Geen aannemer</SelectItem>
-                <SelectItem value="henk">Aannemer Henk</SelectItem>
-                <SelectItem value="piet">Aannemer Piet</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label className="text-xs">Aannemer</Label>
+          <Select
+            value={form.watch("aannemer")}
+            onValueChange={(value) => onFormChange("aannemer", value)}
+          >
+            <SelectTrigger className="w-full h-6 text-xs">
+              <SelectValue placeholder="Geen" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="geen">Geen aannemer</SelectItem>
+              <SelectItem value="henk">Aannemer Henk</SelectItem>
+              <SelectItem value="piet">Aannemer Piet</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <div>
-            <Label className="text-xs">Prio</Label>
-            <Select
-              value={form.watch("prio")}
-              onValueChange={(value) => onFormChange("prio", value)}
-            >
-              <SelectTrigger className="w-full h-6 text-xs">
-                <SelectValue placeholder="Geen" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="geen">Geen prio</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label className="text-xs">Prio</Label>
+          <Select
+            value={form.watch("prio")}
+            onValueChange={(value) => onFormChange("prio", value)}
+          >
+            <SelectTrigger className="w-full h-6 text-xs">
+              <SelectValue placeholder="Geen" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="geen">Geen prio</SelectItem>
+              <SelectItem value="high">High</SelectItem>
+              <SelectItem value="medium">Medium</SelectItem>
+              <SelectItem value="low">Low</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <div>
-            <Label className="text-xs">Combi</Label>
-            <Select
-              value={form.watch("combi")}
-              onValueChange={(value) => onFormChange("combi", value)}
-            >
-              <SelectTrigger className="w-full h-6 text-xs">
-                <SelectValue placeholder="Voer combi" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="combi">Voer combi</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <div>
+          <Label className="text-xs">Combi</Label>
+          <Select
+            value={form.watch("combi")}
+            onValueChange={(value) => onFormChange("combi", value)}
+          >
+            <SelectTrigger className="w-full h-6 text-xs">
+              <SelectValue placeholder="Voer combi" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="combi">Voer combi</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>
