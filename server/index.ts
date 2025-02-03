@@ -37,12 +37,10 @@ if (process.env.NODE_ENV !== 'production') {
 
   // Serve index.html for all non-API routes
   app.get('*', (req, res, next) => {
-    console.log(`Handling request for: ${req.path}`);
     if (req.path.startsWith('/api')) {
       return next();
     }
     const filename = path.join(compiler.outputPath || '', 'index.html');
-    console.log(`Attempting to serve: ${filename}`);
 
     // Type assertion to handle the readFile method
     const outputFileSystem = compiler.outputFileSystem as {
@@ -56,7 +54,6 @@ if (process.env.NODE_ENV !== 'production') {
       }
       res.set('Content-Type', 'text/html');
       res.send(result);
-      console.log('Successfully served index.html');
     });
   });
 }
