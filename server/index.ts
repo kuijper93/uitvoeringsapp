@@ -1,16 +1,12 @@
-import express, { type Request, Response, NextFunction } from "express";
+import express from "express";
 import { registerRoutes } from "./routes";
 import path from "path";
-import { fileURLToPath } from 'url';
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
-// @ts-ignore - webpack config is a JavaScript file
-import webpackConfig from "../webpack.config.js";
+// @ts-ignore - webpack config is a CommonJS module
+const webpackConfig = require("../webpack.config.js");
 import type { Configuration } from 'webpack';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
@@ -60,7 +56,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Error handling middleware
-app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Server error:', err);
   res.status(500).json({ message: 'Internal Server Error' });
 });

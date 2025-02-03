@@ -2,27 +2,27 @@
   "include": ["client/src/**/*", "db/**/*", "server/**/*"],
   "exclude": ["node_modules", "build", "dist", "**/*.test.ts"],
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "strict": true,
+    "target": "ES2020",
+    "module": "CommonJS",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./client/src/*"],
+      "@db": ["./db/index"],
+      "@db/*": ["./db/*"]
+    },
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "allowJs": true,
-    "noEmit": false,
-    "lib": ["esnext", "dom", "dom.iterable"],
+    "noEmit": true,
+    "isolatedModules": true,
     "incremental": true,
-    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
-    "baseUrl": ".",
     "types": ["node", "webpack-env", "vite/client"],
-    "paths": {
-      "@db": ["./db/index.ts"],
-      "@db/*": ["./db/*"],
-      "@/*": ["./client/src/*"]
-    },
-    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "allowSyntheticDefaultImports": true
   }
 }

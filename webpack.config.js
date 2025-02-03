@@ -1,14 +1,9 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import webpack from 'webpack';
-import type { Configuration } from 'webpack';
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const config: Configuration = {
-  mode: (process.env.NODE_ENV === 'production' ? 'production' : 'development') as 'production' | 'development',
+const config = {
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     app: ['webpack-hot-middleware/client', './client/src/main.tsx'],
   },
@@ -49,4 +44,4 @@ const config: Configuration = {
   ],
 };
 
-export default config;
+module.exports = config;
