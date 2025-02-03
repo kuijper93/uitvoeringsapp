@@ -11,6 +11,7 @@ import CreateRequest from "./pages/create-request";
 import RequestDetails from "./pages/request-details";
 import Objects from "./pages/objects";
 import InternalRequests from "./pages/internal-requests";
+import InternalRequest from "./pages/internal-request";
 import NotFound from "./pages/not-found";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/create-request" component={CreateRequest} />
         <Route path="/objects" component={Objects} />
         <Route path="/internal-requests" component={InternalRequests} />
+        <Route path="/internal-request" component={InternalRequest} />
         <Route component={NotFound} />
       </Switch>
     </Shell>
