@@ -9,11 +9,11 @@ const __dirname = path.dirname(__filename);
 const config = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    app: './client/src/main.tsx',
+    app: ['webpack-hot-middleware/client', './client/src/main.tsx'],
   },
   output: {
     path: path.resolve(__dirname, 'dist/public'),
-    filename: '[name].[contenthash].js',
+    filename: '[name].bundle.js',
     publicPath: '/',
     clean: true,
   },
@@ -21,83 +21,32 @@ const config = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: {
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: true,
-            compilerOptions: {
-              noEmit: false,
-            },
-          },
-        },
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  'tailwindcss',
-                  'autoprefixer',
-                ],
-              },
-            },
-          },
-        ],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': path.resolve(__dirname, 'client/src'),
       '@db': path.resolve(__dirname, 'db'),
     },
-    fallback: {
-      "path": false,
-      "fs": false,
-    }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       template: './client/index.html',
-      filename: 'index.html',
-      inject: true,
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
   ],
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: false,
-    },
-    runtimeChunk: 'single',
-  },
-    stats: {
-    colors: true,
-    errorDetails: true,
-  },
-  performance: {
-    hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
-  },
+  devtool: 'source-map',
 };
 
 export default config;

@@ -8,7 +8,6 @@ import webpackHotMiddleware from "webpack-hot-middleware";
 // @ts-ignore - webpack config is a JavaScript file
 import webpackConfig from "../webpack.config.js";
 
-// ESM module support
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -16,40 +15,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// CORS middleware for Replit domains
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && (origin.endsWith('.replit.dev') || origin.endsWith('.repl.co'))) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-  }
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
 // Register API routes first
 const server = registerRoutes(app);
 
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
-  const compiler = webpack({
-    ...webpackConfig,
-    entry: {
-      app: ['webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000', webpackConfig.entry.app],
-    },
-  });
+  const compiler = webpack(webpackConfig);
 
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath || '/',
-    writeToDisk: true,
+    publicPath: '/',
+    stats: 'minimal',
   }));
 
-  app.use(webpackHotMiddleware(compiler));
+  app.use(webpackHotMiddleware(compiler, {
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
+  }));
 }
 
 // Error handling middleware
@@ -58,25 +40,8 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
-// Try to find an available port
-const startServer = (retries = 3, basePort = 5000) => {
-  let currentPort = basePort;
-  const tryListen = () => {
-    server.listen(currentPort, "0.0.0.0", () => {
-      console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${currentPort}`);
-    }).on('error', (err: any) => {
-      if (err.code === 'EADDRINUSE' && retries > 0) {
-        console.log(`Port ${currentPort} in use, trying ${currentPort + 1}...`);
-        currentPort++;
-        retries--;
-        tryListen();
-      } else {
-        console.error('Server failed to start:', err);
-        process.exit(1);
-      }
-    });
-  };
-  tryListen();
-};
-
-startServer();
+// Start server
+const port = process.env.PORT || 5000;
+server.listen(port, "0.0.0.0", () => {
+  console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${port}`);
+});
