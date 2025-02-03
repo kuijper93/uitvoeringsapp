@@ -20,7 +20,7 @@ export default function InternalRequest() {
       </div>
 
       <Card className="rounded-xl">
-        <AanvraagIntern workOrder={workOrder} mapHeight={210} />
+        <AanvraagIntern workOrder={workOrder} />
       </Card>
     </div>
   );
