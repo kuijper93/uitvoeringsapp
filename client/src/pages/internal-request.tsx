@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { AanvraagIntern } from "@/components/tabs/AanvraagIntern";
+import AanvraagIntern from "@/components/tabs/AanvraagIntern";
 import { useQuery } from "@tanstack/react-query";
 import { SelectWorkOrder } from "@db/schema";
 
