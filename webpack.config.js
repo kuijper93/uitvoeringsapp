@@ -2,12 +2,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
+import type { Configuration } from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const config = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+const config: Configuration = {
+  mode: (process.env.NODE_ENV === 'production' ? 'production' : 'development') as 'production' | 'development',
   entry: {
     app: ['webpack-hot-middleware/client', './client/src/main.tsx'],
   },

@@ -7,6 +7,7 @@ import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 // @ts-ignore - webpack config is a JavaScript file
 import webpackConfig from "../webpack.config.js";
+import type { Configuration } from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,10 +24,10 @@ const server = registerRoutes(app);
 // Set up webpack middleware in development
 if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
-  const compiler = webpack(webpackConfig);
+  const compiler = webpack(webpackConfig as Configuration);
 
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: webpackConfig.output.publicPath || '/',
+    publicPath: webpackConfig.output?.publicPath || '/',
     stats: 'minimal',
   }));
 
