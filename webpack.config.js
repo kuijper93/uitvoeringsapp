@@ -9,10 +9,7 @@ const __dirname = path.dirname(__filename);
 const config = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    app: [
-      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true',
-      './client/src/main.tsx',
-    ],
+    app: './client/src/main.tsx',
   },
   output: {
     path: path.resolve(__dirname, 'dist/public'),
@@ -81,12 +78,10 @@ const config = {
       template: './client/index.html',
       filename: 'index.html',
       inject: true,
-      publicPath: '/',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
-    new webpack.NoEmitOnErrorsPlugin(),
   ],
   devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'eval-source-map',
   optimization: {
@@ -96,7 +91,7 @@ const config = {
     },
     runtimeChunk: 'single',
   },
-  stats: {
+    stats: {
     colors: true,
     errorDetails: true,
   },
