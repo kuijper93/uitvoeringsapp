@@ -3,26 +3,22 @@ import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from 'ws';
 import * as schema from './schema';
 
-// Configure Neon to use WebSocket
+// Required for Neon serverless with WebSocket support
 neonConfig.webSocketConstructor = ws;
-neonConfig.useSecureWebSocket = true;
 
 if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL must be set. Did you forget to provision a database?');
+  throw new Error('DATABASE_URL must be set');
 }
 
-// Create connection pool
-const pool = new Pool({ 
-  connectionString: process.env.DATABASE_URL,
-});
+// Create a pool using Neon's serverless client
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-// Add error handling for the pool
+// Add error handling
 pool.on('error', (err) => {
-  console.error('Unexpected error on idle client', err);
-  process.exit(-1);
+  console.error('Unexpected database pool error:', err);
 });
 
-// Initialize Drizzle with the pool
+// Initialize Drizzle with the pool and schema
 export const db = drizzle(pool, { schema });
 
 // Export pool for potential direct usage
