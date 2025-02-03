@@ -70,16 +70,12 @@ if (process.env.NODE_ENV !== 'production') {
   console.log('Setting up webpack middleware...');
   const compiler = webpack(webpackConfig);
 
-  // Configure webpack dev middleware with proper MIME types and history fallback
+  // Configure webpack dev middleware
   const devMiddleware = webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath || '/',
     writeToDisk: true,
     serverSideRender: true,
     index: true,
-    mimeTypes: {
-      'application/javascript': ['js', 'jsx', 'ts', 'tsx'],
-      'text/css': ['css'],
-    },
   });
 
   app.use(devMiddleware);
@@ -91,11 +87,17 @@ if (process.env.NODE_ENV !== 'production') {
       return next();
     }
 
-    const filename = path.join(compiler.outputPath, 'index.html');
+    const filename = path.join(compiler.outputPath || '', 'index.html');
+    if (!compiler.outputFileSystem) {
+      return next(new Error('Webpack compiler output filesystem not available'));
+    }
 
-    compiler.outputFileSystem.readFile(filename, (err: any, result: any) => {
+    compiler.outputFileSystem.readFile(filename, (err: any, result: Buffer | string | null) => {
       if (err) {
         return next(err);
+      }
+      if (!result) {
+        return next(new Error('No output file generated'));
       }
 
       res.set('Content-Type', 'text/html');
@@ -105,11 +107,6 @@ if (process.env.NODE_ENV !== 'production') {
   });
 } else {
   // Production static file serving
-  express.static.mime.define({
-    'application/javascript': ['js', 'jsx', 'ts', 'tsx'],
-    'text/css': ['css'],
-  });
-
   app.use(express.static(path.join(__dirname, '../dist/public')));
 
   // Handle all routes in production
@@ -127,7 +124,25 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
-const PORT = Number(process.env.PORT) || 5000;
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${PORT}`);
-});
+// Try to find an available port
+const startServer = (retries = 3, basePort = 5000) => {
+  let currentPort = basePort;
+  const tryListen = () => {
+    server.listen(currentPort, "0.0.0.0", () => {
+      console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${currentPort}`);
+    }).on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE' && retries > 0) {
+        console.log(`Port ${currentPort} in use, trying ${currentPort + 1}...`);
+        currentPort++;
+        retries--;
+        tryListen();
+      } else {
+        console.error('Server failed to start:', err);
+        process.exit(1);
+      }
+    });
+  };
+  tryListen();
+};
+
+startServer();
