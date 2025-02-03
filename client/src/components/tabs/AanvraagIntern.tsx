@@ -41,9 +41,10 @@ type AanvraagInternFormData = z.infer<typeof aanvraagInternSchema>;
 interface AanvraagInternProps {
   workOrder?: SelectWorkOrder;
   onUpdate?: (data: Partial<SelectWorkOrder>) => void;
+  mapHeight?: number;
 }
 
-export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternProps) {
+export default function AanvraagIntern({ workOrder, onUpdate, mapHeight = 210 }: AanvraagInternProps) {
   const form = useForm<AanvraagInternFormData>({
     resolver: zodResolver(aanvraagInternSchema),
     defaultValues: {
@@ -82,7 +83,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
   return (
     <div className="grid grid-cols-[0.8fr,2.4fr,0.8fr] gap-2">
       {/* Left section - Objectgegevens */}
-      <Card className="bg-amber-50/50 p-2 rounded-sm h-[300px] overflow-y-auto">
+      <Card className="bg-amber-50/50 p-2 rounded-sm h-[210px] overflow-y-auto">
         <div className="space-y-1">
           <div>
             <Label className="text-xs">Local Model</Label>
@@ -133,7 +134,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
       </Card>
 
       {/* Middle section - Map */}
-      <div className="h-[300px] relative">
+      <div style={{ height: `${mapHeight}px` }} className="relative">
         <MapContainer
           center={[52.3676, 4.9041]}
           zoom={13}
@@ -161,7 +162,7 @@ export default function AanvraagIntern({ workOrder, onUpdate }: AanvraagInternPr
       </div>
 
       {/* Right section - Services */}
-      <div className="space-y-0.5 h-[300px] overflow-y-auto">
+      <div className="space-y-0.5 h-[210px] overflow-y-auto">
         <div className="mb-1">
           <h3 className="text-xs font-medium">Aangevraagde services</h3>
           <div className="space-y-0.5 mt-0.5">
