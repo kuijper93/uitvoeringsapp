@@ -41,7 +41,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Start server
-const port = process.env.PORT || 5000;
-server.listen(port, "0.0.0.0", () => {
+const port = parseInt(process.env.PORT || '5000', 10);
+server.listen(port, () => {
   console.log(`${new Date().toLocaleTimeString()} [express] Server running at http://0.0.0.0:${port}`);
 });
